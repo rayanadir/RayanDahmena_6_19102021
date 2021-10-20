@@ -1,0 +1,108 @@
+body {
+    width: 1024px;
+    margin: auto;
+}
+
+.tags_list {
+    display: flex;
+    column-gap: .5rem;
+    padding: 0;
+}
+
+.tag {
+    list-style-type: none;
+    border: 0.5px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 11px;
+    padding: .1rem .3rem;
+    color: #901C1C;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    /* identical to box height */
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    /*column-gap: 2rem;*/
+    justify-content: space-between;
+}
+
+.photographers {
+    font-family: DM Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 47px;
+    color: #911C1C;
+}
+
+.photographer_img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10rem;
+    object-fit: cover;
+}
+
+.photographer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.photographer_name {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 47px;
+    /* identical to box height */
+    text-align: center;
+    color: #D3573C;
+    margin-bottom: 0;
+}
+
+.localisation {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 17px;
+    /* identical to box height */
+    text-align: center;
+    color: #901C1C;
+    margin: 0;
+}
+
+.description {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 13px;
+    /* identical to box height */
+    text-align: center;
+    color: #000000;
+    margin: 0;
+}
+
+.price {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9px;
+    line-height: 12px;
+    /* identical to box height */
+    text-align: center;
+    color: #757575;
+    margin: 0;
+}
+
+.photographers_tags {
+    display: flex;
+    column-gap: .2rem;
+}

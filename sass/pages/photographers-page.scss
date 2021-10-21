@@ -1,3 +1,182 @@
 body {
-    display: initial;
+    width: 1440px;
+    margin: auto;
+    //font-family: 'DM Sans', sans-serif;
+}
+
+main {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.header {
+    display: flex;
+    height: 95px;
+    align-items: center;
+}
+
+.profile {
+    background-color: #FAFAFA;
+    display: flex;
+    /*justify-content: space-between;*/
+    padding: 3rem;
+    column-gap: 6rem;
+    &__img {
+        height: 200px;
+        width: 200px;
+        border-radius: 15rem;
+        object-fit: cover;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    &__name {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 64px;
+        line-height: 83px;
+        color: #D3573C;
+        margin: 0;
+    }
+    &__localisation {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 24px;
+        line-height: 31px;
+        color: #901C1C;
+    }
+    &__description {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 23px;
+        color: #525252;
+    }
+    &__bouton {
+        flex: 1;
+        height: 83px;
+        display: flex;
+        align-items: center;
+    }
+    &__contact {
+        background: #911C1C;
+        border-radius: 5px;
+        width: 170px;
+        height: 60px;
+        color: #FFFFFF;
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 26px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        border: 0;
+    }
+    &__contact:hover {
+        cursor: pointer;
+    }
+    &__tags {
+        display: flex;
+        column-gap: .2rem;
+    }
+    &__tag {
+        list-style-type: none;
+        border: 0.5px solid #C4C4C4;
+        box-sizing: border-box;
+        border-radius: 11px;
+        padding: .1rem .3rem;
+        color: #901C1C;
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 17px;
+        line-height: 16px;
+        text-align: center;
+    }
+}
+
+.images {
+    padding: 3rem;
+    &__article {
+        width: 350px;
+        margin-top: 5rem;
+    }
+    &__filter {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 23px;
+        color: #000000;
+    }
+    &__image {
+        width: 350px;
+        height: 300px;
+        object-fit: cover;
+    }
+    &__title_like {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__title {
+        //font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 24px;
+        line-height: 31px;
+        color: #911C1C;
+    }
+    &__like {
+        display: flex;
+        column-gap: .5rem;
+        align-items: center;
+    }
+    &__count {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 31px;
+        text-align: right;
+        color: #911C1C;
+    }
+    &__icon {
+        color: #911C1C;
+    }
+}
+
+.banner {
+    background: #DB8876;
+    display: flex;
+    column-gap: 1.5rem;
+    width: 376px;
+    height: 89px;
+    border-radius: 5px;
+    justify-content: space-evenly;
+    align-items: center;
+    bottom: 0;
+    right: 10rem;
+    position: absolute;
+    &__likes {
+        display: flex;
+        column-gap: .3rem;
+        align-items: center;
+    }
+    &__count {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 31px;
+    }
+    &__price {
+        font-family: 'DM Sans', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 31px;
+    }
 }

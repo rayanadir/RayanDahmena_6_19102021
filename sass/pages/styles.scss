@@ -23,7 +23,7 @@ body {
         color: #901C1C;
         font-family: 'DM Sans', sans-serif;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 12px;
         line-height: 16px;
         text-align: center;
@@ -49,6 +49,9 @@ body {
         height: 200px;
         border-radius: 10rem;
         object-fit: cover;
+    }
+    &__img:hover {
+        cursor: pointer;
     }
     &__name {
         font-family: 'DM Sans', sans-serif;

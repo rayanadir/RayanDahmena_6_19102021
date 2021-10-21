@@ -1,0 +1,110 @@
+body {
+  width: 1440px;
+  margin: auto;
+  font-family: "DM Sans", sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.header__tags_list {
+  display: flex;
+  column-gap: 0.5rem;
+  padding: 0;
+}
+.header__tag {
+  list-style-type: none;
+  border: 0.5px solid #C4C4C4;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 0.1rem 0.3rem;
+  color: #901C1C;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+.header__photographers {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 47px;
+  color: #911C1C;
+}
+
+.photographers__photographer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.photographers__img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10rem;
+  object-fit: cover;
+}
+.photographers__name {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 47px;
+  text-align: center;
+  color: #D3573C;
+  margin-bottom: 0;
+}
+.photographers__localisation {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 17px;
+  text-align: center;
+  color: #901C1C;
+  margin: 0;
+}
+.photographers__description {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 13px;
+  text-align: center;
+  color: #000000;
+  margin: 0;
+}
+.photographers__price {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 12px;
+  text-align: center;
+  color: #757575;
+  margin: 0;
+}
+.photographers__tags {
+  display: flex;
+  column-gap: 0.2rem;
+}
+.photographers__tag {
+  list-style-type: none;
+  border: 0.5px solid #C4C4C4;
+  box-sizing: border-box;
+  border-radius: 11px;
+  padding: 0.1rem 0.3rem;
+  color: #901C1C;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+/*# sourceMappingURL=styles.css.map */

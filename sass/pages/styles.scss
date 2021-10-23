@@ -20,6 +20,9 @@ body {
         @include tag();
         font-size: 12px;
     }
+    &__tag:hover {
+        @include tag_hover();
+    }
     &__photographers {
         font-style: normal;
         font-weight: normal;
@@ -78,5 +81,8 @@ body {
     &__tag {
         @include tag();
         font-size: 12px;
+    }
+    &__tag:hover {
+        @include tag_hover();
     }
 }

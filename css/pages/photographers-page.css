@@ -65,6 +65,8 @@ body {
 }
 .profile__contact:hover {
   cursor: pointer;
+  background: #DB8876;
+  color: black;
 }
 .profile__tags {
   display: flex;
@@ -82,6 +84,11 @@ body {
   line-height: 16px;
   text-align: center;
   font-size: 17px;
+}
+.profile__tag:hover {
+  background: #911C1C;
+  color: white;
+  cursor: pointer;
 }
 
 .images {
@@ -154,6 +161,87 @@ body {
   font-weight: 500;
   font-size: 24px;
   line-height: 31px;
+}
+
+.contactform {
+  width: 669px;
+  height: 775px;
+  background: #DB8876;
+  border-radius: 5px;
+  position: absolute;
+  padding: 1.5rem;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  z-index: 1;
+  top: 3rem;
+  transform: translateX(50%);
+}
+.contactform__contact_close {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contactform__contactMe {
+  font-size: 64px;
+  line-height: 83px;
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+}
+.contactform__close {
+  background: none;
+  border: none;
+}
+.contactform__close:hover {
+  cursor: pointer;
+}
+.contactform__icon {
+  color: white;
+  font-size: 3rem;
+}
+.contactform__formData {
+  font-size: 30px;
+  line-height: 47px;
+  color: #312E2E;
+  mix-blend-mode: normal;
+}
+.contactform__formData[error=true]::after {
+  content: attr(error);
+  text-align: left;
+  color: red;
+  font-size: 20px;
+}
+.contactform__input {
+  width: 669px;
+  height: 55px;
+  border-radius: 5px;
+  border: 0;
+  font-size: 36px;
+}
+.contactform__message {
+  width: 669px;
+  height: 130px;
+  border-radius: 5px;
+  border: 0;
+  font-size: 36px;
+  resize: none;
+}
+.contactform__send {
+  background: #911C1C;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  color: white;
+  width: 170px;
+  height: 69px;
+  border: 0;
+}
+.contactform__send:hover {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=photographers-page.css.map */

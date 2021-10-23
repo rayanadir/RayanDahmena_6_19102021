@@ -8,6 +8,7 @@
     <title>Photographer</title>
     <link rel="stylesheet" href="../css/pages/photographers-page.css">
     <script src="https://kit.fontawesome.com/8570de5ffd.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -36,7 +37,7 @@
                 </div>
             </article>
             <div class="profile__bouton">
-                <button class="profile__contact">
+                <button class="profile__contact" onclick="openForm()">
                 Contactez-moi
             </button>
             </div>
@@ -73,7 +74,42 @@
                 300€ / jour
             </div>
         </section>
+        <section class="contactform">
+            <div class="contactform__contact_close">
+                <h1 class="contactform__contactMe">Contactez-moi</h1>
+                <button class="contactform__close" onclick="closeForm()">
+                     <i class="fas fa-times contactform__icon" ></i>
+                </button>
+            </div>
+
+            <h1 class="contactform__contactMe">Mimi Keel</h1>
+            </div>
+            <form method="get" name="reserve" action="photographer-page.html" onsubmit="return checkForm();">
+                <div class="contactform__formData">
+                    <label for="firstname">Prénom</label> <br>
+                    <input type="text" class="contactform__input" id="first" onblur="checkFirstandLastName(this,'firstname')"> <br>
+                </div>
+                <div class="contactform__formData">
+                    <label for="lastname">Nom</label> <br>
+                    <input type="text" class="contactform__input" id="last" onblur="checkFirstandLastName(this,'lastname')"> <br>
+                </div>
+                <div class="contactform__formData">
+                    <label for="email">Email</label> <br>
+                    <input type="text" class="contactform__input" id="email" onblur="checkEmail(this)"> <br>
+                </div>
+                <div class="contactform__formData">
+                    <label for="message">Votre message</label> <br>
+                    <textarea type="text" class="contactform__message" id="message" onblur="checkMessage(this)"></textarea> <br>
+                </div>
+
+            </form>
+            <br>
+            <button class="contactform__send" type="submit">
+                Envoyer
+            </button>
+        </section>
     </main>
+    <script src="photographer-page.js"></script>
 </body>
 
 </html>

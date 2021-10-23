@@ -15,3 +15,9 @@
     line-height: 16px;
     text-align: center;
 }
+
+@mixin tag_hover() {
+    background: #911C1C;
+    color: white;
+    cursor: pointer;
+}

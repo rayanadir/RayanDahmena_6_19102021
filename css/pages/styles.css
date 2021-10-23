@@ -29,6 +29,11 @@ body {
   text-align: center;
   font-size: 12px;
 }
+.header__tag:hover {
+  background: #911C1C;
+  color: white;
+  cursor: pointer;
+}
 .header__photographers {
   font-style: normal;
   font-weight: normal;
@@ -97,6 +102,11 @@ body {
   line-height: 16px;
   text-align: center;
   font-size: 12px;
+}
+.photographers__tag:hover {
+  background: #911C1C;
+  color: white;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=styles.css.map */

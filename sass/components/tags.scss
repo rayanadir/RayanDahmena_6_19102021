@@ -1,0 +1,17 @@
+@mixin tags() {
+    display: flex;
+    column-gap: .2rem;
+}
+
+@mixin tag() {
+    list-style-type: none;
+    border: 0.5px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 11px;
+    padding: .1rem .3rem;
+    color: #901C1C;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: center;
+}

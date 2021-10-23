@@ -1,11 +1,10 @@
+@import "../components/tags";
 body {
     width: 1440px;
     margin: auto;
-    //font-family: 'DM Sans', sans-serif;
-}
-
-main {
     font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .header {
@@ -17,7 +16,6 @@ main {
 .profile {
     background-color: #FAFAFA;
     display: flex;
-    /*justify-content: space-between;*/
     padding: 3rem;
     column-gap: 6rem;
     &__img {
@@ -28,26 +26,18 @@ main {
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
     }
     &__name {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: normal;
         font-size: 64px;
         line-height: 83px;
         color: #D3573C;
         margin: 0;
+        font-weight: normal;
     }
     &__localisation {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: normal;
         font-size: 24px;
         line-height: 31px;
         color: #901C1C;
     }
     &__description {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: normal;
         font-size: 18px;
         line-height: 23px;
         color: #525252;
@@ -64,8 +54,6 @@ main {
         width: 170px;
         height: 60px;
         color: #FFFFFF;
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
         font-weight: bold;
         font-size: 20px;
         line-height: 26px;
@@ -79,36 +67,23 @@ main {
         cursor: pointer;
     }
     &__tags {
-        display: flex;
-        column-gap: .2rem;
+        @include tags();
     }
     &__tag {
-        list-style-type: none;
-        border: 0.5px solid #C4C4C4;
-        box-sizing: border-box;
-        border-radius: 11px;
-        padding: .1rem .3rem;
-        color: #901C1C;
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: 600;
+        @include tag();
         font-size: 17px;
-        line-height: 16px;
-        text-align: center;
     }
 }
 
 .images {
-    padding: 3rem;
+    margin-top: 3rem;
     &__article {
         width: 350px;
         margin-top: 5rem;
     }
     &__filter {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: bold;
         font-size: 18px;
+        font-weight: bold;
         line-height: 23px;
         color: #000000;
     }
@@ -122,9 +97,6 @@ main {
         justify-content: space-between;
     }
     &__title {
-        //font-family: 'DM Sans', sans-serif;
-        font-style: normal;
-        font-weight: normal;
         font-size: 24px;
         line-height: 31px;
         color: #911C1C;
@@ -135,8 +107,6 @@ main {
         align-items: center;
     }
     &__count {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
         font-weight: 500;
         font-size: 24px;
         line-height: 31px;
@@ -166,15 +136,11 @@ main {
         align-items: center;
     }
     &__count {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
         font-weight: 500;
         font-size: 24px;
         line-height: 31px;
     }
     &__price {
-        font-family: 'DM Sans', sans-serif;
-        font-style: normal;
         font-weight: 500;
         font-size: 24px;
         line-height: 31px;

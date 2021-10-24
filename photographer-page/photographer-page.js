@@ -1,3 +1,107 @@
+fetch('../photographers.json').then(res => {
+        return res.json();
+    }).then(data => {
+            console.log(data.photographers);
+            console.log(data.media);
+            const photographers = data.photographers;
+            const url = window.location.search;
+            const id = url.split('id=')[1];
+            console.log(id);
+            photographers.map(photographer => {
+                        if (photographer.id == id) {
+
+                            const medias = data.media;
+                            var likes = 0;
+                            medias.map(media => {
+
+                                if (media.photographerId == id) {
+                                    console.log("likes : " + media.likes);
+                                    likes = likes + media.likes;
+                                }
+
+                            })
+                            console.log("total de likes: " + likes);
+                            //console.log("nombre total de likes : " + likes);
+                            document.getElementById('banner').innerHTML = `
+            <div class="banner__likes">
+            <div class="banner__count">
+                ${likes}
+            </div>
+            <i class="fas fa-heart banner__icon"></i>
+        </div>
+        <div class="banner__price">
+            ${photographer.price}€ / jour
+        </div> 
+            `
+
+
+
+                            document.getElementById("profile").innerHTML = `
+            <article class="profile__infos">
+            <h1 class="profile__name">
+                ${photographer.name}
+            </h1>
+            <p class="profile__localisation">
+                ${photographer.city},${photographer.country}
+            </p>
+            <p class="profile__description">
+                ${photographer.tagline}
+            </p>
+            <div class="profile__tags">
+                ${photographer.tags.map((tag)=>`<li class="profile__tag"> #${tag}</li>`).join('')}
+            </div>
+        </article>
+        <div class="profile__bouton">
+            <button class="profile__contact" onclick="openForm()">
+            Contactez-moi
+        </button>
+        </div>
+
+        <img class="profile__img" src="${photographer.portrait}">
+            `
+            document.getElementById("contact").innerHTML=`
+            <div class="contactform__contact_close">
+            <h1 class="contactform__contactMe">Contactez-moi</h1>
+            <button class="contactform__close" onclick="closeForm()">
+                 <i class="fas fa-times contactform__icon" ></i>
+            </button>
+        </div>
+
+        <h1 class="contactform__contactMe">${photographer.name}</h1>
+        </div>
+        <form method="get" name="reserve" action="photographer-page.html" onsubmit="return checkForm();">
+            <div class="contactform__formData">
+                <label for="firstname">Prénom</label> <br>
+                <input type="text" class="contactform__input" id="first" onblur="checkFirstandLastName(this,'firstname')"> <br>
+            </div>
+            <div class="contactform__formData">
+                <label for="lastname">Nom</label> <br>
+                <input type="text" class="contactform__input" id="last" onblur="checkFirstandLastName(this,'lastname')"> <br>
+            </div>
+            <div class="contactform__formData">
+                <label for="email">Email</label> <br>
+                <input type="text" class="contactform__input" id="email" onblur="checkEmail(this)"> <br>
+            </div>
+            <div class="contactform__formData">
+                <label for="message">Votre message</label> <br>
+                <textarea type="text" class="contactform__message" id="message" onblur="checkMessage(this)"></textarea> <br>
+            </div>
+
+        </form>
+        <br>
+        <button class="contactform__send" type="submit">
+            Envoyer
+        </button>
+            `
+            
+        }
+    })
+})
+
+
+//console.log("id : " + url.split('id=')[1])
+
+
 const form = document.querySelector(".contactform");
 
 form.style.display = "none"

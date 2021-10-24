@@ -8,7 +8,7 @@ fetch('photographers.json').then(res => {
             photographers.map(photographer => {
                         document.getElementById("photographers").innerHTML = `
 <article class="photographers__photographer">
-<a href="/photographer-page/photographer-page.html">
+<a href="/photographer-page/photographer-page.html?id=${photographer.id}">
     <img class="photographers__img" src="${photographer.portrait}" alt="${photographer.name}">
 </a>
 
@@ -30,7 +30,4 @@ fetch('photographers.json').then(res => {
 </article>
 `
     })
-
-
-
 })

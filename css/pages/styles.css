@@ -43,6 +43,9 @@ body {
 }
 
 .photographers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 4rem;
   text-align: center;
   font-style: normal;
   font-weight: normal;
@@ -51,6 +54,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  row-gap: 0.2rem;
 }
 .photographers__img {
   width: 200px;

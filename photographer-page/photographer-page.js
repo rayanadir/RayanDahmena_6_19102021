@@ -1,27 +1,50 @@
+function getPhotographerFolderName(str) {
+    let spaceIndex = str.indexOf(' ');
+    return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
+};
+
+
 fetch('../photographers.json').then(res => {
         return res.json();
     }).then(data => {
-            console.log(data.photographers);
-            console.log(data.media);
             const photographers = data.photographers;
             const url = window.location.search;
             const id = url.split('id=')[1];
             console.log(id);
             photographers.map(photographer => {
                         if (photographer.id == id) {
-
                             const medias = data.media;
                             var likes = 0;
-                            medias.map(media => {
 
+
+                            medias.map(media => {
                                 if (media.photographerId == id) {
-                                    console.log("likes : " + media.likes);
                                     likes = likes + media.likes;
+                                    const photographer_folder = getPhotographerFolderName(photographer.name);
+                                    const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + media.image;
+                                    console.log(imageurl)
+                                    document.getElementById('images').innerHTML = `
+                                    
+                                <img src="${imageurl}" class="images__image" alt="image">
+                                <div class="images__title_like">
+                                    <div class="images__title">
+                                        ${media.title}
+                                    </div>
+                                    <div class="images__like">
+                                        <div class="images__count">
+                                            ${media.likes}
+                                        </div>
+                                        <i class="fas fa-heart images__icon"></i>
+                                    </div>
+                                </div>
+                                    `
+
+
                                 }
 
+
                             })
-                            console.log("total de likes: " + likes);
-                            //console.log("nombre total de likes : " + likes);
+
                             document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">
@@ -97,10 +120,6 @@ fetch('../photographers.json').then(res => {
         }
     })
 })
-
-
-//console.log("id : " + url.split('id=')[1])
-
 
 const form = document.querySelector(".contactform");
 

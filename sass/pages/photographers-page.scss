@@ -82,9 +82,14 @@ body {
 
 .images {
     margin-top: 3rem;
+    padding-bottom: 3rem;
     &__article {
         width: 350px;
         margin-top: 5rem;
+    }
+    &__collection {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
     }
     &__filter {
         font-size: 18px;
@@ -96,10 +101,12 @@ body {
         width: 350px;
         height: 300px;
         object-fit: cover;
+        border-radius: 5px;
     }
     &__title_like {
         display: flex;
         justify-content: space-between;
+        width: 350px;
     }
     &__title {
         font-size: 24px;
@@ -120,6 +127,10 @@ body {
     }
     &__icon {
         color: #911C1C;
+        font-size: 22px;
+    }
+    &__icon:hover {
+        cursor: pointer;
     }
 }
 
@@ -134,7 +145,7 @@ body {
     align-items: center;
     bottom: 0;
     right: 10rem;
-    position: absolute;
+    position: fixed;
     &__likes {
         display: flex;
         column-gap: .3rem;
@@ -157,7 +168,7 @@ body {
     height: 775px;
     background: #DB8876;
     border-radius: 5px;
-    position: absolute;
+    position: fixed;
     padding: 1.5rem;
     font-family: 'DM Sans', sans-serif;
     font-style: normal;

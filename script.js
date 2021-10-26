@@ -1,9 +1,9 @@
 fetch('photographers.json').then(res => {
         return res.json();
     }).then(data => {
-            //console.log(data.photographers);
-            //console.log(data.media);
+
             const photographers = data.photographers;
+            selectTag(photographers.tags)
             document.getElementById("photographers").innerHTML = `
           ${photographers.map((photographer)=>`
           <article class="photographers__photographer">
@@ -30,3 +30,10 @@ fetch('photographers.json').then(res => {
           `).join('')}
      `
 })
+
+
+
+
+function selectTag(tag){
+     console.log("tag séléctionné : " + tag);
+}

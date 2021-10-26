@@ -93,10 +93,15 @@ body {
 
 .images {
   margin-top: 3rem;
+  padding-bottom: 3rem;
 }
 .images__article {
   width: 350px;
   margin-top: 5rem;
+}
+.images__collection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 .images__filter {
   font-size: 18px;
@@ -108,10 +113,12 @@ body {
   width: 350px;
   height: 300px;
   object-fit: cover;
+  border-radius: 5px;
 }
 .images__title_like {
   display: flex;
   justify-content: space-between;
+  width: 350px;
 }
 .images__title {
   font-size: 24px;
@@ -132,6 +139,10 @@ body {
 }
 .images__icon {
   color: #911C1C;
+  font-size: 22px;
+}
+.images__icon:hover {
+  cursor: pointer;
 }
 
 .banner {
@@ -145,7 +156,7 @@ body {
   align-items: center;
   bottom: 0;
   right: 10rem;
-  position: absolute;
+  position: fixed;
 }
 .banner__likes {
   display: flex;
@@ -168,7 +179,7 @@ body {
   height: 775px;
   background: #DB8876;
   border-radius: 5px;
-  position: absolute;
+  position: fixed;
   padding: 1.5rem;
   font-family: "DM Sans", sans-serif;
   font-style: normal;

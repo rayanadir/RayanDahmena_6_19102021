@@ -3,6 +3,29 @@ function getPhotographerFolderName(str) {
     return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
 };
 
+function getSource(image, video) {
+    if (image === null || image === undefined) {
+        console.log(".mp4");
+        return "video";
+    }
+    if (video === null || video === undefined) {
+        console.log(".jpg");
+        return "image";
+    }
+}
+
+var likedMedias = [];
+
+function likeMedia(id, number) {
+    if (likedMedias.indexOf(id) == -1) {
+        likedMedias.push(id);
+        console.log(likedMedias);
+        number++;
+    } else {
+        likedMedias.splice(id, 1);
+        number--;
+    }
+}
 
 fetch('../photographers.json').then(res => {
         return res.json();
@@ -15,17 +38,80 @@ fetch('../photographers.json').then(res => {
                         if (photographer.id == id) {
                             const medias = data.media;
                             var likes = 0;
-
-
-                            medias.map(media => {
-                                if (media.photographerId == id) {
-                                    likes = likes + media.likes;
+                            var images = document.getElementById('images');
+                            var i;
+                            for (i = 0; i < medias.length; i++) {
+                                if (medias[i].photographerId == id) {
+                                    likes = likes + medias[i].likes;
                                     const photographer_folder = getPhotographerFolderName(photographer.name);
-                                    const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + media.image;
-                                    console.log(imageurl)
-                                    document.getElementById('images').innerHTML = `
-                                    
-                                <img src="${imageurl}" class="images__image" alt="image">
+
+                                    if (getSource(medias[i].image, medias[i].video) == "image") {
+                                        const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
+                                        var articleTemplate = `
+                                    <article class="images__article">
+                                       <img src="${imageurl}" class="images__image" alt="image">
+                                       <div class="images__title_like">
+                                            <div class="images__title">
+                                                ${medias[i].title}
+                                            </div>
+                                            <div class="images__like">
+                                                <div class="images__count">
+                                                    ${medias[i].likes}
+                                                </div>
+                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id},${medias[i].likes})"></i>
+                                            </div>
+                                        </div>
+                                        </article>
+                                       `;
+                                        images.insertAdjacentHTML('beforeend', articleTemplate);
+                                    } else {
+                                        const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].video;
+                                        var articleTemplate = `
+                                    <article class="images__article">
+                                    <video src="${videourl}" class="images__image" controls="controls"></video>
+                                       <div class="images__title_like">
+                                            <div class="images__title">
+                                                ${medias[i].title}
+                                            </div>
+                                            <div class="images__like">
+                                                <div class="images__count">
+                                                    ${medias[i].likes}
+                                                </div>
+                                                <i class="fas fa-heart images__icon"></i>
+                                            </div>
+                                        </div>
+                                        </article>
+                                       `;
+                                        images.insertAdjacentHTML('beforeend', articleTemplate);
+                                    };
+
+                                }
+
+                            }
+                            /*document.getElementById('images').innerHTML = `
+                                ${medias.map((media)=>{
+                                    if(media.photographerId==id){
+                                       var articleTemplate=`
+                                       <div class="images__title_like">
+                                       <div class="images__title">
+                                           ${media.title}
+                                       </div>
+                                       <div class="images__like">
+                                           <div class="images__count">
+                                               ${media.likes}
+                                           </div>
+                                           <i class="fas fa-heart images__icon"></i>
+                                       </div>
+                                   </div>
+                                       `
+                                    }
+                                }).join(' ')}
+                            `*/
+
+                            /*
+                            document.getElementById('images').innerHTML = `
+                                ${medias.map((media) =>  `
+                                
                                 <div class="images__title_like">
                                     <div class="images__title">
                                         ${media.title}
@@ -37,13 +123,36 @@ fetch('../photographers.json').then(res => {
                                         <i class="fas fa-heart images__icon"></i>
                                     </div>
                                 </div>
-                                    `
+                                `
+                                ).join(' ')}
+                            `*/
 
+                            /*medias.map(media => {
+                                if (media.photographerId == id) {
+                                    likes = likes + media.likes;
+                                    const photographer_folder = getPhotographerFolderName(photographer.name);
+                                    const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + media.image;
+                                    console.log(imageurl)
+                                    document.getElementById('images').innerHTML = `
+                                    <img src="${imageurl}" class="images__image" alt="image">
+                                                                        <div class="images__title_like">
+                                                                            <div class="images__title">
+                                                                                ${media.title}
+                                                                            </div>
+                                                                            <div class="images__like">
+                                                                                <div class="images__count">
+                                                                                    ${media.likes}
+                                                                                </div>
+                                                                                <i class="fas fa-heart images__icon"></i>
+                                                                            </div>
+                                                                        </div>
+                                
+                                    `
 
                                 }
 
 
-                            })
+                            })*/
 
                             document.getElementById('banner').innerHTML = `
             <div class="banner__likes">

@@ -3,9 +3,18 @@ fetch('photographers.json').then(res => {
     }).then(data => {
 
             const photographers = data.photographers;
-            selectTag(photographers.tags)
+            const tags = [...new Set(data.photographers.map((photographer) => photographer.tags).flat())];
+            tags.forEach((tag) => {
+                const li = document.createElement('li');
+                li.addEventListener('click', selectTag)
+                li.innerHTML = "#" + tag;
+                li.classList.add('header__tag');
+                document.getElementById('nav').appendChild(li);
+            })
+
+
             document.getElementById("photographers").innerHTML = `
-          ${photographers.map((photographer)=>`
+          ${photographers.map((photographer) => `
           <article class="photographers__photographer">
           <a href="/photographer-page/photographer-page.html?id=${photographer.id}">
           <img class="photographers__img" src="${photographer.portrait}" alt="${photographer.name}">
@@ -24,16 +33,13 @@ fetch('photographers.json').then(res => {
                ${photographer.price}€ / jour
           </p>
           <div class="photographers__tags">
-          ${photographer.tags.map((tag)=>`<li class="photographers__tag"> #${tag}</li>`).join('')} 
+          ${photographer.tags.map((tag) => `<li class="photographers__tag"> #${tag}</li>`).join('')} 
           </div>
           </article>
           `).join('')}
      `
 })
 
-
-
-
-function selectTag(tag){
-     console.log("tag séléctionné : " + tag);
+function selectTag(event){
+     console.log(event);
 }

@@ -20,11 +20,12 @@ function likeMedia(id, number) {
     if (likedMedias.indexOf(id) == -1) {
         likedMedias.push(id);
         console.log(likedMedias);
-        number++;
+        number = number + 1;
     } else {
         likedMedias.splice(id, 1);
-        number--;
+        number = number - 1;
     }
+    return number;
 }
 
 fetch('../photographers.json').then(res => {
@@ -88,71 +89,7 @@ fetch('../photographers.json').then(res => {
                                 }
 
                             }
-                            /*document.getElementById('images').innerHTML = `
-                                ${medias.map((media)=>{
-                                    if(media.photographerId==id){
-                                       var articleTemplate=`
-                                       <div class="images__title_like">
-                                       <div class="images__title">
-                                           ${media.title}
-                                       </div>
-                                       <div class="images__like">
-                                           <div class="images__count">
-                                               ${media.likes}
-                                           </div>
-                                           <i class="fas fa-heart images__icon"></i>
-                                       </div>
-                                   </div>
-                                       `
-                                    }
-                                }).join(' ')}
-                            `*/
 
-                            /*
-                            document.getElementById('images').innerHTML = `
-                                ${medias.map((media) =>  `
-                                
-                                <div class="images__title_like">
-                                    <div class="images__title">
-                                        ${media.title}
-                                    </div>
-                                    <div class="images__like">
-                                        <div class="images__count">
-                                            ${media.likes}
-                                        </div>
-                                        <i class="fas fa-heart images__icon"></i>
-                                    </div>
-                                </div>
-                                `
-                                ).join(' ')}
-                            `*/
-
-                            /*medias.map(media => {
-                                if (media.photographerId == id) {
-                                    likes = likes + media.likes;
-                                    const photographer_folder = getPhotographerFolderName(photographer.name);
-                                    const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + media.image;
-                                    console.log(imageurl)
-                                    document.getElementById('images').innerHTML = `
-                                    <img src="${imageurl}" class="images__image" alt="image">
-                                                                        <div class="images__title_like">
-                                                                            <div class="images__title">
-                                                                                ${media.title}
-                                                                            </div>
-                                                                            <div class="images__like">
-                                                                                <div class="images__count">
-                                                                                    ${media.likes}
-                                                                                </div>
-                                                                                <i class="fas fa-heart images__icon"></i>
-                                                                            </div>
-                                                                        </div>
-                                
-                                    `
-
-                                }
-
-
-                            })*/
 
                             document.getElementById('banner').innerHTML = `
             <div class="banner__likes">

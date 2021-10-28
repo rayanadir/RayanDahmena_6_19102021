@@ -4,6 +4,10 @@ body {
   font-family: "DM Sans", sans-serif;
 }
 
+.none {
+  display: none;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -40,6 +44,11 @@ body {
   font-size: 36px;
   line-height: 47px;
   color: #911C1C;
+}
+
+.filtered {
+  background: #911C1C;
+  color: white;
 }
 
 .photographers {

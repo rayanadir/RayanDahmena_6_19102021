@@ -95,3 +95,70 @@ body {
         @include tag_hover();
     }
 }
+
+@media (max-width:425px) {
+    body {
+        margin: auto;
+        width: 425px;
+    }
+    .header {
+        flex-wrap: wrap;
+        &__tags {
+            order: 1;
+        }
+        &__photographers {
+            font-size: 15px;
+        }
+        &__logo {
+            width: 8rem;
+        }
+        &__tags_list {
+            display: inline-flex;
+            //column-gap: .5rem;
+            row-gap: .5rem;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 24rem;
+        }
+        &__tag {
+            font-size: .7rem;
+        }
+    }
+    .photographers {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        &__photographer {
+            padding: 1rem;
+            max-width: 20rem;
+        }
+        &__img {
+            width: 200px;
+            height: 200px;
+            border-radius: 39rem;
+        }
+        &__name {
+            font-size: 50px;
+        }
+        &__localisation {
+            font-size: 30px;
+            margin-top: 40px;
+        }
+        &__description {
+            font-size: 20px;
+            margin-top: 25px;
+        }
+        &__price {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        &__tags {
+            margin-top: 40px;
+            column-gap: .5rem;
+        }
+        &__tag {
+            font-size: .5rem;
+        }
+    }
+}

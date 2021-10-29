@@ -118,4 +118,72 @@ body {
   cursor: pointer;
 }
 
+@media (max-width: 425px) {
+  body {
+    margin: auto;
+    width: 425px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+  .header__tags {
+    order: 1;
+  }
+  .header__photographers {
+    font-size: 15px;
+  }
+  .header__logo {
+    width: 8rem;
+  }
+  .header__tags_list {
+    display: inline-flex;
+    row-gap: 0.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 24rem;
+  }
+  .header__tag {
+    font-size: 0.7rem;
+  }
+
+  .photographers {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+  .photographers__photographer {
+    padding: 1rem;
+    max-width: 20rem;
+  }
+  .photographers__img {
+    width: 200px;
+    height: 200px;
+    border-radius: 39rem;
+  }
+  .photographers__name {
+    font-size: 50px;
+  }
+  .photographers__localisation {
+    font-size: 30px;
+    margin-top: 40px;
+  }
+  .photographers__description {
+    font-size: 20px;
+    margin-top: 25px;
+  }
+  .photographers__price {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  .photographers__tags {
+    margin-top: 40px;
+    column-gap: 0.5rem;
+  }
+  .photographers__tag {
+    font-size: 0.5rem;
+  }
+}
+
 /*# sourceMappingURL=styles.css.map */

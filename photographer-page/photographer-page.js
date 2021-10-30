@@ -28,6 +28,9 @@ function likeMedia(id, number) {
     return number;
 }
 
+var filterValue = "Popularité";
+var filterTemplate = document.getElementById("filter").innerHTML;
+
 fetch('../photographers.json').then(res => {
         return res.json();
     }).then(data => {
@@ -164,8 +167,65 @@ fetch('../photographers.json').then(res => {
             `
             
         }
-    })
+    });
+    
+    document.getElementById("filter").innerHTML=`
+    <label for="filter" class="images__filter">
+    Trier par
+</label>
+<button class="images__filter_button" onclick="openFilter()" onblur="closeFilter()">
+    <div class="images__value_arrow">
+    ${filterValue}
+    <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="images__values">
+    <hr>
+    <div class="images__value" id="date" onclick="selectFilter('Date')">
+    Date
+    </div>
+    <hr>
+    <div class="images__value" id="title" onclick="selectFilter('Titre')">
+    Titre
+    </div>
+    </div>
+</button>
+    `
 })
+
+function openFilter(){
+    const values=document.querySelector('.images__values');
+    values.style.display="initial";
+    const date=document.getElementById('date');
+    const title=document.getElementById('title');
+    date.style.display="flex";
+    title.style.display="flex";
+    console.log("values open : "+values.style)
+}
+
+function closeFilter(){
+    document.querySelector('.images__values').style.display="none";
+}
+
+function selectFilter(filter){
+    const values=document.querySelector('.images__values');
+    document.getElementById("filter").innerHTML=``;
+    console.log("filtre séléctionné : " + filter);
+    filterValue=filter;
+    document.getElementById("filter").innerHTML=`
+    <label for="filter" class="images__filter">
+    Trier par
+</label>
+<button class="images__filter_button" onblur="closeFilter()">
+    <div class="images__value_arrow">
+    ${filterValue}
+    <i class="fas fa-chevron-down arrow"></i>
+    </div>
+</button>
+    `
+    console.log("values select : " + values.style)
+    return filter;
+}
+
 
 const form = document.querySelector(".contactform");
 

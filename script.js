@@ -67,7 +67,7 @@ fetch('photographers.json').then(res => {
                                    
                                    ).join('')}
                          `
-                         console.log(photographerTemplate)
+                         //console.log(photographerTemplate)
 })
 
 

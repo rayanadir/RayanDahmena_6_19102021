@@ -144,26 +144,31 @@ fetch('../photographers.json').then(res => {
         <form method="get" name="reserve" action="photographer-page.html" onsubmit="return checkForm();">
             <div class="contactform__formData">
                 <label for="firstname">Prénom</label> <br>
-                <input type="text" class="contactform__input" id="first" onblur="checkFirstandLastName(this,'firstname')"> <br>
+                <input type="text" class="contactform__input" id="first" onblur="checkFirstandLastName(this,'firstname')"> 
+                <p class="contactform__error_first">Vous devez entrer votre prénom</p>
+                
             </div>
             <div class="contactform__formData">
                 <label for="lastname">Nom</label> <br>
                 <input type="text" class="contactform__input" id="last" onblur="checkFirstandLastName(this,'lastname')"> <br>
+                <p class="contactform__error_last">Vous devez entrer votre nom</p>
             </div>
             <div class="contactform__formData">
-                <label for="email">Email</label> <br>
-                <input type="text" class="contactform__input" id="email" onblur="checkEmail(this)"> <br>
+                <label for="email_test">Email</label> <br>
+                <input type="email" class="contactform__input" id="email" onblur="checkEmail(this)"> <br>
+                <p class="contactform__error_email">Vous devez entrer votre email</p>
             </div>
             <div class="contactform__formData">
                 <label for="message">Votre message</label> <br>
                 <textarea type="text" class="contactform__message" id="message" onblur="checkMessage(this)"></textarea> <br>
+                <p class="contactform__error_message">Vous devez entrer un message valide</p>
             </div>
-
-        </form>
-        <br>
-        <button class="contactform__send" type="submit">
+                            <button class="contactform__send" type="submit" onclick="checkForm()">
             Envoyer
         </button>
+        </form>
+        <br>
+        
             `
             
         }
@@ -243,52 +248,49 @@ function checkFirstandLastName(input, type) {
     const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const value = input.value;
     const test = regex.test(value);
-    console.log(test)
-    if (test) {
-        input.parentElement.removeAttribute('error');
+    if (test && input.length!==0) {
+        if (type === "firstname") {
+            document.querySelector('.contactform__error_first').style.display="none";
+        }
+        if (type === "lastname") {
+            document.querySelector('.contactform__error_last').style.display="none";
+        }
         return true;
     } else {
         if (type === "firstname") {
-            input.parentElement.setAttribute('error', 'Vous devez entrer votre prénom');
+            document.querySelector('.contactform__error_first').style.display="flex";
         }
         if (type === "lastname") {
-            input.parentElement.setAttribute('error', 'Vous devez entrer votre nom');
+            document.querySelector('.contactform__error_last').style.display="flex";
         }
         return false
     }
 }
 
 function checkEmail(input) {
-    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const value = input.value;
-    const test = regex.test(value);
-    if (test) {
-        input.parentElement.removeAttribute('error');
-        return true;
-    } else {
-        input.parentElement.setAttribute('error', 'Vous devez entrer une adresse email valide');
-        return false;
-    }
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const test=re.test(String(input).toLowerCase());
+    return test;
 }
 
 function checkMessage(input) {
-    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const value = input.value;
     const test = regex.test(value);
-    if (test) {
-        input.parentElement.removeAttribute('error');
+    if (test && input.length!==0) {
+        document.querySelector('.contactform__error_message').style.display="none";
         return true;
     } else {
-        input.parentElement.setAttribute('error', 'Vous devez entrer un message');
+        document.querySelector('.contactform__error_message').style.display="flex";
         return false;
     }
 }
 
 function checkForm() {
-    const fisrt = document.getElementById('first');
-    const last = document.getElementById('last');
-    const email = document.getElementById('email');
-    const message = document.getElementById('message');
+    const fisrt = document.getElementById('first').value;
+    const last = document.getElementById('last').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
 
     let firstValid = false;
     let lastValid = false;
@@ -300,15 +302,33 @@ function checkForm() {
     emailValid = checkEmail(email);
     messageValid = checkMessage(message);
 
-    console.log(firstValid + lastValid + emailValid + messageValid)
-
-    return firstValid && lastValid && emailValid && messageValid;
+    if(emailValid==false){
+        document.querySelector('.contactform__error_email').style.display="flex";
+    }
+    if(firstValid==false){
+        document.querySelector('.contactform__error_first').style.display="flex";
+    }
+    if(lastValid==false){
+        document.querySelector('.contactform__error_last').style.display="flex";
+    }
+    if(messageValid==false){
+        document.querySelector('.contactform__error_message').style.display="flex";
+    }
+    let formValid=firstValid && lastValid && emailValid && messageValid;
+    return formValid;
 }
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
-    console.log("formulaire test")
     if (checkForm() == true) {
-        console.log("formulaire valide")
+        console.log("formulaire valide");
+        document.querySelector('.contactform__error_email').style.display="none";
+        console.log("Prénom : " +document.getElementById('first').value);
+        console.log("Nom : " +document.getElementById('last').value);
+        console.log("Email : " +document.getElementById('email').value);
+        console.log("Message : " +document.getElementById('message').value);
+        document.querySelector('form').reset();
+    }else{
+        console.log("formulaire invalide");
     }
 })

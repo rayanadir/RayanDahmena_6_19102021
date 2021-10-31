@@ -232,7 +232,7 @@ body {
   align-items: center;
 }
 .contactform__contactMe {
-  font-size: 64px;
+  font-size: 40px;
   line-height: 83px;
   margin: 0;
   font-family: "DM Sans", sans-serif;
@@ -251,30 +251,41 @@ body {
   font-size: 3rem;
 }
 .contactform__formData {
-  font-size: 30px;
+  font-size: 20px;
   line-height: 47px;
   color: #312E2E;
   mix-blend-mode: normal;
 }
-.contactform__formData[error=true]::after {
+.contactform__formData[data-error=true]::after {
   content: attr(error);
   text-align: left;
   color: red;
   font-size: 20px;
 }
+.contactform__formData[data-error-visible=true]::after {
+  opacity: 1;
+}
+.contactform__error_first, .contactform__error_last, .contactform__error_email, .contactform__error_message {
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+  height: 10px;
+  display: none;
+  align-items: center;
+}
 .contactform__input {
   width: 669px;
-  height: 55px;
+  height: 40px;
   border-radius: 5px;
   border: 0;
-  font-size: 36px;
+  font-size: 22px;
 }
 .contactform__message {
   width: 669px;
-  height: 130px;
+  height: 110px;
   border-radius: 5px;
   border: 0;
-  font-size: 36px;
+  font-size: 22px;
   resize: none;
 }
 .contactform__send {
@@ -288,6 +299,7 @@ body {
   width: 170px;
   height: 69px;
   border: 0;
+  margin-top: 2rem;
 }
 .contactform__send:hover {
   cursor: pointer;

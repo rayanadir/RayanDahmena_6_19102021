@@ -110,3 +110,11 @@ function filterPhotographers(photographers) {
             photographerList.innerHTML += template;
         }
 }
+
+window.addEventListener("scroll", ()=>{
+    if(window.scrollY>200){
+        document.querySelector('.content').style.display="flex";
+    }else{
+        document.querySelector('.content').style.display="none";
+    }
+})

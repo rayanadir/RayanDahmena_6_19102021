@@ -96,6 +96,12 @@ body {
     }
 }
 
+@media (min-width:1025px) {
+    .content {
+        display: none;
+    }
+}
+
 @media (min-width:667px) and (max-width:768px) {
     .header {
         display: flex;
@@ -112,6 +118,24 @@ body {
         &__tag {
             font-size: 1.3rem;
             padding: .3rem;
+        }
+    }
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__button {
+            border-radius: 5px;
+            background: #DB8876;
+            color: black;
+            font-weight: bold;
+            padding: 1rem;
+            z-index: 1;
+            position: fixed;
+            text-align: center;
+            text-decoration: none;
+            top: 50px;
+            font-size: x-large;
         }
     }
     .photographers {
@@ -151,6 +175,23 @@ body {
     body {
         margin: 1rem;
         width: auto;
+    }
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &__button {
+            border-radius: 5px;
+            background: #DB8876;
+            color: black;
+            font-weight: bold;
+            padding: .3rem;
+            z-index: 1;
+            position: fixed;
+            text-align: center;
+            text-decoration: none;
+            top: 50px;
+        }
     }
     .header {
         flex-wrap: wrap;

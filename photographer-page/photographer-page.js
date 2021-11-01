@@ -31,6 +31,9 @@ function likeMedia(id, number) {
 var filterValue = "Popularité";
 var filterTemplate = document.getElementById("filter").innerHTML;
 
+
+
+
 fetch('../photographers.json').then(res => {
         return res.json();
     }).then(data => {

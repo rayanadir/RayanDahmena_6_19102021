@@ -305,4 +305,58 @@ body {
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  body {
+    margin: 1rem;
+    width: auto;
+  }
+
+  .banner {
+    display: none;
+  }
+
+  .images__collection {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile {
+    background-color: white;
+    padding: 0;
+    column-gap: 0;
+    /*&__contact {
+        display: none;
+    }*/
+  }
+  .profile__name {
+    font-size: 30px;
+    line-height: 33px;
+  }
+  .profile__localisation {
+    margin: 0;
+    font-size: 14px;
+  }
+  .profile__description {
+    margin: 0;
+    font-size: 14px;
+  }
+  .profile__tag {
+    font-size: 12px;
+  }
+  .profile__bouton {
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    z-index: 1;
+    position: fixed;
+    bottom: 4rem;
+    justify-content: center;
+  }
+  .profile__img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
 /*# sourceMappingURL=photographers-page.css.map */

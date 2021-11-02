@@ -16,22 +16,55 @@ function getSource(image, video) {
 
 var likedMedias = [];
 
-function likeMedia(id, number) {
+function likeMedia(id) {
+    var total;
     if (likedMedias.indexOf(id) == -1) {
         likedMedias.push(id);
-        console.log(likedMedias);
-        number = number + 1;
+        //number = number + 1;
+        refreshBanner('like');
+        total = refreshBanner('like');
+        console.log("like");
     } else {
-        likedMedias.splice(id, 1);
-        number = number - 1;
+        likedMedias.splice(likedMedias.indexOf(id), 1);
+        //number = number - 1;
+        refreshBanner('cancel');
+        total = refreshBanner('cancel');
+        console.log("annulation like")
     }
-    return number;
+    console.log(likedMedias);
+    return total;
+}
+
+function refreshBanner(type) {
+    const photographerPrice = price;
+    var total = likes;
+    if (type == "like") {
+        total++;
+    }
+    if (type == "cancel") {
+        total = total;
+    }
+    document.getElementById('banner').innerHTML = ``;
+    document.getElementById('banner').innerHTML = `
+            <div class="banner__likes">
+            <div class="banner__count">
+                ${total}
+            </div>
+            <i class="fas fa-heart banner__icon"></i>
+        </div>
+        <div class="banner__price">
+            ${photographerPrice}€ / jour
+        </div> 
+            `
+    return total;
 }
 
 var filterValue = "Popularité";
 var filterTemplate = document.getElementById("filter").innerHTML;
 var mediasArray = []
 var photographerName;
+var price;
+var likes = 0;
 
 
 fetch('../photographers.json').then(res => {
@@ -44,9 +77,9 @@ fetch('../photographers.json').then(res => {
             photographers.map(photographer => {
                         if (photographer.id == id) {
                             const medias = data.media;
-                            var likes = 0;
                             var images = document.getElementById('images');
                             var i;
+                            price = photographer.price;
                             photographerName = photographer.name;
                             for (i = 0; i < medias.length; i++) {
                                 if (medias[i].photographerId == id) {
@@ -57,7 +90,7 @@ fetch('../photographers.json').then(res => {
                                         const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
                                         var articleTemplate = `
                                     <article class="images__article">
-                                       <img src="${imageurl}" class="images__image" alt="${medias[i].title}">
+                                       <img src="${imageurl}" class="images__image" alt="${medias[i].title}" onclick="showMedia(${imageurl},${medias[i].title})">
                                        <div class="images__title_like">
                                             <div class="images__title">
                                                 ${medias[i].title}
@@ -66,7 +99,7 @@ fetch('../photographers.json').then(res => {
                                                 <div class="images__count">
                                                     ${medias[i].likes}
                                                 </div>
-                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id},${medias[i].likes})"></i>
+                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id})"></i>
                                             </div>
                                         </div>
                                         </article>
@@ -97,7 +130,7 @@ fetch('../photographers.json').then(res => {
 
                             }
 
-
+                            console.log(likes);
                             document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">
@@ -201,6 +234,21 @@ fetch('../photographers.json').then(res => {
     `
 })
 
+function showMedia(title){
+    const mediaSection=document.getElementById('media');
+    mediaSection.style.display="initial";
+    mediaSection.style.zIndex="10";
+    mediaSection.innerHTML=`
+    <div class="close">
+        <i class="fas fa-times" ></i>
+    </div>
+        
+    <div class="title">
+        ${title}
+    </div>
+    `
+}
+
 
 function mediaFilter(type){
     document.getElementById('images').innerHTML=``;
@@ -231,7 +279,7 @@ function mediaFilter(type){
             const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
             var articleTemplate = `
         <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}">
+           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
            <div class="images__title_like">
                 <div class="images__title">
                     ${mediasArray[i].title}

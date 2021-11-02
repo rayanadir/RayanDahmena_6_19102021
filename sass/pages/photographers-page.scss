@@ -142,6 +142,7 @@ body {
         height: 300px;
         object-fit: cover;
         border-radius: 5px;
+        cursor: pointer;
     }
     &__title_like {
         display: flex;
@@ -297,6 +298,10 @@ body {
     &__send:hover {
         cursor: pointer;
     }
+}
+
+.media {
+    display: none;
 }
 
 @media (min-width:530px) and (max-width:1024px) {

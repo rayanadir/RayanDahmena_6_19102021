@@ -159,7 +159,7 @@ body {
   width: 350px;
 }
 .images__title {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 31px;
   color: #911C1C;
 }
@@ -170,7 +170,7 @@ body {
 }
 .images__count {
   font-weight: 500;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 31px;
   text-align: right;
   color: #911C1C;
@@ -305,6 +305,60 @@ body {
   cursor: pointer;
 }
 
+@media (min-width: 530px) and (max-width: 1024px) {
+  .images {
+    padding-bottom: 1rem;
+  }
+  .images__wrap_filter_button {
+    padding-left: 1rem;
+  }
+  .images__collection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+    padding: 0;
+  }
+  .images__article {
+    place-self: center;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .images__article:nth-child(3n) {
+    place-self: center;
+  }
+  .images__article:nth-child(3n+1) {
+    place-self: center;
+  }
+  .images__image {
+    height: 300px;
+    width: 100%;
+  }
+  .images__title {
+    font-size: 14px;
+  }
+  .images__title_like {
+    width: auto;
+  }
+  .images__count {
+    font-size: 16px;
+  }
+  .images__icon {
+    font-size: 16px;
+  }
+}
+@media (max-width: 529px) {
+  .images {
+    padding-bottom: 1rem;
+  }
+  .images__collection {
+    display: flex;
+    flex-direction: column;
+  }
+  .images__image {
+    height: 200px;
+    width: 100%;
+  }
+}
 @media (max-width: 768px) {
   body {
     margin: 1rem;
@@ -315,18 +369,40 @@ body {
     display: none;
   }
 
-  .images__collection {
-    display: flex;
-    flex-direction: column;
+  .images {
+    /*&__collection {
+        display: flex;
+        flex-direction: column;
+    }*/
+    /*&__image {
+        height: 200px;
+        width: 100%;
+    }*/
+  }
+  .images__article {
+    place-self: center;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .images__article:nth-child(3n) {
+    place-self: center;
+  }
+  .images__article:nth-child(3n+1) {
+    place-self: center;
+  }
+  .images__title_like {
+    width: auto;
   }
 
   .profile {
     background-color: white;
     padding: 0;
     column-gap: 0;
-    /*&__contact {
-        display: none;
-    }*/
+    justify-content: space-between;
+  }
+  .profile__contact {
+    height: 38px;
+    font-weight: initial;
   }
   .profile__name {
     font-size: 30px;

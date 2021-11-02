@@ -149,7 +149,7 @@ body {
         width: 350px;
     }
     &__title {
-        font-size: 24px;
+        font-size: 20px;
         line-height: 31px;
         color: #911C1C;
     }
@@ -160,7 +160,7 @@ body {
     }
     &__count {
         font-weight: 500;
-        font-size: 24px;
+        font-size: 20px;
         line-height: 31px;
         text-align: right;
         color: #911C1C;
@@ -299,6 +299,62 @@ body {
     }
 }
 
+@media (min-width:530px) and (max-width:1024px) {
+    .images {
+        padding-bottom: 1rem;
+        &__wrap_filter_button {
+            padding-left: 1rem;
+        }
+        &__collection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 1rem;
+            padding: 0;
+        }
+        &__article {
+            place-self: center;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        &__article:nth-child(3n) {
+            place-self: center;
+        }
+        &__article:nth-child(3n+1) {
+            place-self: center;
+        }
+        &__image {
+            height: 300px;
+            width: 100%;
+        }
+        &__title {
+            font-size: 14px;
+        }
+        &__title_like {
+            width: auto;
+        }
+        &__count {
+            font-size: 16px;
+        }
+        &__icon {
+            font-size: 16px;
+        }
+    }
+}
+
+@media (max-width:529px) {
+    .images {
+        padding-bottom: 1rem;
+        &__collection {
+            display: flex;
+            flex-direction: column;
+        }
+        &__image {
+            height: 200px;
+            width: 100%;
+        }
+    }
+}
+
 @media (max-width:768px) {
     body {
         margin: 1rem;
@@ -308,18 +364,38 @@ body {
         display: none;
     }
     .images {
-        &__collection {
+        /*&__collection {
             display: flex;
             flex-direction: column;
+        }*/
+        &__article {
+            place-self: center;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        &__article:nth-child(3n) {
+            place-self: center;
+        }
+        &__article:nth-child(3n+1) {
+            place-self: center;
+        }
+        /*&__image {
+            height: 200px;
+            width: 100%;
+        }*/
+        &__title_like {
+            width: auto;
         }
     }
     .profile {
         background-color: white;
         padding: 0;
         column-gap: 0;
-        /*&__contact {
-            display: none;
-        }*/
+        justify-content: space-between;
+        &__contact {
+            height: 38px;
+            font-weight: initial;
+        }
         &__name {
             font-size: 30px;
             line-height: 33px;

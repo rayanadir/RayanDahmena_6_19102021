@@ -30,8 +30,8 @@ function likeMedia(id, number) {
 
 var filterValue = "Popularité";
 var filterTemplate = document.getElementById("filter").innerHTML;
-
-
+var mediasArray = []
+var photographerName;
 
 
 fetch('../photographers.json').then(res => {
@@ -47,16 +47,17 @@ fetch('../photographers.json').then(res => {
                             var likes = 0;
                             var images = document.getElementById('images');
                             var i;
+                            photographerName = photographer.name;
                             for (i = 0; i < medias.length; i++) {
                                 if (medias[i].photographerId == id) {
                                     likes = likes + medias[i].likes;
                                     const photographer_folder = getPhotographerFolderName(photographer.name);
-
+                                    mediasArray.push(medias[i]);
                                     if (getSource(medias[i].image, medias[i].video) == "image") {
                                         const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
                                         var articleTemplate = `
                                     <article class="images__article">
-                                       <img src="${imageurl}" class="images__image" alt="image">
+                                       <img src="${imageurl}" class="images__image" alt="${medias[i].title}">
                                        <div class="images__title_like">
                                             <div class="images__title">
                                                 ${medias[i].title}
@@ -199,6 +200,76 @@ fetch('../photographers.json').then(res => {
 </button>
     `
 })
+
+
+function mediaFilter(type){
+    document.getElementById('images').innerHTML=``;
+    if(type=="popularite"){
+        mediasArray.sort((x,y)=> {
+            return y.likes-x.likes;
+        })
+    }
+    if(type=="date"){
+        mediasArray.sort((x,y)=> {
+            return new Date(x.date) - new Date(y.date);
+        })
+    }
+    if(type=="nom"){
+        mediasArray.sort((x,y)=>{
+            if(x.title.toLowerCase()<y.title.toLowerCase()){
+                return -1;
+            }
+            if(x.title.toLowerCase()>y.title.toLowerCase()){
+                return 1;
+            }
+            return 0;
+        })
+    }
+    photographer_folder=getPhotographerFolderName(photographerName)
+    for(var i=0;i<mediasArray.length;i++){
+        if (getSource(mediasArray[i].image, mediasArray[i].video) == "image") {
+            const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
+            var articleTemplate = `
+        <article class="images__article">
+           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}">
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${mediasArray[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${mediasArray[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id},${mediasArray[i].likes})"></i>
+                </div>
+            </div>
+            </article>
+           `;
+            //images.insertAdjacentHTML('beforeend', articleTemplate);
+        } else {
+            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].video;
+            var articleTemplate = `
+        <article class="images__article">
+        <video src="${videourl}" class="images__image" controls="controls"></video>
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${mediasArray[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${mediasArray[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon"></i>
+                </div>
+            </div>
+            </article>
+           `;
+            //images.insertAdjacentHTML('beforeend', articleTemplate);
+        }
+        document.getElementById('images').innerHTML+=articleTemplate;
+    }
+    console.log(mediasArray);
+}
 
 function openFilter(){
     const values=document.querySelector('.images__values');

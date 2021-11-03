@@ -5,44 +5,85 @@ function getPhotographerFolderName(str) {
 
 function getSource(image, video) {
     if (image === null || image === undefined) {
-        console.log(".mp4");
         return "video";
     }
     if (video === null || video === undefined) {
-        console.log(".jpg");
         return "image";
     }
 }
 
 var likedMedias = [];
 
+
+
 function likeMedia(id) {
-    var total;
-    if (likedMedias.indexOf(id) == -1) {
-        likedMedias.push(id);
-        //number = number + 1;
-        refreshBanner('like');
-        total = refreshBanner('like');
-        console.log("like");
-    } else {
-        likedMedias.splice(likedMedias.indexOf(id), 1);
-        //number = number - 1;
-        refreshBanner('cancel');
-        total = refreshBanner('cancel');
-        console.log("annulation like")
-    }
-    console.log(likedMedias);
-    return total;
+    mediasArray.forEach((media, index) => {
+        if (media.id === id) {
+            if (likedMedias.includes(id) == true) {
+                likedMedias.splice(likedMedias.indexOf(id), 1);
+                mediasArray[index].likes = mediasArray[index].likes - 1
+                return mediasArray[index].likes;
+            } else {
+                likedMedias.push(id);
+                return mediasArray[index].likes++;
+            }
+        }
+    })
+    refreshMedias(mediasArray);
 }
 
-function refreshBanner(type) {
-    const photographerPrice = price;
-    var total = likes;
-    if (type == "like") {
-        total++;
+
+function refreshMedias(array) {
+    document.getElementById('images').innerHTML = ``;
+    photographer_folder = getPhotographerFolderName(photographerName);
+    for (var i = 0; i < array.length; i++) {
+        if (getSource(array[i].image, array[i].video) == "image") {
+            const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + array[i].image;
+            var articleTemplate = `
+            <article class="images__article">
+           <img src="${imageurl}" class="images__image" alt="${array[i].title}" onclick="showMedia(${imageurl},${array[i].title})">
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${array[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${array[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon" onclick="likeMedia(${array[i].id})"></i>
+                </div>
+            </div>
+            </article>
+           `;
+        } else {
+            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + array[i].video;
+            var articleTemplate = `
+        <article class="images__article">
+        <video src="${videourl}" class="images__image" controls="controls"></video>
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${array[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${array[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon" onclick="likeMedia(${array[i].id})"></i>
+                </div>
+            </div>
+            </article>
+           `;
+        }
+        document.getElementById('images').innerHTML += articleTemplate;
     }
-    if (type == "cancel") {
-        total = total;
+    refreshBanner(array);
+}
+
+function refreshBanner(array) {
+    const photographerPrice = price;
+    var total = 0;
+    for (var i = 0; i < array.length; i++) {
+        total = total + array[i].likes;
     }
     document.getElementById('banner').innerHTML = ``;
     document.getElementById('banner').innerHTML = `
@@ -73,7 +114,6 @@ fetch('../photographers.json').then(res => {
             const photographers = data.photographers;
             const url = window.location.search;
             const id = url.split('id=')[1];
-            console.log(id);
             photographers.map(photographer => {
                         if (photographer.id == id) {
                             const medias = data.media;
@@ -118,7 +158,7 @@ fetch('../photographers.json').then(res => {
                                                 <div class="images__count">
                                                     ${medias[i].likes}
                                                 </div>
-                                                <i class="fas fa-heart images__icon"></i>
+                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id})"></i>
                                             </div>
                                         </div>
                                         </article>
@@ -129,8 +169,6 @@ fetch('../photographers.json').then(res => {
                                 }
 
                             }
-
-                            console.log(likes);
                             document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">
@@ -288,7 +326,7 @@ function mediaFilter(type){
                     <div class="images__count">
                         ${mediasArray[i].likes}
                     </div>
-                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id},${mediasArray[i].likes})"></i>
+                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
                 </div>
             </div>
             </article>
@@ -307,7 +345,7 @@ function mediaFilter(type){
                     <div class="images__count">
                         ${mediasArray[i].likes}
                     </div>
-                    <i class="fas fa-heart images__icon"></i>
+                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
                 </div>
             </div>
             </article>

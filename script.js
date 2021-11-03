@@ -1,3 +1,5 @@
+import Photographer from './js/models/Photographer.js';
+
 var tagsArray = [];
 var photographerTemplate;
 
@@ -14,12 +16,16 @@ function selectTag(event) {
 
 
 
-fetch('photographers.json').then(res => {
+fetch('photographers.json')
+    .then(res => {
         return res.json();
-    }).then(data => {
-
-            const photographers = data.photographers;
-            const tags = [...new Set(data.photographers.map((photographer) => photographer.tags).flat())];
+    })
+    .then(data => {
+        return data.photographers.map((photographer) => new Photographer(photographer))
+    })
+    .then(photographers => {
+            console.log(photographers)
+            const tags = [...new Set(photographers.map((photographer) => photographer.tags).flat())];
 
             tags.forEach((tag) => {
                 const li = document.createElement('li');

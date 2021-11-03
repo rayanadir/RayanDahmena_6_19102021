@@ -1,3 +1,7 @@
+import { MediaFactory, Photo, Video } from '../js/models/Media.js';
+import Photographer from '../js/models/Photographer.js';
+
+
 function getPhotographerFolderName(str) {
     let spaceIndex = str.indexOf(' ');
     return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
@@ -108,27 +112,35 @@ var price;
 var likes = 0;
 
 
-fetch('../photographers.json').then(res => {
+fetch('../photographers.json')
+    .then(res => {
         return res.json();
-    }).then(data => {
+    })
+    .then(data => {
             const photographers = data.photographers;
             const url = window.location.search;
             const id = url.split('id=')[1];
-            photographers.map(photographer => {
-                        if (photographer.id == id) {
-                            const medias = data.media;
-                            var images = document.getElementById('images');
-                            var i;
-                            price = photographer.price;
-                            photographerName = photographer.name;
-                            for (i = 0; i < medias.length; i++) {
-                                if (medias[i].photographerId == id) {
-                                    likes = likes + medias[i].likes;
-                                    const photographer_folder = getPhotographerFolderName(photographer.name);
-                                    mediasArray.push(medias[i]);
-                                    if (getSource(medias[i].image, medias[i].video) == "image") {
-                                        const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
-                                        var articleTemplate = `
+            let photographer = photographers.find(photographer => photographer.id == id);
+            if (photographer) {
+                photographer = new Photographer(photographer);
+            }
+            //photographers.map(photographer => {
+            if (photographer.id == id) {
+                const medias = data.media.map(media => {
+                    return MediaFactory.createMedia(media);
+                })
+                var images = document.getElementById('images');
+                var i;
+                price = photographer.price;
+                photographerName = photographer.name;
+                for (i = 0; i < medias.length; i++) {
+                    if (medias[i].photographerId == id) {
+                        likes = likes + medias[i].likes;
+                        const photographer_folder = getPhotographerFolderName(photographer.name);
+                        mediasArray.push(medias[i]);
+                        if (medias[i] instanceof Photo) {
+                            const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
+                            var articleTemplate = `
                                     <article class="images__article">
                                        <img src="${imageurl}" class="images__image" alt="${medias[i].title}" onclick="showMedia(${imageurl},${medias[i].title})">
                                        <div class="images__title_like">
@@ -144,10 +156,10 @@ fetch('../photographers.json').then(res => {
                                         </div>
                                         </article>
                                        `;
-                                        images.insertAdjacentHTML('beforeend', articleTemplate);
-                                    } else {
-                                        const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].video;
-                                        var articleTemplate = `
+                            images.insertAdjacentHTML('beforeend', articleTemplate);
+                        } else if (medias[i] instanceof Video) {
+                            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].video;
+                            var articleTemplate = `
                                     <article class="images__article">
                                     <video src="${videourl}" class="images__image" controls="controls"></video>
                                        <div class="images__title_like">
@@ -163,13 +175,13 @@ fetch('../photographers.json').then(res => {
                                         </div>
                                         </article>
                                        `;
-                                        images.insertAdjacentHTML('beforeend', articleTemplate);
-                                    };
+                            images.insertAdjacentHTML('beforeend', articleTemplate);
+                        };
 
-                                }
+                    }
 
-                            }
-                            document.getElementById('banner').innerHTML = `
+                }
+                document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">
                 ${likes}
@@ -183,7 +195,7 @@ fetch('../photographers.json').then(res => {
 
 
 
-                            document.getElementById("profile").innerHTML = `
+                document.getElementById("profile").innerHTML = `
             <article class="profile__infos">
             <h1 class="profile__name">
                 ${photographer.name}
@@ -195,7 +207,7 @@ fetch('../photographers.json').then(res => {
                 ${photographer.tagline}
             </p>
             <div class="profile__tags">
-                ${photographer.tags.map((tag)=>`<li class="profile__tag"> #${tag}</li>`).join('')}
+                ${photographer.tags.map((tag) => `<li class="profile__tag"> #${tag}</li>`).join('')}
             </div>
         </article>
         <div class="profile__bouton">
@@ -206,7 +218,7 @@ fetch('../photographers.json').then(res => {
 
         <img class="profile__img" src="${photographer.portrait}">
             `
-            document.getElementById("contact").innerHTML=`
+            document.getElementById("contact").innerHTML = `
             <div class="contactform__contact_close">
             <h1 class="contactform__contactMe">Contactez-moi</h1>
             <button class="contactform__close" onclick="closeForm()">
@@ -245,11 +257,11 @@ fetch('../photographers.json').then(res => {
         <br>
         
             `
-            
+
         }
-    });
-    
-    document.getElementById("filter").innerHTML=`
+    //});
+
+    document.getElementById("filter").innerHTML = `
     <label for="filter" class="images__filter">
     Trier par
 </label>
@@ -272,15 +284,17 @@ fetch('../photographers.json').then(res => {
     `
 })
 
-function showMedia(title){
-    const mediaSection=document.getElementById('media');
-    mediaSection.style.display="initial";
-    mediaSection.style.zIndex="10";
-    mediaSection.innerHTML=`
+function showMedia(source, title) {
+    const mediaSection = document.getElementById('media');
+    mediaSection.style.display = "initial";
+    mediaSection.style.zIndex = "10";
+    mediaSection.innerHTML = `
     <div class="close">
         <i class="fas fa-times" ></i>
     </div>
-        
+        <div class="media_img">
+            <img src="${source}">
+        </div>
     <div class="title">
         ${title}
     </div>
@@ -288,31 +302,31 @@ function showMedia(title){
 }
 
 
-function mediaFilter(type){
-    document.getElementById('images').innerHTML=``;
-    if(type=="popularite"){
-        mediasArray.sort((x,y)=> {
-            return y.likes-x.likes;
+function mediaFilter(type) {
+    document.getElementById('images').innerHTML = ``;
+    if (type == "popularite") {
+        mediasArray.sort((x, y) => {
+            return y.likes - x.likes;
         })
     }
-    if(type=="date"){
-        mediasArray.sort((x,y)=> {
+    if (type == "date") {
+        mediasArray.sort((x, y) => {
             return new Date(x.date) - new Date(y.date);
         })
     }
-    if(type=="nom"){
-        mediasArray.sort((x,y)=>{
-            if(x.title.toLowerCase()<y.title.toLowerCase()){
+    if (type == "nom") {
+        mediasArray.sort((x, y) => {
+            if (x.title.toLowerCase() < y.title.toLowerCase()) {
                 return -1;
             }
-            if(x.title.toLowerCase()>y.title.toLowerCase()){
+            if (x.title.toLowerCase() > y.title.toLowerCase()) {
                 return 1;
             }
             return 0;
         })
     }
-    photographer_folder=getPhotographerFolderName(photographerName)
-    for(var i=0;i<mediasArray.length;i++){
+    photographer_folder = getPhotographerFolderName(photographerName)
+    for (var i = 0; i < mediasArray.length; i++) {
         if (getSource(mediasArray[i].image, mediasArray[i].video) == "image") {
             const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
             var articleTemplate = `
@@ -352,31 +366,31 @@ function mediaFilter(type){
            `;
             //images.insertAdjacentHTML('beforeend', articleTemplate);
         }
-        document.getElementById('images').innerHTML+=articleTemplate;
+        document.getElementById('images').innerHTML += articleTemplate;
     }
-    console.log(mediasArray);
+    //console.log(mediasArray);
 }
 
-function openFilter(){
-    const values=document.querySelector('.images__values');
-    values.style.display="initial";
-    const date=document.getElementById('date');
-    const title=document.getElementById('title');
-    date.style.display="flex";
-    title.style.display="flex";
-    console.log("values open : "+values.style)
+function openFilter() {
+    const values = document.querySelector('.images__values');
+    values.style.display = "initial";
+    const date = document.getElementById('date');
+    const title = document.getElementById('title');
+    date.style.display = "flex";
+    title.style.display = "flex";
+    console.log("values open : " + values.style)
 }
 
-function closeFilter(){
-    document.querySelector('.images__values').style.display="none";
+function closeFilter() {
+    document.querySelector('.images__values').style.display = "none";
 }
 
-function selectFilter(filter){
-    const values=document.querySelector('.images__values');
-    document.getElementById("filter").innerHTML=``;
+function selectFilter(filter) {
+    const values = document.querySelector('.images__values');
+    document.getElementById("filter").innerHTML = ``;
     console.log("filtre séléctionné : " + filter);
-    filterValue=filter;
-    document.getElementById("filter").innerHTML=`
+    filterValue = filter;
+    document.getElementById("filter").innerHTML = `
     <label for="filter" class="images__filter">
     Trier par
 </label>
@@ -408,20 +422,20 @@ function checkFirstandLastName(input, type) {
     const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const value = input.value;
     const test = regex.test(value);
-    if (test && input.length!==0) {
+    if (test && input.length !== 0) {
         if (type === "firstname") {
-            document.querySelector('.contactform__error_first').style.display="none";
+            document.querySelector('.contactform__error_first').style.display = "none";
         }
         if (type === "lastname") {
-            document.querySelector('.contactform__error_last').style.display="none";
+            document.querySelector('.contactform__error_last').style.display = "none";
         }
         return true;
     } else {
         if (type === "firstname") {
-            document.querySelector('.contactform__error_first').style.display="flex";
+            document.querySelector('.contactform__error_first').style.display = "flex";
         }
         if (type === "lastname") {
-            document.querySelector('.contactform__error_last').style.display="flex";
+            document.querySelector('.contactform__error_last').style.display = "flex";
         }
         return false
     }
@@ -429,7 +443,7 @@ function checkFirstandLastName(input, type) {
 
 function checkEmail(input) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const test=re.test(String(input).toLowerCase());
+    const test = re.test(String(input).toLowerCase());
     return test;
 }
 
@@ -437,11 +451,11 @@ function checkMessage(input) {
     const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const value = input.value;
     const test = regex.test(value);
-    if (test && input.length!==0) {
-        document.querySelector('.contactform__error_message').style.display="none";
+    if (test && input.length !== 0) {
+        document.querySelector('.contactform__error_message').style.display = "none";
         return true;
     } else {
-        document.querySelector('.contactform__error_message').style.display="flex";
+        document.querySelector('.contactform__error_message').style.display = "flex";
         return false;
     }
 }
@@ -462,33 +476,33 @@ function checkForm() {
     emailValid = checkEmail(email);
     messageValid = checkMessage(message);
 
-    if(emailValid==false){
-        document.querySelector('.contactform__error_email').style.display="flex";
+    if (emailValid == false) {
+        document.querySelector('.contactform__error_email').style.display = "flex";
     }
-    if(firstValid==false){
-        document.querySelector('.contactform__error_first').style.display="flex";
+    if (firstValid == false) {
+        document.querySelector('.contactform__error_first').style.display = "flex";
     }
-    if(lastValid==false){
-        document.querySelector('.contactform__error_last').style.display="flex";
+    if (lastValid == false) {
+        document.querySelector('.contactform__error_last').style.display = "flex";
     }
-    if(messageValid==false){
-        document.querySelector('.contactform__error_message').style.display="flex";
+    if (messageValid == false) {
+        document.querySelector('.contactform__error_message').style.display = "flex";
     }
-    let formValid=firstValid && lastValid && emailValid && messageValid;
+    let formValid = firstValid && lastValid && emailValid && messageValid;
     return formValid;
 }
 
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", function (event) {
     event.preventDefault();
     if (checkForm() == true) {
         console.log("formulaire valide");
-        document.querySelector('.contactform__error_email').style.display="none";
-        console.log("Prénom : " +document.getElementById('first').value);
-        console.log("Nom : " +document.getElementById('last').value);
-        console.log("Email : " +document.getElementById('email').value);
-        console.log("Message : " +document.getElementById('message').value);
+        document.querySelector('.contactform__error_email').style.display = "none";
+        console.log("Prénom : " + document.getElementById('first').value);
+        console.log("Nom : " + document.getElementById('last').value);
+        console.log("Email : " + document.getElementById('email').value);
+        console.log("Message : " + document.getElementById('message').value);
         document.querySelector('form').reset();
-    }else{
+    } else {
         console.log("formulaire invalide");
     }
 })

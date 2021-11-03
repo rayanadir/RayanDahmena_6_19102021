@@ -123,17 +123,21 @@ fetch('../photographers.json')
             let photographer = photographers.find(photographer => photographer.id == id);
             if (photographer) {
                 photographer = new Photographer(photographer);
+                //console.log(photographer)
             }
             //photographers.map(photographer => {
             if (photographer.id == id) {
                 const medias = data.media.map(media => {
-                    return MediaFactory.createMedia(media);
-                })
+                    if (media.photographerId == id) {
+                        console.log(MediaFactory.createMedia(media))
+                        return MediaFactory.createMedia(media);
+                    }
+                });
                 var images = document.getElementById('images');
                 var i;
                 price = photographer.price;
                 photographerName = photographer.name;
-                for (i = 0; i < medias.length; i++) {
+                /*for (i = 0; i < medias.length; i++) {
                     if (medias[i].photographerId == id) {
                         likes = likes + medias[i].likes;
                         const photographer_folder = getPhotographerFolderName(photographer.name);
@@ -180,7 +184,7 @@ fetch('../photographers.json')
 
                     }
 
-                }
+                }*/
                 document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">

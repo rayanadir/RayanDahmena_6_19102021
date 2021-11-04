@@ -6,6 +6,8 @@ export class Media {
     likes;
     date;
     price;
+
+
     constructor(data) {
         this.id = data.id;
         this.photographerId = data.photographerId;
@@ -35,15 +37,10 @@ export class Video extends Media {
 
 export class MediaFactory {
     static createMedia(data) {
-        var likes = 0;
         if (data.video) {
             return new Video(data);
         } else if (data.image) {
             return new Photo(data);
         }
-        data.forEach((media) => {
-            likes = likes + media.likes;
-            return likes;
-        });
     }
 }

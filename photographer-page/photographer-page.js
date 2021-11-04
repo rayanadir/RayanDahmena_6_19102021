@@ -123,20 +123,70 @@ fetch('../photographers.json')
             let photographer = photographers.find(photographer => photographer.id == id);
             if (photographer) {
                 photographer = new Photographer(photographer);
-                //console.log(photographer)
+                price = new Photographer(photographer).price;
+                photographerName = new Photographer(photographer).name;
+
             }
-            //photographers.map(photographer => {
             if (photographer.id == id) {
                 const medias = data.media.map(media => {
                     if (media.photographerId == id) {
-                        console.log(MediaFactory.createMedia(media))
-                        return MediaFactory.createMedia(media);
+                        mediasArray.push(MediaFactory.createMedia(media))
+
+                        likes = likes + MediaFactory.createMedia(media).likes;
+                        //return MediaFactory.createMedia(media);
                     }
+
                 });
+                console.log(mediasArray);
                 var images = document.getElementById('images');
                 var i;
-                price = photographer.price;
-                photographerName = photographer.name;
+
+                for (var i = 0; i < mediasArray.length; i++) {
+                    if (mediasArray[i] instanceof Photo) {
+
+                        const photographer_folder = getPhotographerFolderName(photographerName)
+                        const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
+                        var articleTemplate = `
+                                    <article class="images__article">
+                                       <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
+                                       <div class="images__title_like">
+                                            <div class="images__title">
+                                                ${mediasArray[i].title}
+                                            </div>
+                                            <div class="images__like">
+                                                <div class="images__count">
+                                                    ${mediasArray[i].likes}
+                                                </div>
+                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
+                                            </div>
+                                        </div>
+                                        </article>
+                                       `;
+
+                    } else if (mediasArray[i] instanceof Video) {
+                        const photographer_folder = getPhotographerFolderName(photographerName)
+                        const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].video;
+                        var articleTemplate = `
+                                                       <article class="images__article">
+                                                       <video src="${videourl}" class="images__image" controls="controls"></video>
+                                                          <div class="images__title_like">
+                                                               <div class="images__title">
+                                                                   ${mediasArray[i].title}
+                                                               </div>
+                                                               <div class="images__like">
+                                                                   <div class="images__count">
+                                                                       ${mediasArray[i].likes}
+                                                                   </div>
+                                                                   <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
+                                                               </div>
+                                                           </div>
+                                                           </article>
+                                                          `;
+                    }
+                    images.innerHTML += articleTemplate;
+                }
+
+                //console.log(medias)
                 /*for (i = 0; i < medias.length; i++) {
                     if (medias[i].photographerId == id) {
                         likes = likes + medias[i].likes;

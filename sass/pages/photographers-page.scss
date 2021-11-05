@@ -126,6 +126,21 @@ body {
             transform: rotate(-180deg);
         }
     }
+    &__filter_list {
+        display: none;
+        flex-direction: column;
+        padding: 0;
+        align-items: flex-start;
+        margin: 0;
+        row-gap: 1rem;
+        margin-top: 1rem;
+    }
+    &__filter_option {
+        list-style-type: none;
+    }
+    &__filter_label {
+        display: initial;
+    }
     &__values {
         display: none;
     }

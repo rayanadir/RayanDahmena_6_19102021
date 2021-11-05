@@ -2,6 +2,9 @@ import { MediaFactory, Photo, Video } from '../js/models/Media.js';
 import Photographer from '../js/models/Photographer.js';
 
 
+
+
+
 function getPhotographerFolderName(str) {
     let spaceIndex = str.indexOf(' ');
     return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
@@ -186,55 +189,6 @@ fetch('../photographers.json')
                     images.innerHTML += articleTemplate;
                 }
 
-                //console.log(medias)
-                /*for (i = 0; i < medias.length; i++) {
-                    if (medias[i].photographerId == id) {
-                        likes = likes + medias[i].likes;
-                        const photographer_folder = getPhotographerFolderName(photographer.name);
-                        mediasArray.push(medias[i]);
-                        if (medias[i] instanceof Photo) {
-                            const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].image;
-                            var articleTemplate = `
-                                    <article class="images__article">
-                                       <img src="${imageurl}" class="images__image" alt="${medias[i].title}" onclick="showMedia(${imageurl},${medias[i].title})">
-                                       <div class="images__title_like">
-                                            <div class="images__title">
-                                                ${medias[i].title}
-                                            </div>
-                                            <div class="images__like">
-                                                <div class="images__count">
-                                                    ${medias[i].likes}
-                                                </div>
-                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id})"></i>
-                                            </div>
-                                        </div>
-                                        </article>
-                                       `;
-                            images.insertAdjacentHTML('beforeend', articleTemplate);
-                        } else if (medias[i] instanceof Video) {
-                            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + medias[i].video;
-                            var articleTemplate = `
-                                    <article class="images__article">
-                                    <video src="${videourl}" class="images__image" controls="controls"></video>
-                                       <div class="images__title_like">
-                                            <div class="images__title">
-                                                ${medias[i].title}
-                                            </div>
-                                            <div class="images__like">
-                                                <div class="images__count">
-                                                    ${medias[i].likes}
-                                                </div>
-                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${medias[i].id})"></i>
-                                            </div>
-                                        </div>
-                                        </article>
-                                       `;
-                            images.insertAdjacentHTML('beforeend', articleTemplate);
-                        };
-
-                    }
-
-                }*/
                 document.getElementById('banner').innerHTML = `
             <div class="banner__likes">
             <div class="banner__count">
@@ -246,9 +200,6 @@ fetch('../photographers.json')
             ${photographer.price}€ / jour
         </div> 
             `
-
-
-
                 document.getElementById("profile").innerHTML = `
             <article class="profile__infos">
             <h1 class="profile__name">
@@ -272,6 +223,7 @@ fetch('../photographers.json')
 
         <img class="profile__img" src="${photographer.portrait}">
             `
+
             document.getElementById("contact").innerHTML = `
             <div class="contactform__contact_close">
             <h1 class="contactform__contactMe">Contactez-moi</h1>
@@ -314,7 +266,7 @@ fetch('../photographers.json')
 
         }
     //});
-
+/*
     document.getElementById("filter").innerHTML = `
     <label for="filter" class="images__filter">
     Trier par
@@ -335,7 +287,7 @@ fetch('../photographers.json')
     </div>
     </div>
 </button>
-    `
+    `*/
 })
 
 function showMedia(source, title) {
@@ -426,13 +378,17 @@ function mediaFilter(type) {
 }
 
 function openFilter() {
+    /*
     const values = document.querySelector('.images__values');
     values.style.display = "initial";
     const date = document.getElementById('date');
     const title = document.getElementById('title');
     date.style.display = "flex";
     title.style.display = "flex";
-    console.log("values open : " + values.style)
+    console.log("values open : " + values.style)*/
+    document.querySelector('.images__filter_label').style.display="none";
+    document.querySelector('.arrow').style.display="none";
+    document.querySelector('.images__filter_option').style.display="flex";
 }
 
 function closeFilter() {

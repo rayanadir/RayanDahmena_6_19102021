@@ -136,6 +136,21 @@ body {
 .images__filter_button:focus .arrow {
   transform: rotate(-180deg);
 }
+.images__filter_list {
+  display: none;
+  flex-direction: column;
+  padding: 0;
+  align-items: flex-start;
+  margin: 0;
+  row-gap: 1rem;
+  margin-top: 1rem;
+}
+.images__filter_option {
+  list-style-type: none;
+}
+.images__filter_label {
+  display: initial;
+}
 .images__values {
   display: none;
 }

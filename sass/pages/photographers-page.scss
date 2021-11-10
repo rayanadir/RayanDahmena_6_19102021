@@ -101,6 +101,7 @@ body {
     &__wrap_filter_button {
         display: flex;
         align-items: center;
+        column-gap: 3rem;
     }
     &__filter {
         font-size: 18px;
@@ -151,6 +152,18 @@ body {
         display: flex;
         align-items: center;
         column-gap: 1rem;
+    }
+    &__select {
+        padding: 1rem;
+        border: 0;
+        background: #911C1C;
+        border-radius: 5px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 17px;
+        color: white;
+    }
+    &__option {
+        height: 30px;
     }
     &__image {
         width: 350px;

@@ -8,7 +8,7 @@
     <title>Photographer</title>
     <link rel="stylesheet" href="../css/pages/photographers-page.css">
     <script src="https://kit.fontawesome.com/8570de5ffd.js" crossorigin="anonymous"></script>
-    <script type="module" src="photographer-page.js"></script>
+
 </head>
 
 <body>
@@ -25,16 +25,20 @@
                 <label for="filter" class="images__filter">
                     Trier par
                 </label>
-                <button class="images__filter_button" onclick="openFilter()">
+                <!--<button class="images__filter_button" onclick="openFilter()">
                    <label for="filter" class="images__filter_label">Popularité</label> 
                     <i class="fas fa-chevron-down arrow"></i>
                     <ul role="listbox" class="images__filter_list">
-                    <!--<li class="images__filter_option">Popularité</li>-->
                     <li class="images__filter_option">Date</li>
                     <li class="images__filter_option">Titre</li>
                     </ul>
                 </button>
-
+            -->
+                <select class="images__select">
+                <option value="popularite" class="images__option">Popularité</option>
+                <option value="date" class="images__option">Date</option>
+                <option value="titre" class="images__option">Titre</option>
+            </select">
 
             </div>
             <!--
@@ -51,7 +55,7 @@
         <section class="media" id="media">
         </section>
     </main>
-
+    <script type="module" src="photographer-page.js"></script>
 </body>
 
 </html>

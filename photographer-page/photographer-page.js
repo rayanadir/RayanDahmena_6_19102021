@@ -24,25 +24,26 @@ var likedMedias = [];
 
 
 function likeMedia(id) {
+    console.log(id)
     mediasArray.forEach((media, index) => {
-        if (media.id === id) {
-            if (likedMedias.includes(id) == true) {
-                likedMedias.splice(likedMedias.indexOf(id), 1);
-                mediasArray[index].likes = mediasArray[index].likes - 1
-                return mediasArray[index].likes;
-            } else {
-                likedMedias.push(id);
-                return mediasArray[index].likes++;
+            if (media.id === id) {
+                if (likedMedias.includes(id) == true) {
+                    likedMedias.splice(likedMedias.indexOf(id), 1);
+                    mediasArray[index].likes = mediasArray[index].likes - 1
+                    return mediasArray[index].likes;
+                } else {
+                    likedMedias.push(id);
+                    return mediasArray[index].likes++;
+                }
             }
-        }
-    })
-    refreshMedias(mediasArray);
+        })
+        //refreshMedias(mediasArray);
 }
 
 
 function refreshMedias(array) {
     document.getElementById('images').innerHTML = ``;
-    photographer_folder = getPhotographerFolderName(photographerName);
+    const photographer_folder = getPhotographerFolderName(photographerName);
     for (var i = 0; i < array.length; i++) {
         if (getSource(array[i].image, array[i].video) == "image") {
             const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + array[i].image;
@@ -110,8 +111,6 @@ function refreshBanner(array) {
 var filterValue = "Popularité";
 var filterTemplate = document.getElementById("filter").innerHTML;
 var mediasArray = []
-var photographerName;
-var price;
 var likes = 0;
 
 
@@ -126,9 +125,8 @@ fetch('../photographers.json')
             let photographer = photographers.find(photographer => photographer.id == id);
             if (photographer) {
                 photographer = new Photographer(photographer);
-                price = new Photographer(photographer).price;
-                photographerName = new Photographer(photographer).name;
-
+                /*price = new Photographer(photographer).price;
+                photographerName = new Photographer(photographer).name;*/
             }
             if (photographer.id == id) {
                 const medias = data.media.map(media => {
@@ -147,7 +145,7 @@ fetch('../photographers.json')
                 for (var i = 0; i < mediasArray.length; i++) {
                     if (mediasArray[i] instanceof Photo) {
 
-                        const photographer_folder = getPhotographerFolderName(photographerName)
+                        const photographer_folder = getPhotographerFolderName(photographer.name)
                         const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
                         var articleTemplate = `
                                     <article class="images__article">
@@ -160,7 +158,7 @@ fetch('../photographers.json')
                                                 <div class="images__count">
                                                     ${mediasArray[i].likes}
                                                 </div>
-                                                <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
+                                                <i class="fas fa-heart images__icon"></i>
                                             </div>
                                         </div>
                                         </article>
@@ -180,7 +178,7 @@ fetch('../photographers.json')
                                                                    <div class="images__count">
                                                                        ${mediasArray[i].likes}
                                                                    </div>
-                                                                   <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
+                                                                   <i class="fas fa-heart images__icon"></i>
                                                                </div>
                                                            </div>
                                                            </article>
@@ -263,7 +261,11 @@ fetch('../photographers.json')
         <br>
         
             `
-
+            const items = document.getElementsByClassName('images__icon');
+            console.log(items)
+            for(let item of items) {
+                item.addEventListener('click', likeMedia)
+            }
         }
     //});
 /*
@@ -415,11 +417,11 @@ function selectFilter(filter) {
     return filter;
 }
 
-
+/*
 const form = document.querySelector(".contactform");
 
 form.style.display = "none"
-
+*/
 function openForm() {
     form.style.display = "block";
 }
@@ -501,7 +503,7 @@ function checkForm() {
     let formValid = firstValid && lastValid && emailValid && messageValid;
     return formValid;
 }
-
+/*
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     if (checkForm() == true) {
@@ -515,4 +517,4 @@ form.addEventListener("submit", function (event) {
     } else {
         console.log("formulaire invalide");
     }
-})
+})*/

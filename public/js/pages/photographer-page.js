@@ -44,9 +44,8 @@ function likeMedia(id) {
 
 function refreshMedias(array) {
     document.getElementById('images').innerHTML = ``;
-    const photographer_folder = getPhotographerFolderName(photographerName);
     for (var i = 0; i < array.length; i++) {
-        if (getSource(array[i].image, array[i].video) == "image") {
+        if (array[i] instanceof Photo) {
             const imageurl = "/public/medias/" + array[i].image;
             var articleTemplate = `
             <article class="images__article">
@@ -59,13 +58,13 @@ function refreshMedias(array) {
                     <div class="images__count">
                         ${array[i].likes}
                     </div>
-                    <i class="fas fa-heart images__icon" onclick="likeMedia(${array[i].id})"></i>
+                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
                 </div>
             </div>
             </article>
            `;
-        } else {
-            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + array[i].video;
+        } else if (array[i] instanceof Video) {
+            const videourl = "/public/medias/" + array[i].video;
             var articleTemplate = `
         <article class="images__article">
         <video src="${videourl}" class="images__image" controls="controls"></video>
@@ -77,7 +76,7 @@ function refreshMedias(array) {
                     <div class="images__count">
                         ${array[i].likes}
                     </div>
-                    <i class="fas fa-heart images__icon" onclick="likeMedia(${array[i].id})"></i>
+                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
                 </div>
             </div>
             </article>
@@ -113,7 +112,7 @@ var filterValue = "Popularité";
 var filterTemplate = document.getElementById("filter").innerHTML;
 var mediasArray = []
 var likes = 0;
-
+var price;
 
 fetch('/public/datas/photographers.json')
     .then(res => {
@@ -128,14 +127,14 @@ fetch('/public/datas/photographers.json')
                 photographer = new Photographer(photographer);
             }
             if (photographer.id == id) {
-                const medias = data.media.map(media => {
+                data.media.map(media => {
                     if (media.photographerId == id) {
                         mediasArray.push(MediaFactory.createMedia(media))
                         likes = likes + MediaFactory.createMedia(media).likes;
                     }
 
                 });
-                console.log(mediasArray);
+                price = photographer.price;
                 var images = document.getElementById('images');
                 var i;
 
@@ -144,7 +143,7 @@ fetch('/public/datas/photographers.json')
 
                         const imageurl = "/public/medias/" + mediasArray[i].image;
                         var articleTemplate = `
-                                    <article class="images__article">
+                                    <article class="images__article" >
                                        <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
                                        <div class="images__title_like">
                                             <div class="images__title">
@@ -154,12 +153,11 @@ fetch('/public/datas/photographers.json')
                                                 <div class="images__count">
                                                     ${mediasArray[i].likes}
                                                 </div>
-                                                <i class="fas fa-heart images__icon"></i>
+                                                <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
                                             </div>
                                         </div>
                                         </article>
                                        `;
-
                     } else if (mediasArray[i] instanceof Video) {
                         const videourl = "/public/medias/" + mediasArray[i].video;
                         var articleTemplate = `
@@ -173,7 +171,7 @@ fetch('/public/datas/photographers.json')
                                                                    <div class="images__count">
                                                                        ${mediasArray[i].likes}
                                                                    </div>
-                                                                   <i class="fas fa-heart images__icon"></i>
+                                                                   <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
                                                                </div>
                                                            </div>
                                                            </article>
@@ -257,11 +255,27 @@ fetch('/public/datas/photographers.json')
             `
             const items = document.getElementsByClassName('images__icon');
             for(let item of items) {
-                item.addEventListener('click', likeMedia)
+                //fonctionnalité like
+                item.addEventListener('click', (e)=>{
+                    const id=e.target.attributes[1].nodeValue;
+                    mediasArray.forEach((media, index) => {
+                        if (media.id == id) {
+                            if (likedMedias.includes(id) == true) {
+                                likedMedias.splice(likedMedias.indexOf(id), 1);
+                                mediasArray[index].likes = mediasArray[index].likes - 1
+                                return mediasArray[index].likes;
+                            } else {
+                                likedMedias.push(id);
+                                return mediasArray[index].likes++;
+                            }
+                        }
+                    })
+                    console.log(likedMedias)
+                    refreshMedias(mediasArray);
+                })
             }
         }
         document.getElementById('contact').addEventListener('click',openForm)
-    
 })
 
 

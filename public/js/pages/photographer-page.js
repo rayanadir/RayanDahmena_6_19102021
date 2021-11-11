@@ -84,6 +84,26 @@ function refreshMedias(array) {
         }
         document.getElementById('images').innerHTML += articleTemplate;
     }
+    const items = document.getElementsByClassName('images__icon');
+    for (let item of items) {
+        //fonctionnalité like
+        item.addEventListener('click', (e) => {
+            const id = e.target.attributes[1].nodeValue;
+            mediasArray.forEach((media, index) => {
+                if (media.id == id) {
+                    if (likedMedias.includes(id) == true) {
+                        likedMedias.splice(likedMedias.indexOf(id), 1);
+                        mediasArray[index].likes = mediasArray[index].likes - 1
+                        return mediasArray[index].likes;
+                    } else {
+                        likedMedias.push(id);
+                        return mediasArray[index].likes++;
+                    }
+                }
+            })
+            refreshMedias(mediasArray);
+        })
+    }
     refreshBanner(array);
 }
 
@@ -270,7 +290,6 @@ fetch('/public/datas/photographers.json')
                             }
                         }
                     })
-                    console.log(likedMedias)
                     refreshMedias(mediasArray);
                 })
             }
@@ -278,6 +297,93 @@ fetch('/public/datas/photographers.json')
         document.getElementById('contact').addEventListener('click',openForm)
 })
 
+const select=document.getElementById('select');
+select.addEventListener('change',(e)=>{
+    console.log(e.target.value);
+    var type=e.target.value;
+    document.getElementById('images').innerHTML = ``;
+    if (type == "popularite") {
+        mediasArray.sort((x, y) => {
+            return y.likes - x.likes;
+        })
+    }
+    if (type == "date") {
+        mediasArray.sort((x, y) => {
+            return new Date(x.date) - new Date(y.date);
+        })
+    }
+    if (type == "titre") {
+        mediasArray.sort((x, y) => {
+            if (x.title.toLowerCase() < y.title.toLowerCase()) {
+                return -1;
+            }
+            if (x.title.toLowerCase() > y.title.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        })
+    }
+    for (var i = 0; i < mediasArray.length; i++) {
+        if (mediasArray[i] instanceof Photo) {
+            const imageurl = "/public/medias/" + mediasArray[i].image;
+            var articleTemplate = `
+        <article class="images__article">
+           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${mediasArray[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${mediasArray[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
+                </div>
+            </div>
+            </article>
+           `;
+        } else if(mediasArray[i] instanceof Video){
+            const videourl = "/public/medias/" + mediasArray[i].video;
+            var articleTemplate = `
+        <article class="images__article">
+        <video src="${videourl}" class="images__image" controls="controls"></video>
+           <div class="images__title_like">
+                <div class="images__title">
+                    ${mediasArray[i].title}
+                </div>
+                <div class="images__like">
+                    <div class="images__count">
+                        ${mediasArray[i].likes}
+                    </div>
+                    <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
+                </div>
+            </div>
+            </article>
+           `;
+        }
+        document.getElementById('images').innerHTML += articleTemplate;
+        const items = document.getElementsByClassName('images__icon');
+            for(let item of items) {
+                //fonctionnalité like
+                item.addEventListener('click', (e)=>{
+                    const id=e.target.attributes[1].nodeValue;
+                    mediasArray.forEach((media, index) => {
+                        if (media.id == id) {
+                            if (likedMedias.includes(id) == true) {
+                                likedMedias.splice(likedMedias.indexOf(id), 1);
+                                mediasArray[index].likes = mediasArray[index].likes - 1
+                                return mediasArray[index].likes;
+                            } else {
+                                likedMedias.push(id);
+                                return mediasArray[index].likes++;
+                            }
+                        }
+                    })
+                    refreshMedias(mediasArray);
+                })
+            }
+    }
+})
 
 function showMedia(source, title) {
     const mediaSection = document.getElementById('media');
@@ -294,106 +400,6 @@ function showMedia(source, title) {
         ${title}
     </div>
     `
-}
-
-
-function mediaFilter(type) {
-    document.getElementById('images').innerHTML = ``;
-    if (type == "popularite") {
-        mediasArray.sort((x, y) => {
-            return y.likes - x.likes;
-        })
-    }
-    if (type == "date") {
-        mediasArray.sort((x, y) => {
-            return new Date(x.date) - new Date(y.date);
-        })
-    }
-    if (type == "nom") {
-        mediasArray.sort((x, y) => {
-            if (x.title.toLowerCase() < y.title.toLowerCase()) {
-                return -1;
-            }
-            if (x.title.toLowerCase() > y.title.toLowerCase()) {
-                return 1;
-            }
-            return 0;
-        })
-    }
-    photographer_folder = getPhotographerFolderName(photographerName)
-    for (var i = 0; i < mediasArray.length; i++) {
-        if (getSource(mediasArray[i].image, mediasArray[i].video) == "image") {
-            const imageurl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].image;
-            var articleTemplate = `
-        <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${mediasArray[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${mediasArray[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
-                </div>
-            </div>
-            </article>
-           `;
-            //images.insertAdjacentHTML('beforeend', articleTemplate);
-        } else {
-            const videourl = "/FishEye_Photos/Sample Photos/" + photographer_folder + "/" + mediasArray[i].video;
-            var articleTemplate = `
-        <article class="images__article">
-        <video src="${videourl}" class="images__image" controls="controls"></video>
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${mediasArray[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${mediasArray[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" onclick="likeMedia(${mediasArray[i].id})"></i>
-                </div>
-            </div>
-            </article>
-           `;
-            //images.insertAdjacentHTML('beforeend', articleTemplate);
-        }
-        document.getElementById('images').innerHTML += articleTemplate;
-    }
-    //console.log(mediasArray);
-}
-
-function openFilter() {
-    document.querySelector('.images__filter_label').style.display="none";
-    document.querySelector('.arrow').style.display="none";
-    document.querySelector('.images__filter_option').style.display="flex";
-}
-
-function closeFilter() {
-    document.querySelector('.images__values').style.display = "none";
-}
-
-function selectFilter(filter) {
-    const values = document.querySelector('.images__values');
-    document.getElementById("filter").innerHTML = ``;
-    console.log("filtre séléctionné : " + filter);
-    filterValue = filter;
-    document.getElementById("filter").innerHTML = `
-    <label for="filter" class="images__filter">
-    Trier par
-</label>
-<button class="images__filter_button" onblur="closeFilter()">
-    <div class="images__value_arrow">
-    ${filterValue}
-    <i class="fas fa-chevron-down arrow"></i>
-    </div>
-</button>
-    `
-    console.log("values select : " + values.style)
-    return filter;
 }
 
 

@@ -161,9 +161,11 @@ body {
         font-family: 'DM Sans', sans-serif;
         font-size: 17px;
         color: white;
+        cursor: pointer;
     }
     &__option {
         height: 30px;
+        cursor: pointer;
     }
     &__image {
         width: 350px;
@@ -245,6 +247,7 @@ body {
     z-index: 10;
     top: 3rem;
     transform: translateX(50%);
+    display: none;
     &__contact_close {
         display: flex;
         justify-content: space-between;
@@ -330,6 +333,41 @@ body {
 
 .media {
     display: none;
+    flex-direction: column;
+    width: 950px;
+    margin: auto;
+    align-items: end;
+    &__media_icons {
+        display: flex;
+        justify-content: center;
+        height: 700px;
+        align-items: center;
+        column-gap: 3rem;
+    }
+    &__media_title {
+        display: flex;
+        flex-direction: column;
+    }
+    &__media {
+        width: 800px;
+        height: 600px;
+    }
+    &__title {
+        font-size: 24px;
+        color: #911C1C;
+    }
+    &__icon {
+        font-size: xx-large;
+        color: #911C1C;
+        cursor: pointer;
+    }
+    &__close_icon {
+        margin-top: 2rem;
+        font-size: xx-large;
+        color: #911C1C;
+        cursor: pointer;
+        width: fit-content;
+    }
 }
 
 @media (min-width:530px) and (max-width:1024px) {

@@ -2,6 +2,8 @@ import { MediaFactory, Photo, Video } from '/public/js/models/Media.js';
 import Photographer from '/public/js/models/Photographer.js';
 
 var likedMedias = [];
+const form = document.querySelector(".contactform");
+form.style.display = "none"
 
 function refreshMedias(array) {
     document.getElementById('images').innerHTML = ``;
@@ -10,7 +12,7 @@ function refreshMedias(array) {
             const imageurl = "/public/medias/" + array[i].image;
             var articleTemplate = `
             <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${array[i].title}" onclick="showMedia(${imageurl},${array[i].title})">
+           <img src="${imageurl}" class="images__image" alt="${array[i].title}" data-id="${imageurl}">
            <div class="images__title_like">
                 <div class="images__title">
                     ${array[i].title}
@@ -28,7 +30,7 @@ function refreshMedias(array) {
             const videourl = "/public/medias/" + array[i].video;
             var articleTemplate = `
         <article class="images__article">
-        <video src="${videourl}" class="images__image" controls="controls"></video>
+        <video src="${videourl}" class="images__image" controls="controls" data-id="${videourl}"></video>
            <div class="images__title_like">
                 <div class="images__title">
                     ${array[i].title}
@@ -121,8 +123,8 @@ fetch('/public/datas/photographers.json')
 
                         const imageurl = "/public/medias/" + mediasArray[i].image;
                         var articleTemplate = `
-                                    <article class="images__article" >
-                                       <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
+                                    <article class="images__article">
+                                       <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" data-id="${imageurl}">
                                        <div class="images__title_like">
                                             <div class="images__title">
                                                 ${mediasArray[i].title}
@@ -131,7 +133,7 @@ fetch('/public/datas/photographers.json')
                                                 <div class="images__count">
                                                     ${mediasArray[i].likes}
                                                 </div>
-                                                <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
+                                                <i class="fas fa-heart images__icon" data-id="${mediasArray[i]}"></i>
                                             </div>
                                         </div>
                                         </article>
@@ -140,7 +142,7 @@ fetch('/public/datas/photographers.json')
                         const videourl = "/public/medias/" + mediasArray[i].video;
                         var articleTemplate = `
                                                        <article class="images__article">
-                                                       <video src="${videourl}" class="images__image" controls="controls"></video>
+                                                       <video src="${videourl}" class="images__image" controls="controls" data-id="${videourl}"></video>
                                                           <div class="images__title_like">
                                                                <div class="images__title">
                                                                    ${mediasArray[i].title}
@@ -375,6 +377,43 @@ fetch('/public/datas/photographers.json')
                     refreshMedias(mediasArray);
                 })
             }
+            const medias=document.getElementsByClassName('images__image');
+            for(let media of medias){
+                media.addEventListener('click',(e)=>{
+                    const url=e.target.attributes[3].nodeValue;
+                    const alt=e.target.alt;
+                    const mediaSection=document.getElementById('media');
+                    console.log(alt)
+                    document.getElementById('profile').style.display="none";
+                    document.getElementById('imagesSection').style.display="none";
+                    document.getElementById('banner').style.display="none";
+                    document.getElementById('contact').style.display="none";
+                    document.getElementById('header').style.display="none";
+                    mediaSection.style.display="flex";
+                    var template=`
+                    <i class="fas fa-times media__close_icon" id="closemedia"></i>
+                    <div class="media__media_icons">
+                    <i class="fas fa-chevron-left media__icon"></i>
+                        <div class="media__media_title">
+                            <img src="${url}" class="media__media">
+                            <p class="media__title">${alt}</p>
+                        </div>
+                    <i class="fas fa-chevron-right media__icon"></i>
+                    </div>
+                    `
+                    mediaSection.innerHTML+=template
+                })
+            }
+            const closemedia=document.getElementById('closemedia');
+            closemedia.addEventListener('click', (e)=>{
+                const mediaSection=document.getElementById('media');
+                mediaSection.style.display="none";
+                document.getElementById('profile').style.display="flex";
+                document.getElementById('imagesSection').style.display="initial";
+                document.getElementById('banner').style.display="flex";
+                document.getElementById('contact').style.display="none";
+                document.getElementById('header').style.display="flex";
+            })
         }
 })
 
@@ -410,7 +449,7 @@ select.addEventListener('change',(e)=>{
             const imageurl = "/public/medias/" + mediasArray[i].image;
             var articleTemplate = `
         <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" onclick="showMedia(${imageurl},${mediasArray[i].title})">
+           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" data-id="${imageurl}">
            <div class="images__title_like">
                 <div class="images__title">
                     ${mediasArray[i].title}
@@ -428,7 +467,7 @@ select.addEventListener('change',(e)=>{
             const videourl = "/public/medias/" + mediasArray[i].video;
             var articleTemplate = `
         <article class="images__article">
-        <video src="${videourl}" class="images__image" controls="controls"></video>
+        <video src="${videourl}" class="images__image" controls="controls" data-id="${videourl}"></video>
            <div class="images__title_like">
                 <div class="images__title">
                     ${mediasArray[i].title}

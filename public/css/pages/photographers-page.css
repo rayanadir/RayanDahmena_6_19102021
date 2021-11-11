@@ -171,9 +171,11 @@ body {
   font-family: "DM Sans", sans-serif;
   font-size: 17px;
   color: white;
+  cursor: pointer;
 }
 .images__option {
   height: 30px;
+  cursor: pointer;
 }
 .images__image {
   width: 350px;
@@ -254,6 +256,7 @@ body {
   z-index: 10;
   top: 3rem;
   transform: translateX(50%);
+  display: none;
 }
 .contactform__contact_close {
   display: flex;
@@ -336,6 +339,41 @@ body {
 
 .media {
   display: none;
+  flex-direction: column;
+  width: 950px;
+  margin: auto;
+  align-items: end;
+}
+.media__media_icons {
+  display: flex;
+  justify-content: center;
+  height: 700px;
+  align-items: center;
+  column-gap: 3rem;
+}
+.media__media_title {
+  display: flex;
+  flex-direction: column;
+}
+.media__media {
+  width: 800px;
+  height: 600px;
+}
+.media__title {
+  font-size: 24px;
+  color: #911C1C;
+}
+.media__icon {
+  font-size: xx-large;
+  color: #911C1C;
+  cursor: pointer;
+}
+.media__close_icon {
+  margin-top: 2rem;
+  font-size: xx-large;
+  color: #911C1C;
+  cursor: pointer;
+  width: fit-content;
 }
 
 @media (min-width: 530px) and (max-width: 1024px) {

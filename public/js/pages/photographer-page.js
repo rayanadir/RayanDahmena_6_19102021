@@ -1,46 +1,7 @@
 import { MediaFactory, Photo, Video } from '/public/js/models/Media.js';
 import Photographer from '/public/js/models/Photographer.js';
 
-
-
-
-
-function getPhotographerFolderName(str) {
-    let spaceIndex = str.indexOf(' ');
-    return spaceIndex === -1 ? str : str.substr(0, spaceIndex);
-};
-
-function getSource(image, video) {
-    if (image === null || image === undefined) {
-        return "video";
-    }
-    if (video === null || video === undefined) {
-        return "image";
-    }
-}
-
 var likedMedias = [];
-
-
-
-function likeMedia(id) {
-    console.log(id)
-    mediasArray.forEach((media, index) => {
-        if (media.id === id) {
-            if (likedMedias.includes(id) == true) {
-                likedMedias.splice(likedMedias.indexOf(id), 1);
-                mediasArray[index].likes = mediasArray[index].likes - 1
-                return mediasArray[index].likes;
-            } else {
-                likedMedias.push(id);
-                return mediasArray[index].likes++;
-            }
-        }
-    })
-    console.log(likedMedias)
-    refreshMedias(mediasArray);
-}
-
 
 function refreshMedias(array) {
     document.getElementById('images').innerHTML = ``;
@@ -127,9 +88,6 @@ function refreshBanner(array) {
             `
     return total;
 }
-
-var filterValue = "Popularité";
-var filterTemplate = document.getElementById("filter").innerHTML;
 var mediasArray = []
 var likes = 0;
 var price;
@@ -226,53 +184,177 @@ fetch('/public/datas/photographers.json')
             </div>
         </article>
         <div class="profile__bouton">
-            <button class="profile__contact" onclick="openForm()">
+            <button class="profile__contact" id="openform">
             Contactez-moi
         </button>
         </div>
 
         <img class="profile__img" src="/public/medias/${photographer.portrait}">
             `
-
+        
             document.getElementById("contact").innerHTML = `
             <div class="contactform__contact_close">
             <h1 class="contactform__contactMe">Contactez-moi</h1>
-            <button class="contactform__close" onclick="closeForm()">
+            <button class="contactform__close" id="closeForm">
                  <i class="fas fa-times contactform__icon" ></i>
             </button>
         </div>
 
         <h1 class="contactform__contactMe">${photographer.name}</h1>
         </div>
-        <form method="get" name="reserve" action="photographer-page.html" onsubmit="return checkForm();">
+        <form method="get" name="reserve" action="photographer-page.html" >
             <div class="contactform__formData">
                 <label for="firstname">Prénom</label> <br>
-                <input type="text" class="contactform__input" id="first" onblur="checkFirstandLastName(this,'firstname')"> 
+                <input type="text" class="contactform__input" id="first"> 
                 <p class="contactform__error_first">Vous devez entrer votre prénom</p>
                 
             </div>
             <div class="contactform__formData">
                 <label for="lastname">Nom</label> <br>
-                <input type="text" class="contactform__input" id="last" onblur="checkFirstandLastName(this,'lastname')"> <br>
+                <input type="text" class="contactform__input" id="last"> <br>
                 <p class="contactform__error_last">Vous devez entrer votre nom</p>
             </div>
             <div class="contactform__formData">
                 <label for="email_test">Email</label> <br>
-                <input type="email" class="contactform__input" id="email" onblur="checkEmail(this)"> <br>
-                <p class="contactform__error_email">Vous devez entrer votre email</p>
+                <input type="email" class="contactform__input" id="email"> <br>
+                <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
             </div>
             <div class="contactform__formData">
                 <label for="message">Votre message</label> <br>
-                <textarea type="text" class="contactform__message" id="message" onblur="checkMessage(this)"></textarea> <br>
+                <textarea type="text" class="contactform__message" id="message"></textarea> <br>
                 <p class="contactform__error_message">Vous devez entrer un message valide</p>
             </div>
-                            <button class="contactform__send" type="submit" onclick="checkForm()">
+                            <button class="contactform__send" type="submit">
             Envoyer
         </button>
         </form>
         <br>
-        
             `
+
+            const form = document.querySelector(".contactform");
+            form.style.display = "none"
+            const openform=document.getElementById('openform');
+            openform.addEventListener('click',(e)=>{
+                form.style.display = "block";
+            });
+            const closeForm=document.getElementById('closeForm');
+            closeForm.addEventListener('click', (e)=>{
+                form.style.display = "none";
+            })
+            const first=document.getElementById('first');
+            first.addEventListener('blur',function checkFirstandLastName(input, type) {
+                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                const value = input.value;
+                const test = regex.test(value);
+                if (test && input.length !== 0) {
+                    if (type === "firstname") {
+                        document.querySelector('.contactform__error_first').style.display = "none";
+                    }
+                    if (type === "lastname") {
+                        document.querySelector('.contactform__error_last').style.display = "none";
+                    }
+                    return true;
+                } else {
+                    if (type === "firstname") {
+                        document.querySelector('.contactform__error_first').style.display = "flex";
+                    }
+                    if (type === "lastname") {
+                        document.querySelector('.contactform__error_last').style.display = "flex";
+                    }
+                    return false
+                }
+            })
+            const last=document.getElementById('last');
+            last.addEventListener('blur',function checkFirstandLastName(input, type) {
+                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                const value = input.value;
+                const test = regex.test(value);
+                if (test && input.length !== 0) {
+                    if (type === "firstname") {
+                        document.querySelector('.contactform__error_first').style.display = "none";
+                    }
+                    if (type === "lastname") {
+                        document.querySelector('.contactform__error_last').style.display = "none";
+                    }
+                    return true;
+                } else {
+                    if (type === "firstname") {
+                        document.querySelector('.contactform__error_first').style.display = "flex";
+                    }
+                    if (type === "lastname") {
+                        document.querySelector('.contactform__error_last').style.display = "flex";
+                    }
+                    return false
+                }
+            })
+            const email=document.getElementById('email');
+            email.addEventListener('blur',function checkEmail(input) {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                const test = re.test(String(input).toLowerCase());
+                return test;
+            })
+            const message=document.getElementById('message');
+            message.addEventListener('blur',function checkMessage(input) {
+                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                const value = input.value;
+                const test = regex.test(value);
+                if (test && input.length !== 0) {
+                    document.querySelector('.contactform__error_message').style.display = "none";
+                    return true;
+                } else {
+                    document.querySelector('.contactform__error_message').style.display = "flex";
+                    return false;
+                }
+            })
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let firstValid = false;
+                let lastValid = false;
+                let emailValid = false;
+                let messageValid = false;
+
+                const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(regexFirstLastMessage.test(document.getElementById('first').value)){
+                    firstValid=true;
+                }
+                if(regexFirstLastMessage.test(document.getElementById('last').value)){
+                    lastValid=true;
+                }
+                if(regexFirstLastMessage.test(document.getElementById('message').value)){
+                    messageValid=true;
+                }
+                if(regexEmail.test(document.getElementById('email').value)){
+                    emailValid=true;
+                }
+
+                if (emailValid == false) {
+                    document.querySelector('.contactform__error_email').style.display = "flex";
+                }
+                if (firstValid == false) {
+                    document.querySelector('.contactform__error_first').style.display = "flex";
+                }
+                if (lastValid == false) {
+                    document.querySelector('.contactform__error_last').style.display = "flex";
+                }
+                if (messageValid == false) {
+                    document.querySelector('.contactform__error_message').style.display = "flex";
+                }
+                let formValid = firstValid && lastValid && emailValid && messageValid;
+                if (formValid == true) {
+                    console.log("formulaire valide");
+                    document.querySelector('.contactform__error_email').style.display = "none";
+                    console.log("Prénom : " + document.getElementById('first').value);
+                    console.log("Nom : " + document.getElementById('last').value);
+                    console.log("Email : " + document.getElementById('email').value);
+                    console.log("Message : " + document.getElementById('message').value);
+                    document.querySelector('form').reset();
+                } else {
+                    console.log("formulaire invalide");
+                }
+            })
+
             const items = document.getElementsByClassName('images__icon');
             for(let item of items) {
                 //fonctionnalité like
@@ -294,9 +376,9 @@ fetch('/public/datas/photographers.json')
                 })
             }
         }
-        document.getElementById('contact').addEventListener('click',openForm)
 })
 
+//fonctionnalité 'trier par'
 const select=document.getElementById('select');
 select.addEventListener('change',(e)=>{
     console.log(e.target.value);
@@ -401,105 +483,3 @@ function showMedia(source, title) {
     </div>
     `
 }
-
-
-const form = document.querySelector(".contactform");
-
-form.style.display = "none"
-
-function openForm() {
-    form.style.display = "block";
-}
-
-function closeForm() {
-    form.style.display = "none";
-}
-
-function checkFirstandLastName(input, type) {
-    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-    const value = input.value;
-    const test = regex.test(value);
-    if (test && input.length !== 0) {
-        if (type === "firstname") {
-            document.querySelector('.contactform__error_first').style.display = "none";
-        }
-        if (type === "lastname") {
-            document.querySelector('.contactform__error_last').style.display = "none";
-        }
-        return true;
-    } else {
-        if (type === "firstname") {
-            document.querySelector('.contactform__error_first').style.display = "flex";
-        }
-        if (type === "lastname") {
-            document.querySelector('.contactform__error_last').style.display = "flex";
-        }
-        return false
-    }
-}
-
-function checkEmail(input) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const test = re.test(String(input).toLowerCase());
-    return test;
-}
-
-function checkMessage(input) {
-    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-    const value = input.value;
-    const test = regex.test(value);
-    if (test && input.length !== 0) {
-        document.querySelector('.contactform__error_message').style.display = "none";
-        return true;
-    } else {
-        document.querySelector('.contactform__error_message').style.display = "flex";
-        return false;
-    }
-}
-
-function checkForm() {
-    const fisrt = document.getElementById('first').value;
-    const last = document.getElementById('last').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-
-    let firstValid = false;
-    let lastValid = false;
-    let emailValid = false;
-    let messageValid = false;
-
-    firstValid = checkFirstandLastName(fisrt, 'firstname');
-    lastValid = checkFirstandLastName(last, 'lastname');
-    emailValid = checkEmail(email);
-    messageValid = checkMessage(message);
-
-    if (emailValid == false) {
-        document.querySelector('.contactform__error_email').style.display = "flex";
-    }
-    if (firstValid == false) {
-        document.querySelector('.contactform__error_first').style.display = "flex";
-    }
-    if (lastValid == false) {
-        document.querySelector('.contactform__error_last').style.display = "flex";
-    }
-    if (messageValid == false) {
-        document.querySelector('.contactform__error_message').style.display = "flex";
-    }
-    let formValid = firstValid && lastValid && emailValid && messageValid;
-    return formValid;
-}
-
-form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    if (checkForm() == true) {
-        console.log("formulaire valide");
-        document.querySelector('.contactform__error_email').style.display = "none";
-        console.log("Prénom : " + document.getElementById('first').value);
-        console.log("Nom : " + document.getElementById('last').value);
-        console.log("Email : " + document.getElementById('email').value);
-        console.log("Message : " + document.getElementById('message').value);
-        document.querySelector('form').reset();
-    } else {
-        console.log("formulaire invalide");
-    }
-})

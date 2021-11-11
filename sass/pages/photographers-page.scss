@@ -242,7 +242,7 @@ body {
     font-family: 'DM Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
-    z-index: 1;
+    z-index: 10;
     top: 3rem;
     transform: translateX(50%);
     &__contact_close {
@@ -397,10 +397,6 @@ body {
         display: none;
     }
     .images {
-        /*&__collection {
-            display: flex;
-            flex-direction: column;
-        }*/
         &__article {
             place-self: center;
             margin-top: 1rem;
@@ -412,10 +408,6 @@ body {
         &__article:nth-child(3n+1) {
             place-self: center;
         }
-        /*&__image {
-            height: 200px;
-            width: 100%;
-        }*/
         &__title_like {
             width: auto;
         }
@@ -457,6 +449,27 @@ body {
         &__img {
             width: 100px;
             height: 100px;
+        }
+    }
+    .contactform {
+        width: auto;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        &__input {
+            width: 100%;
+        }
+        &__message {
+            width: 100%;
+        }
+        &__contactMe {
+            font-size: 29px;
+            line-height: 20px;
+        }
+        &__icon {
+            font-size: 2rem;
         }
     }
 }

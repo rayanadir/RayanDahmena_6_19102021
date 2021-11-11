@@ -251,7 +251,7 @@ body {
   font-family: "DM Sans", sans-serif;
   font-style: normal;
   font-weight: normal;
-  z-index: 1;
+  z-index: 10;
   top: 3rem;
   transform: translateX(50%);
 }
@@ -402,16 +402,6 @@ body {
     display: none;
   }
 
-  .images {
-    /*&__collection {
-        display: flex;
-        flex-direction: column;
-    }*/
-    /*&__image {
-        height: 200px;
-        width: 100%;
-    }*/
-  }
   .images__article {
     place-self: center;
     margin-top: 1rem;
@@ -465,6 +455,28 @@ body {
   .profile__img {
     width: 100px;
     height: 100px;
+  }
+
+  .contactform {
+    width: auto;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+  .contactform__input {
+    width: 100%;
+  }
+  .contactform__message {
+    width: 100%;
+  }
+  .contactform__contactMe {
+    font-size: 29px;
+    line-height: 20px;
+  }
+  .contactform__icon {
+    font-size: 2rem;
   }
 }
 

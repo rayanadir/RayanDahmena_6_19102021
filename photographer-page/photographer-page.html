@@ -26,10 +26,10 @@
                     Trier par
                 </label>
                 <select class="images__select" id="select">
-                <option value="popularite" class="images__option">Popularité</option>
-                <option value="date" class="images__option">Date</option>
-                <option value="titre" class="images__option">Titre</option>
-            </select>
+                    <option value="popularite" class="images__option">Popularité</option>
+                    <option value="date" class="images__option">Date</option>
+                    <option value="titre" class="images__option">Titre</option>
+                </select>
             </div>
             <div class="images__collection" id="images">
             </div>
@@ -39,6 +39,13 @@
         <section class="contactform" id="contact">
         </section>
         <section class="media" id="media">
+            <i class="fas fa-times media__close_icon" id="closemedia"></i>
+            <div class="media__media_icons">
+                <i class="fas fa-chevron-left media__icon" id="previous"></i>
+                <div class="media__media_title" id="media_title">
+                </div>
+                <i class="fas fa-chevron-right media__icon" id="next"></i>
+            </div>
         </section>
     </main>
     <script type="module" src="/public/js/pages/photographer-page.js"></script>

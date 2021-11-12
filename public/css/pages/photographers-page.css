@@ -358,10 +358,12 @@ body {
 .media__media {
   width: 800px;
   height: 600px;
+  object-fit: contain;
 }
 .media__title {
   font-size: 24px;
   color: #911C1C;
+  align-self: center;
 }
 .media__icon {
   font-size: xx-large;

@@ -214,6 +214,14 @@ body {
   cursor: pointer;
 }
 
+.banner[display-desktop=true] {
+  display: flex;
+}
+
+.banner[close-banner-desktop=true] {
+  display: none;
+}
+
 .banner {
   background: #DB8876;
   display: flex;
@@ -337,6 +345,10 @@ body {
   cursor: pointer;
 }
 
+.media[display-desktop=true] {
+  display: flex;
+}
+
 .media {
   display: none;
   flex-direction: column;
@@ -438,6 +450,10 @@ body {
     width: auto;
   }
 
+  .banner[display-mobile=true] {
+    display: none;
+  }
+
   .banner {
     display: none;
   }
@@ -517,6 +533,27 @@ body {
   }
   .contactform__icon {
     font-size: 2rem;
+  }
+
+  .media[display-mobile-media=true] {
+    display: initial;
+  }
+
+  .media {
+    display: none;
+    width: 100%;
+    align-items: center;
+  }
+  .media__media {
+    width: 250px;
+    height: 300px;
+    object-fit: contain;
+  }
+  .media__close_icon {
+    float: right;
+  }
+  .media__media_icons {
+    justify-content: space-between;
   }
 }
 

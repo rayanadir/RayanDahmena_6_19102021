@@ -205,6 +205,14 @@ body {
     }
 }
 
+.banner[display-desktop="true"] {
+    display: flex;
+}
+
+.banner[close-banner-desktop="true"] {
+    display: none;
+}
+
 .banner {
     background: #DB8876;
     display: flex;
@@ -331,6 +339,10 @@ body {
     }
 }
 
+.media[display-desktop="true"] {
+    display: flex;
+}
+
 .media {
     display: none;
     flex-direction: column;
@@ -433,6 +445,9 @@ body {
         margin: 1rem;
         width: auto;
     }
+    .banner[display-mobile="true"] {
+        display: none;
+    }
     .banner {
         display: none;
     }
@@ -510,6 +525,25 @@ body {
         }
         &__icon {
             font-size: 2rem;
+        }
+    }
+    .media[display-mobile-media="true"] {
+        display: initial;
+    }
+    .media {
+        display: none;
+        width: 100%;
+        align-items: center;
+        &__media {
+            width: 250px;
+            height: 300px;
+            object-fit: contain;
+        }
+        &__close_icon {
+            float: right;
+        }
+        &__media_icons {
+            justify-content: space-between;
         }
     }
 }

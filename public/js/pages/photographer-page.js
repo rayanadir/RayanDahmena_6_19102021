@@ -522,7 +522,19 @@ for (let item of items) {
             //navigation média suivant
             document.getElementById('next').addEventListener('click', navigateNext)
             //navigation média précédent
-            document.getElementById('previous').addEventListener('click', navigatePrevious)
+            document.getElementById('previous').addEventListener('click', navigatePrevious);
+            //navigation média touches fléchées
+            document.addEventListener('keydown', (key)=>{
+                const value=key.code;
+                //console.log(value);
+                if(value=="Escape"){
+                    closeMedia();
+                }else if(value=="ArrowLeft"){
+                    navigatePrevious();
+                }else if(value=="ArrowRight"){
+                    navigateNext();
+                }
+            })
         })
     }
     loadBanner(array)

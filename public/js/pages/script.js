@@ -47,7 +47,7 @@ fetch('/public/datas/photographers.json')
             document.getElementById("photographers").innerHTML = `
                               ${photographers.map((photographer) =>
                                     photographerTemplate=`
-                              <article class="photographers__photographer">
+                              <article class="photographers__photographer" aria-label="Photographer">
                               <a href="/photographer-page/photographer-page.html?id=${photographer.id}">
                               <img class="photographers__img" src="/public/medias/${photographer.portrait}" alt="${photographer.name}">
                               </a>
@@ -91,7 +91,7 @@ function filterPhotographers(photographers) {
     let photographerList = document.getElementById("photographers");
         for (var i = 0; i < photographersArray.length; i++) {
             var template = `
-                <article class="photographers__photographer">
+                <article class="photographers__photographer" aria-label="Photographer">
                                       <a href="/photographer-page/photographer-page.html?id=${photographersArray[i].id}">
                                       <img class="photographers__img" src="/public/medias/${photographersArray[i].portrait}" alt="${photographersArray[i].name}">
                                       </a>

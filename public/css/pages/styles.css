@@ -76,6 +76,7 @@ body {
   color: #D3573C;
   margin-bottom: 0;
   font-weight: normal;
+  cursor: pointer;
 }
 .photographers__localisation {
   font-size: 13px;

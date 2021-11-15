@@ -60,7 +60,7 @@ fetch('/public/datas/photographers.json')
 
                 //profil photographe
                 document.getElementById("profile").innerHTML = `
-            <article class="profile__infos">
+            <article class="profile__infos" aria-label="Profile">
             <h1 class="profile__name">
                 ${photographer.name}
             </h1>
@@ -84,10 +84,10 @@ fetch('/public/datas/photographers.json')
             `
                 //formulaire
             document.getElementById("contact").innerHTML = `
-            <div class="contactform__contact_close">
+            <div class="contactform__contact_close" aria-label="Form">
             <h1 class="contactform__contactMe">Contactez-moi</h1>
             <button class="contactform__close" id="closeForm">
-                 <i class="fas fa-times contactform__icon" ></i>
+                 <i class="fas fa-times contactform__icon" aria-label="Close"></i>
             </button>
         </div>
 
@@ -96,26 +96,26 @@ fetch('/public/datas/photographers.json')
         <form method="get" name="reserve" action="photographer-page.html" >
             <div class="contactform__formData">
                 <label for="firstname">Prénom</label> <br>
-                <input type="text" class="contactform__input" id="first"> 
+                <input type="text" class="contactform__input" id="first" aria-label="Firstname"> 
                 <p class="contactform__error_first">Vous devez entrer votre prénom</p>
                 
             </div>
             <div class="contactform__formData">
                 <label for="lastname">Nom</label> <br>
-                <input type="text" class="contactform__input" id="last"> <br>
+                <input type="text" class="contactform__input" id="last" aria-label="Lastname"> <br>
                 <p class="contactform__error_last">Vous devez entrer votre nom</p>
             </div>
             <div class="contactform__formData">
                 <label for="email_test">Email</label> <br>
-                <input type="email" class="contactform__input" id="email"> <br>
+                <input type="email" class="contactform__input" id="email" aria-label="Email"> <br>
                 <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
             </div>
             <div class="contactform__formData">
                 <label for="message">Votre message</label> <br>
-                <textarea type="text" class="contactform__message" id="message"></textarea> <br>
+                <textarea type="text" class="contactform__message" id="message" aria-label="Message"></textarea> <br>
                 <p class="contactform__error_message">Vous devez entrer un message valide</p>
             </div>
-                            <button class="contactform__send" type="submit">
+                            <button class="contactform__send" type="submit" aria-label="Send">
             Envoyer
         </button>
         </form>
@@ -242,15 +242,12 @@ fetch('/public/datas/photographers.json')
                 }
                 let formValid = firstValid && lastValid && emailValid && messageValid;
                 if (formValid == true) {
-                    console.log("formulaire valide");
                     document.querySelector('.contactform__error_email').style.display = "none";
                     console.log("Prénom : " + document.getElementById('first').value);
                     console.log("Nom : " + document.getElementById('last').value);
                     console.log("Email : " + document.getElementById('email').value);
                     console.log("Message : " + document.getElementById('message').value);
                     document.querySelector('form').reset();
-                } else {
-                    console.log("formulaire invalide");
                 }
             })
         }
@@ -417,8 +414,8 @@ function loadMedias(array){
         if (array[i] instanceof Photo) {
             const imageurl = "/public/medias/" + array[i].image;
             var articleTemplate = `
-                        <article class="images__article">
-                           <img src="${imageurl}" class="images__image" alt="${array[i].title}" data-id="${imageurl}">
+                        <article class="images__article" aria-label="Media">
+                           <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${imageurl}">
                            <div class="images__title_like">
                                 <div class="images__title">
                                     ${array[i].title}
@@ -427,7 +424,7 @@ function loadMedias(array){
                                     <div class="images__count">
                                         ${array[i].likes}
                                     </div>
-                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
+                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
                                 </div>
                             </div>
                             </article>
@@ -435,8 +432,8 @@ function loadMedias(array){
         } else if (array[i] instanceof Video) {
             const videourl = "/public/medias/" + array[i].video;
             var articleTemplate = `
-                                           <article class="images__article">
-                                           <video src="${videourl}" class="images__image" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
+                                           <article class="images__article" aria-label="Media">
+                                           <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
                                               <div class="images__title_like">
                                                    <div class="images__title">
                                                        ${array[i].title}
@@ -445,7 +442,7 @@ function loadMedias(array){
                                                        <div class="images__count">
                                                            ${array[i].likes}
                                                        </div>
-                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
+                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
                                                    </div>
                                                </div>
                                                </article>
@@ -454,11 +451,11 @@ function loadMedias(array){
         images.innerHTML += articleTemplate;
     }
     //fonctionnalité like
-const items = document.getElementsByClassName('images__icon');
-for (let item of items) {
+    const items = document.getElementsByClassName('images__icon');
+    for (let item of items) {
     //fonctionnalité like
     item.addEventListener('click', (e) => {
-        console.log("like");
+        //console.log("like");
         const id = e.target.attributes[1].nodeValue;
         mediasArray.forEach((media, index) => {
             if (media.id == id) {
@@ -488,13 +485,13 @@ for (let item of items) {
                     const title = e.target.alt;
                     if (media.title == title) {
                         index = i;
-                        console.log(index);
+                        //console.log(index);
                     }
                 } else if (media instanceof Video) {
                     const title = e.target.title;
                     if (media.title == title) {
                         index = i;
-                        console.log(index);
+                        //console.log(index);
                     }
                 }
             })

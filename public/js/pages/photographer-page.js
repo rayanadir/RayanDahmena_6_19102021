@@ -5,132 +5,8 @@ import Photographer from '/public/js/models/Photographer.js';
 const form = document.querySelector(".contactform");
 form.style.display = "none";
 
-
-
-
-//actualiser médias
-function refreshMedias(array) {
-    document.getElementById('images').innerHTML = ``;
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] instanceof Photo) {
-            const imageurl = "/public/medias/" + array[i].image;
-            var articleTemplate = `
-            <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${array[i].title}" data-id="${imageurl}">
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${array[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${array[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
-                </div>
-            </div>
-            </article>
-           `;
-        } else if (array[i] instanceof Video) {
-            const videourl = "/public/medias/" + array[i].video;
-            var articleTemplate = `
-        <article class="images__article">
-        <video src="${videourl}" class="images__image" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${array[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${array[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
-                </div>
-            </div>
-            </article>
-           `;
-        }
-        document.getElementById('images').innerHTML += articleTemplate;
-    }
-    const items = document.getElementsByClassName('images__icon');
-    for (let item of items) {
-        //fonctionnalité like
-        item.addEventListener('click', (e) => {
-            const id = e.target.attributes[1].nodeValue;
-            mediasArray.forEach((media, index) => {
-                if (media.id == id) {
-                    if (likedMedias.includes(id) == true) {
-                        likedMedias.splice(likedMedias.indexOf(id), 1);
-                        mediasArray[index].likes = mediasArray[index].likes - 1
-                        return mediasArray[index].likes;
-                    } else {
-                        likedMedias.push(id);
-                        return mediasArray[index].likes++;
-                    }
-                }
-            })
-            refreshMedias(mediasArray);
-        })
-    }
-    const medias = document.getElementsByClassName('images__image');
-    for (let media of medias) {
-        media.addEventListener('click', (e) => {
-            const mediaSection = document.getElementById('media');
-            const mediaType = e.target.tagName;
-            document.getElementById('profile').style.display = "none";
-            document.getElementById('imagesSection').style.display = "none";
-            document.getElementById('banner').style.display = "none";
-            document.getElementById('contact').style.display = "none";
-            document.getElementById('header').style.display = "none";
-            mediaSection.style.display = "flex";
-            if (mediaType == "IMG") {
-                const url = e.target.attributes[3].nodeValue;
-                const title = e.target.alt;
-                document.getElementById('media').innerHTML = `
-                    <i class="fas fa-times media__close_icon" id="closemedia"></i>
-                    <div class="media__media_icons">
-                    <i class="fas fa-chevron-left media__icon"></i>
-                        <div class="media__media_title">
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${title}</p>
-                        </div>
-                    <i class="fas fa-chevron-right media__icon"></i>
-                    </div>
-                    `
-            } else if (mediaType == "VIDEO") {
-                console.log(e);
-                const url = e.target.dataset.id;
-                const title = e.target.title;
-                document.getElementById('media') = `
-                    <i class="fas fa-times media__close_icon" id="closemedia"></i>
-                    <div class="media__media_icons">
-                    <i class="fas fa-chevron-left media__icon"></i>
-                        <div class="media__media_title">
-                            <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
-                            <p class="media__title">${title}</p>
-                        </div>
-                    <i class="fas fa-chevron-right media__icon"></i>
-                    </div>
-                    `
-            }
-
-            //mediaSection.innerHTML += template;
-            const closemedia = document.getElementById('closemedia');
-            closemedia.addEventListener('click', (e) => {
-                const mediaSection = document.getElementById('media');
-                mediaSection.innerHTML = ``;
-                mediaSection.style.display = "none";
-                document.getElementById('profile').style.display = "flex";
-                document.getElementById('imagesSection').style.display = "initial";
-                document.getElementById('banner').style.display = "flex";
-                document.getElementById('contact').style.display = "none";
-                document.getElementById('header').style.display = "flex";
-            })
-        })
-    }
-    refreshBanner(array);
-}
 //actualiser bannière
-function refreshBanner(array) {
+function loadBanner(array) {
     const photographerPrice = price;
     var total = 0;
     for (var i = 0; i < array.length; i++) {
@@ -150,6 +26,7 @@ function refreshBanner(array) {
             `
     return total;
 }
+
 
 var likedMedias = [];
 var mediasArray = [];
@@ -176,67 +53,12 @@ fetch('/public/datas/photographers.json')
                         mediasArray.push(MediaFactory.createMedia(media))
                         likes = likes + MediaFactory.createMedia(media).likes;
                     }
-
                 });
                 price = photographer.price;
-                var images = document.getElementById('images');
-                var i;
-
                 //chargement médias
-                for (var i = 0; i < mediasArray.length; i++) {
-                    if (mediasArray[i] instanceof Photo) {
+                loadMedias(mediasArray);
 
-                        const imageurl = "/public/medias/" + mediasArray[i].image;
-                        var articleTemplate = `
-                                    <article class="images__article">
-                                       <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" data-id="${imageurl}">
-                                       <div class="images__title_like">
-                                            <div class="images__title">
-                                                ${mediasArray[i].title}
-                                            </div>
-                                            <div class="images__like">
-                                                <div class="images__count">
-                                                    ${mediasArray[i].likes}
-                                                </div>
-                                                <i class="fas fa-heart images__icon" data-id="${mediasArray[i]}"></i>
-                                            </div>
-                                        </div>
-                                        </article>
-                                       `;
-                    } else if (mediasArray[i] instanceof Video) {
-                        const videourl = "/public/medias/" + mediasArray[i].video;
-                        var articleTemplate = `
-                                                       <article class="images__article">
-                                                       <video src="${videourl}" class="images__image" title="${mediasArray[i].title}" controls="controls" data-id="${videourl}"></video>
-                                                          <div class="images__title_like">
-                                                               <div class="images__title">
-                                                                   ${mediasArray[i].title}
-                                                               </div>
-                                                               <div class="images__like">
-                                                                   <div class="images__count">
-                                                                       ${mediasArray[i].likes}
-                                                                   </div>
-                                                                   <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
-                                                               </div>
-                                                           </div>
-                                                           </article>
-                                                          `;
-                    }
-                    images.innerHTML += articleTemplate;
-                }
-                //bannière
-                document.getElementById('banner').innerHTML = `
-            <div class="banner__likes">
-            <div class="banner__count">
-                ${likes}
-            </div>
-            <i class="fas fa-heart banner__icon"></i>
-        </div>
-        <div class="banner__price">
-            ${photographer.price}€ / jour
-        </div> 
-            `
-                    //profil photographe
+                //profil photographe
                 document.getElementById("profile").innerHTML = `
             <article class="profile__infos">
             <h1 class="profile__name">
@@ -431,162 +253,6 @@ fetch('/public/datas/photographers.json')
                     console.log("formulaire invalide");
                 }
             })
-
-            //fonctionnalité like média
-            const items = document.getElementsByClassName('images__icon');
-            for (let item of items) {
-                //fonctionnalité like
-                item.addEventListener('click', (e) => {
-                    const id = e.target.attributes[1].nodeValue;
-                    mediasArray.forEach((media, index) => {
-                        if (media.id == id) {
-                            if (likedMedias.includes(id) == true) {
-                                likedMedias.splice(likedMedias.indexOf(id), 1);
-                                mediasArray[index].likes = mediasArray[index].likes - 1
-                                return mediasArray[index].likes;
-                            } else {
-                                likedMedias.push(id);
-                                return mediasArray[index].likes++;
-                            }
-                        }
-                    })
-                    refreshMedias(mediasArray);
-                })
-            }
-
-            //fonctionnalité média (affichage + navigation + fermeture)
-            const medias = document.getElementsByClassName('images__image');
-            for (let media of medias) {
-                media.addEventListener('click', (e) => {
-                    openMedia();
-                    var mediaType = e.target.tagName;
-                    //obtenir indice du média dans le tableau
-                    const media_title = document.getElementById('media_title');
-                    mediasArray.forEach((media, i) => {
-                        if (media instanceof Photo) {
-                            const title = e.target.alt;
-                            if (media.title == title) {
-                                index = i;
-                                console.log(index);
-                            }
-                        } else if (media instanceof Video) {
-                            const title = e.target.title;
-                            if (media.title == title) {
-                                index = i;
-                                console.log(index);
-                            }
-                        }
-                    })
-                    //affichage média séléctionné
-                    if (mediaType == "IMG") {
-                        const url = e.target.attributes[3].nodeValue;
-                        const title = e.target.alt;
-                        document.getElementById('media_title').innerHTML = `
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${title}</p>
-                        `
-                    } else if (mediaType == "VIDEO") {
-                        //console.log(e);
-                        const url = e.target.dataset.id;
-                        const title = e.target.title;
-                        document.getElementById('media_title').innerHTML = `
-                            <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
-                            <p class="media__title">${title}</p>
-                        `
-                    }
-                    //media_title.innerHTML += mediaTemplate;
-
-                    //fermeture média
-                    const closemedia = document.getElementById('closemedia');
-                    closemedia.addEventListener('click', closeMedia)
-
-                    //navigation média suivant
-                    document.getElementById('next').addEventListener('click', (e) => {
-                        index = index + 1;
-                        const media_title = document.getElementById('media_title');
-                        if (index > mediasArray.length - 1) {
-                            console.log("limite atteinte fin");
-                            index = 0;
-                            //media_title.innerHTML = ``;
-                            if (mediasArray[index] instanceof Photo) {
-                                const url = "/public/medias/" + mediasArray[index].image;
-                                document.getElementById('media_title').innerHTML = `
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            } else if (mediasArray[index] instanceof Video) {
-                                const url = "/public/medias/" + mediasArray[index].video;
-                                document.getElementById('media_title').innerHTML = `
-                            <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            }
-                            //media_title.innerHTML += mediaTemplate;
-                            closemedia.addEventListener('click', closeMedia)
-                        } else {
-                            //media_title.innerHTML = ``;
-                            if (mediasArray[index] instanceof Photo) {
-                                const url = "/public/medias/" + mediasArray[index].image;
-                                document.getElementById('media_title').innerHTML = `
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            } else if (mediasArray[index] instanceof Video) {
-                                const url = "/public/medias/" + mediasArray[index].video;
-                                document.getElementById('media_title').innerHTML = `
-                            <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            }
-                            //media_title.innerHTML += mediaTemplate;
-                            closemedia.addEventListener('click', closeMedia)
-                        }
-                        //closemedia.addEventListener('click', closeMedia)
-                    })
-                    //navigation média précédent
-                    document.getElementById('previous').addEventListener('click', (e) => {
-                        index = index - 1;
-                        if (index < 0) {
-                            console.log("limite atteinte debut");
-                            index = mediasArray.length-1;
-                            //media_title.innerHTML = ``;
-                            if (mediasArray[index] instanceof Photo) {
-                                const url = "/public/medias/" + mediasArray[index].image;
-                                document.getElementById('media_title').innerHTML = `
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            } else if (mediasArray[index] instanceof Video) {
-                                const url = "/public/medias/" + mediasArray[index].video;
-                                document.getElementById('media_title').innerHTML = `
-                            <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            }
-                            //media_title.innerHTML += mediaTemplate;
-                            closemedia.addEventListener('click', closeMedia)
-                        }else {
-                            //const media_title = document.getElementById('media_title');
-                            //media_title.innerHTML = ``;
-                            if (mediasArray[index] instanceof Photo) {
-                                const url = "/public/medias/" + mediasArray[index].image;
-                                document.getElementById('media_title').innerHTML = `
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            } else if (mediasArray[index] instanceof Video) {
-                                const url = "/public/medias/" + mediasArray[index].video;
-                                document.getElementById('media_title').innerHTML = `
-                            <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                            <p class="media__title">${mediasArray[index].title}</p>
-                            `
-                            }
-                            //media_title.innerHTML += mediaTemplate;
-                            closemedia.addEventListener('click', closeMedia)
-                        }
-                    })
-                })
-            }
         }
     })
 
@@ -616,122 +282,7 @@ select.addEventListener('change', (e) => {
             return 0;
         })
     }
-    for (var i = 0; i < mediasArray.length; i++) {
-        if (mediasArray[i] instanceof Photo) {
-            const imageurl = "/public/medias/" + mediasArray[i].image;
-            var articleTemplate = `
-        <article class="images__article">
-           <img src="${imageurl}" class="images__image" alt="${mediasArray[i].title}" data-id="${imageurl}">
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${mediasArray[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${mediasArray[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
-                </div>
-            </div>
-            </article>
-           `;
-        } else if (mediasArray[i] instanceof Video) {
-            const videourl = "/public/medias/" + mediasArray[i].video;
-            var articleTemplate = `
-        <article class="images__article">
-        <video src="${videourl}" class="images__image" title="${mediasArray[i].title}" controls="controls" data-id="${videourl}"></video>
-           <div class="images__title_like">
-                <div class="images__title">
-                    ${mediasArray[i].title}
-                </div>
-                <div class="images__like">
-                    <div class="images__count">
-                        ${mediasArray[i].likes}
-                    </div>
-                    <i class="fas fa-heart images__icon" data-id="${mediasArray[i].id}"></i>
-                </div>
-            </div>
-            </article>
-           `;
-        }
-        document.getElementById('images').innerHTML += articleTemplate;
-        const items = document.getElementsByClassName('images__icon');
-        for (let item of items) {
-            //fonctionnalité like
-            item.addEventListener('click', (e) => {
-                const id = e.target.attributes[1].nodeValue;
-                mediasArray.forEach((media, index) => {
-                    if (media.id == id) {
-                        if (likedMedias.includes(id) == true) {
-                            likedMedias.splice(likedMedias.indexOf(id), 1);
-                            mediasArray[index].likes = mediasArray[index].likes - 1
-                            return mediasArray[index].likes;
-                        } else {
-                            likedMedias.push(id);
-                            return mediasArray[index].likes++;
-                        }
-                    }
-                })
-                refreshMedias(mediasArray);
-            })
-        }
-        const medias = document.getElementsByClassName('images__image');
-        for (let media of medias) {
-            media.addEventListener('click', (e) => {
-                const mediaSection = document.getElementById('media');
-                const mediaType = e.target.tagName;
-                document.getElementById('profile').style.display = "none";
-                document.getElementById('imagesSection').style.display = "none";
-                document.getElementById('banner').style.display = "none";
-                document.getElementById('contact').style.display = "none";
-                document.getElementById('header').style.display = "none";
-                mediaSection.style.display = "flex";
-                if (mediaType == "IMG") {
-                    const url = e.target.attributes[3].nodeValue;
-                    const title = e.target.alt;
-                    var template = `
-                    <i class="fas fa-times media__close_icon" id="closemedia"></i>
-                    <div class="media__media_icons">
-                    <i class="fas fa-chevron-left media__icon"></i>
-                        <div class="media__media_title">
-                            <img src="${url}" class="media__media">
-                            <p class="media__title">${title}</p>
-                        </div>
-                    <i class="fas fa-chevron-right media__icon"></i>
-                    </div>
-                    `
-                } else if (mediaType == "VIDEO") {
-                    console.log(e);
-                    const url = e.target.dataset.id;
-                    const title = e.target.title;
-                    var template = `
-                    <i class="fas fa-times media__close_icon" id="closemedia"></i>
-                    <div class="media__media_icons">
-                    <i class="fas fa-chevron-left media__icon"></i>
-                        <div class="media__media_title">
-                            <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
-                            <p class="media__title">${title}</p>
-                        </div>
-                    <i class="fas fa-chevron-right media__icon"></i>
-                    </div>
-                    `
-                }
-
-                mediaSection.innerHTML += template;
-                const closemedia = document.getElementById('closemedia');
-                closemedia.addEventListener('click', (e) => {
-                    const mediaSection = document.getElementById('media');
-                    mediaSection.innerHTML = ``;
-                    mediaSection.style.display = "none";
-                    document.getElementById('profile').style.display = "flex";
-                    document.getElementById('imagesSection').style.display = "initial";
-                    document.getElementById('banner').style.display = "flex";
-                    document.getElementById('contact').style.display = "none";
-                    document.getElementById('header').style.display = "flex";
-                })
-            })
-        }
-    }
+    loadMedias(mediasArray)
 })
 
 //ouvrir media
@@ -749,8 +300,6 @@ function openMedia() {
 //fermer media
 function closeMedia() {
     const mediaSection = document.getElementById('media');
-    //const media_title = document.getElementById('media_title');
-    //media_title.innerHTML = ``;
     document.getElementById('profile').style.display = "flex";
     document.getElementById('imagesSection').style.display = "block";
     document.getElementById('contact').style.display = "none";
@@ -760,8 +309,10 @@ function closeMedia() {
     banner.setAttribute('display-mobile', true);
     banner.setAttribute('display-desktop', true);
     banner.removeAttribute('close-banner-desktop');
-    mediaSection.removeAttribute('display-mobile-media')
-    mediaSection.removeAttribute('display-desktop')
+    mediaSection.removeAttribute('display-mobile-media');
+    mediaSection.removeAttribute('display-desktop');
+    const media_title = document.getElementById('media_title');
+    media_title.innerHTML = ``;
 }
 //fermer formulaire
 function closeForm() {
@@ -772,57 +323,9 @@ function openForm() {
     form.style.display = "block";
 }
 
-
-
-//fonctionnalité média (affichage + navigation + fermeture)
-const medias = document.getElementsByClassName('images__image');
-for (let media of medias) {
-    media.addEventListener('click', (e) => {
-        openMedia();
-        var mediaType = e.target.tagName;
-        //obtenir indice du média dans le tableau
-        const media_title = document.getElementById('media_title');
-        mediasArray.forEach((media, i) => {
-            if (media instanceof Photo) {
-                const title = e.target.alt;
-                if (media.title == title) {
-                    index = i;
-                    console.log(index);
-                }
-            } else if (media instanceof Video) {
-                const title = e.target.title;
-                if (media.title == title) {
-                    index = i;
-                    console.log(index);
-                }
-            }
-        })
-        //affichage média séléctionné
-        if (mediaType == "IMG") {
-            const url = e.target.attributes[3].nodeValue;
-            const title = e.target.alt;
-            mediaTemplate = `
-                <img src="${url}" class="media__media">
-                <p class="media__title">${title}</p>
-            `
-        } else if (mediaType == "VIDEO") {
-            //console.log(e);
-            const url = e.target.dataset.id;
-            const title = e.target.title;
-            mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
-                <p class="media__title">${title}</p>
-            `
-        }
-        media_title.innerHTML += mediaTemplate;
-
-        //fermeture média
-        const closemedia = document.getElementById('closemedia');
-        closemedia.addEventListener('click', closeMedia)
-
-        //navigation média suivant
-        document.getElementById('next').addEventListener('click', (e) => {
-            index = index + 1;
+//navigation suivant
+function navigateNext(){
+    index = index + 1;
             const media_title = document.getElementById('media_title');
             if (index > mediasArray.length - 1) {
                 console.log("limite atteinte fin");
@@ -861,11 +364,10 @@ for (let media of medias) {
                 media_title.innerHTML += mediaTemplate;
                 closemedia.addEventListener('click', closeMedia)
             }
-            //closemedia.addEventListener('click', closeMedia)
-        })
-        //navigation média précédent
-        document.getElementById('previous').addEventListener('click', (e) => {
-            index = index - 1;
+}            
+//navigation précédent
+function navigatePrevious() {
+    index = index - 1;
             if (index < 0) {
                 console.log("limite atteinte debut");
                 index = mediasArray.length-1;
@@ -904,32 +406,124 @@ for (let media of medias) {
                 media_title.innerHTML += mediaTemplate;
                 closemedia.addEventListener('click', closeMedia)
             }
-        })
-    })
 }
 
-//fonctionnalité like média
-            const items = document.getElementsByClassName('images__icon');
-            for (let item of items) {
-                //fonctionnalité like
-                item.addEventListener('click', (e) => {
-                    const id = e.target.attributes[1].nodeValue;
-                    mediasArray.forEach((media, index) => {
-                        if (media.id == id) {
-                            if (likedMedias.includes(id) == true) {
-                                likedMedias.splice(likedMedias.indexOf(id), 1);
-                                mediasArray[index].likes = mediasArray[index].likes - 1
-                                return mediasArray[index].likes;
-                            } else {
-                                likedMedias.push(id);
-                                return mediasArray[index].likes++;
-                            }
-                        }
-                    })
-                    refreshMedias(mediasArray);
-                })
+function loadMedias(array){
+    var images = document.getElementById('images');
+    var banner=document.getElementById('banner');
+    images.innerHTML=``;
+    banner.innerHTML=``;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] instanceof Photo) {
+            const imageurl = "/public/medias/" + array[i].image;
+            var articleTemplate = `
+                        <article class="images__article">
+                           <img src="${imageurl}" class="images__image" alt="${array[i].title}" data-id="${imageurl}">
+                           <div class="images__title_like">
+                                <div class="images__title">
+                                    ${array[i].title}
+                                </div>
+                                <div class="images__like">
+                                    <div class="images__count">
+                                        ${array[i].likes}
+                                    </div>
+                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
+                                </div>
+                            </div>
+                            </article>
+                           `;
+        } else if (array[i] instanceof Video) {
+            const videourl = "/public/medias/" + array[i].video;
+            var articleTemplate = `
+                                           <article class="images__article">
+                                           <video src="${videourl}" class="images__image" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
+                                              <div class="images__title_like">
+                                                   <div class="images__title">
+                                                       ${array[i].title}
+                                                   </div>
+                                                   <div class="images__like">
+                                                       <div class="images__count">
+                                                           ${array[i].likes}
+                                                       </div>
+                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}"></i>
+                                                   </div>
+                                               </div>
+                                               </article>
+                                              `;
+        }
+        images.innerHTML += articleTemplate;
+    }
+    //fonctionnalité like
+const items = document.getElementsByClassName('images__icon');
+for (let item of items) {
+    //fonctionnalité like
+    item.addEventListener('click', (e) => {
+        console.log("like");
+        const id = e.target.attributes[1].nodeValue;
+        mediasArray.forEach((media, index) => {
+            if (media.id == id) {
+                if (likedMedias.includes(id) == true) {
+                    likedMedias.splice(likedMedias.indexOf(id), 1);
+                    mediasArray[index].likes = mediasArray[index].likes - 1
+                    return mediasArray[index].likes;
+                } else {
+                    likedMedias.push(id);
+                    return mediasArray[index].likes++;
+                }
+            }  
+        })
+        loadMedias(mediasArray);
+    })
+}
+    //fonctionnalité média (affichage + navigation + fermeture)
+    const medias = document.getElementsByClassName('images__image');
+    for (let media of medias) {
+        media.addEventListener('click', (e) => {
+            openMedia();
+            var mediaType = e.target.tagName;
+            //obtenir indice du média dans le tableau
+            const media_title = document.getElementById('media_title');
+            mediasArray.forEach((media, i) => {
+                if (media instanceof Photo) {
+                    const title = e.target.alt;
+                    if (media.title == title) {
+                        index = i;
+                        console.log(index);
+                    }
+                } else if (media instanceof Video) {
+                    const title = e.target.title;
+                    if (media.title == title) {
+                        index = i;
+                        console.log(index);
+                    }
+                }
+            })
+            //affichage média séléctionné
+            if (mediaType == "IMG") {
+                const url = e.target.attributes[3].nodeValue;
+                const title = e.target.alt;
+                mediaTemplate = `
+                    <img src="${url}" class="media__media">
+                    <p class="media__title">${title}</p>
+                `
+            } else if (mediaType == "VIDEO") {
+                //console.log(e);
+                const url = e.target.dataset.id;
+                const title = e.target.title;
+                mediaTemplate = `
+                    <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
+                    <p class="media__title">${title}</p>
+                `
             }
-
-
-            const previous = document.getElementById('previous');
-previous.addEventListener('click', console.log("précédent"))
+            media_title.innerHTML += mediaTemplate;
+            //fermeture média
+            const closemedia = document.getElementById('closemedia');
+            closemedia.addEventListener('click', closeMedia)
+            //navigation média suivant
+            document.getElementById('next').addEventListener('click', navigateNext)
+            //navigation média précédent
+            document.getElementById('previous').addEventListener('click', navigatePrevious)
+        })
+    }
+    loadBanner(array)
+}

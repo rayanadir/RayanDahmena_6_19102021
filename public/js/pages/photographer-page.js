@@ -1,11 +1,184 @@
-import { MediaFactory, Photo, Video } from 'public/js/models/Media.js';
-import Photographer from 'public/js/models/Photographer.js';
+import { MediaFactory, Photo, Video } from '../models/Media.js';
+import Photographer from '../models/Photographer.js';
 
+var likedMedias = [];
+var mediasArray = [];
+var likes = 0;
+var price;
+var index;
+var mediaTemplate;
 
 const form = document.querySelector(".contactform");
 form.style.display = "none";
 
-//actualiser bannière
+/**
+ * @description obtention des données json
+ */
+function getData() {
+    fetch('../../public/datas/photographers.json')
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            const photographers = data.photographers;
+            const url = window.location.search;
+            const id = url.split('id=')[1];
+            let photographer = photographers.find(photographer => photographer.id == id);
+            if (photographer) {
+                photographer = new Photographer(photographer);
+            }
+            if (photographer.id == id) {
+                data.media.map(media => {
+                    if (media.photographerId == id) {
+                        mediasArray.push(MediaFactory.createMedia(media))
+                        likes = likes + MediaFactory.createMedia(media).likes;
+                    }
+                });
+                price = photographer.price;
+
+                loadMedias(mediasArray);
+
+
+                loadProfile(photographer);
+                loadForm(photographer);
+
+                const form = document.querySelector(".contactform");
+                form.style.display = "none";
+                //ouvrir formulaire
+                const openform = document.getElementById('openform');
+                openform.addEventListener('click', openForm);
+                //fermer formulaire
+                const closeform = document.getElementById('closeForm');
+                closeform.addEventListener('click', closeForm)
+
+                //verification prénom
+                const first = document.getElementById('first');
+                first.addEventListener('blur', function checkFirstandLastName(input, type) {
+                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                    const value = input.value;
+                    const test = regex.test(value);
+                    if (test && input.length !== 0) {
+                        if (type === "firstname") {
+                            document.querySelector('.contactform__error_first').style.display = "none";
+                        }
+                        if (type === "lastname") {
+                            document.querySelector('.contactform__error_last').style.display = "none";
+                        }
+                        return true;
+                    } else {
+                        if (type === "firstname") {
+                            document.querySelector('.contactform__error_first').style.display = "flex";
+                        }
+                        if (type === "lastname") {
+                            document.querySelector('.contactform__error_last').style.display = "flex";
+                        }
+                        return false
+                    }
+                })
+
+                //verification nom
+                const last = document.getElementById('last');
+                last.addEventListener('blur', function checkFirstandLastName(input, type) {
+                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                    const value = input.value;
+                    const test = regex.test(value);
+                    if (test && input.length !== 0) {
+                        if (type === "firstname") {
+                            document.querySelector('.contactform__error_first').style.display = "none";
+                        }
+                        if (type === "lastname") {
+                            document.querySelector('.contactform__error_last').style.display = "none";
+                        }
+                        return true;
+                    } else {
+                        if (type === "firstname") {
+                            document.querySelector('.contactform__error_first').style.display = "flex";
+                        }
+                        if (type === "lastname") {
+                            document.querySelector('.contactform__error_last').style.display = "flex";
+                        }
+                        return false
+                    }
+                })
+
+                //verification adresse email
+                const email = document.getElementById('email');
+                email.addEventListener('blur', function checkEmail(input) {
+                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    const test = re.test(String(input).toLowerCase());
+                    return test;
+                })
+
+                //verification message
+                const message = document.getElementById('message');
+                message.addEventListener('blur', function checkMessage(input) {
+                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                    const value = input.value;
+                    const test = regex.test(value);
+                    if (test && input.length !== 0) {
+                        document.querySelector('.contactform__error_message').style.display = "none";
+                        return true;
+                    } else {
+                        document.querySelector('.contactform__error_message').style.display = "flex";
+                        return false;
+                    }
+                })
+
+                //verification formulaire
+                form.addEventListener("submit", function(event) {
+                    event.preventDefault();
+
+                    let firstValid = false;
+                    let lastValid = false;
+                    let emailValid = false;
+                    let messageValid = false;
+
+                    const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+                    const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    if (regexFirstLastMessage.test(document.getElementById('first').value)) {
+                        firstValid = true;
+                    }
+                    if (regexFirstLastMessage.test(document.getElementById('last').value)) {
+                        lastValid = true;
+                    }
+                    if (regexFirstLastMessage.test(document.getElementById('message').value)) {
+                        messageValid = true;
+                    }
+                    if (regexEmail.test(document.getElementById('email').value)) {
+                        emailValid = true;
+                    }
+
+                    if (emailValid == false) {
+                        document.querySelector('.contactform__error_email').style.display = "flex";
+                    }
+                    if (firstValid == false) {
+                        document.querySelector('.contactform__error_first').style.display = "flex";
+                    }
+                    if (lastValid == false) {
+                        document.querySelector('.contactform__error_last').style.display = "flex";
+                    }
+                    if (messageValid == false) {
+                        document.querySelector('.contactform__error_message').style.display = "flex";
+                    }
+                    let formValid = firstValid && lastValid && emailValid && messageValid;
+                    if (formValid == true) {
+                        document.querySelector('.contactform__error_email').style.display = "none";
+                        console.log("Prénom : " + document.getElementById('first').value);
+                        console.log("Nom : " + document.getElementById('last').value);
+                        console.log("Email : " + document.getElementById('email').value);
+                        console.log("Message : " + document.getElementById('message').value);
+                        document.querySelector('form').reset();
+                    }
+                })
+            }
+        })
+}
+
+/**
+ * 
+ * @param {*} array chargement de la bannière
+ * @returns retourne le nombre total de likes
+ */
 function loadBanner(array) {
     const photographerPrice = price;
     var total = 0;
@@ -27,39 +200,12 @@ function loadBanner(array) {
     return total;
 }
 
-
-var likedMedias = [];
-var mediasArray = [];
-var likes = 0;
-var price;
-var index;
-var mediaTemplate;
-
-fetch('public/datas/photographers.json')
-    .then(res => {
-        return res.json();
-    })
-    .then(data => {
-            const photographers = data.photographers;
-            const url = window.location.search;
-            const id = url.split('id=')[1];
-            let photographer = photographers.find(photographer => photographer.id == id);
-            if (photographer) {
-                photographer = new Photographer(photographer);
-            }
-            if (photographer.id == id) {
-                data.media.map(media => {
-                    if (media.photographerId == id) {
-                        mediasArray.push(MediaFactory.createMedia(media))
-                        likes = likes + MediaFactory.createMedia(media).likes;
-                    }
-                });
-                price = photographer.price;
-                //chargement médias
-                loadMedias(mediasArray);
-
-                //profil photographe
-                document.getElementById("profile").innerHTML = `
+/**
+ * 
+ * @param {*} photographer chargement du profil
+ */
+function loadProfile(photographer) {
+    document.getElementById("profile").innerHTML = `
             <article class="profile__infos" aria-label="Profile">
             <h1 class="profile__name">
                 ${photographer.name}
@@ -71,7 +217,7 @@ fetch('public/datas/photographers.json')
                 ${photographer.tagline}
             </p>
             <div class="profile__tags">
-                ${photographer.tags.map((tag) => `<li class="profile__tag"> #${tag}</li>`).join('')}
+                ${photographer.tags.map((tag) => `<li class="profile__tag" id="tag"> #${tag}</li>`).join('')}
             </div>
         </article>
         <div class="profile__bouton">
@@ -80,178 +226,53 @@ fetch('public/datas/photographers.json')
         </button>
         </div>
 
-        <img class="profile__img" src="public/medias/${photographer.portrait}">
+        <img class="profile__img" src="../public/medias/${photographer.portrait}">
             `
-                //formulaire
-            document.getElementById("contact").innerHTML = `
-            <div class="contactform__contact_close" aria-label="Form">
-            <h1 class="contactform__contactMe">Contactez-moi</h1>
-            <button class="contactform__close" id="closeForm">
-                 <i class="fas fa-times contactform__icon" aria-label="Close"></i>
-            </button>
-        </div>
+}
+/**
+ * 
+ * @param {*} photographer chargement du formulaire 
+ */
+function loadForm(photographer){
+    document.getElementById("contact").innerHTML = `
+    <div class="contactform__contact_close" aria-label="Form">
+    <h1 class="contactform__contactMe">Contactez-moi</h1>
+    <button class="contactform__close" id="closeForm">
+        <i class="fas fa-times contactform__icon" aria-label="Close"></i>
+    </button>
+</div>
 
-        <h1 class="contactform__contactMe">${photographer.name}</h1>
-        </div>
-        <form method="get" name="reserve" action="photographer-page.html" >
-            <div class="contactform__formData">
-                <label for="firstname">Prénom</label> <br>
-                <input type="text" class="contactform__input" id="first" aria-label="Firstname"> 
-                <p class="contactform__error_first">Vous devez entrer votre prénom</p>
-                
-            </div>
-            <div class="contactform__formData">
-                <label for="lastname">Nom</label> <br>
-                <input type="text" class="contactform__input" id="last" aria-label="Lastname"> <br>
-                <p class="contactform__error_last">Vous devez entrer votre nom</p>
-            </div>
-            <div class="contactform__formData">
-                <label for="email_test">Email</label> <br>
-                <input type="email" class="contactform__input" id="email" aria-label="Email"> <br>
-                <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
-            </div>
-            <div class="contactform__formData">
-                <label for="message">Votre message</label> <br>
-                <textarea type="text" class="contactform__message" id="message" aria-label="Message"></textarea> <br>
-                <p class="contactform__error_message">Vous devez entrer un message valide</p>
-            </div>
-                            <button class="contactform__send" type="submit" aria-label="Send">
-            Envoyer
-        </button>
-        </form>
-        <br>
-            `
-
-            const form = document.querySelector(".contactform");
-            form.style.display = "none";
-            //ouvrir formulaire
-            const openform = document.getElementById('openform');
-            openform.addEventListener('click', openForm);
-            //fermer formulaire
-            const closeform = document.getElementById('closeForm');
-            closeform.addEventListener('click', closeForm)
-
-            //verification prénom
-            const first = document.getElementById('first');
-            first.addEventListener('blur', function checkFirstandLastName(input, type) {
-                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                const value = input.value;
-                const test = regex.test(value);
-                if (test && input.length !== 0) {
-                    if (type === "firstname") {
-                        document.querySelector('.contactform__error_first').style.display = "none";
-                    }
-                    if (type === "lastname") {
-                        document.querySelector('.contactform__error_last').style.display = "none";
-                    }
-                    return true;
-                } else {
-                    if (type === "firstname") {
-                        document.querySelector('.contactform__error_first').style.display = "flex";
-                    }
-                    if (type === "lastname") {
-                        document.querySelector('.contactform__error_last').style.display = "flex";
-                    }
-                    return false
-                }
-            })
-
-            //verification nom
-            const last = document.getElementById('last');
-            last.addEventListener('blur', function checkFirstandLastName(input, type) {
-                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                const value = input.value;
-                const test = regex.test(value);
-                if (test && input.length !== 0) {
-                    if (type === "firstname") {
-                        document.querySelector('.contactform__error_first').style.display = "none";
-                    }
-                    if (type === "lastname") {
-                        document.querySelector('.contactform__error_last').style.display = "none";
-                    }
-                    return true;
-                } else {
-                    if (type === "firstname") {
-                        document.querySelector('.contactform__error_first').style.display = "flex";
-                    }
-                    if (type === "lastname") {
-                        document.querySelector('.contactform__error_last').style.display = "flex";
-                    }
-                    return false
-                }
-            })
-
-            //verification adresse email
-            const email = document.getElementById('email');
-            email.addEventListener('blur', function checkEmail(input) {
-                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                const test = re.test(String(input).toLowerCase());
-                return test;
-            })
-
-            //verification message
-            const message = document.getElementById('message');
-            message.addEventListener('blur', function checkMessage(input) {
-                const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                const value = input.value;
-                const test = regex.test(value);
-                if (test && input.length !== 0) {
-                    document.querySelector('.contactform__error_message').style.display = "none";
-                    return true;
-                } else {
-                    document.querySelector('.contactform__error_message').style.display = "flex";
-                    return false;
-                }
-            })
-
-            //verification formulaire
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                let firstValid = false;
-                let lastValid = false;
-                let emailValid = false;
-                let messageValid = false;
-
-                const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if (regexFirstLastMessage.test(document.getElementById('first').value)) {
-                    firstValid = true;
-                }
-                if (regexFirstLastMessage.test(document.getElementById('last').value)) {
-                    lastValid = true;
-                }
-                if (regexFirstLastMessage.test(document.getElementById('message').value)) {
-                    messageValid = true;
-                }
-                if (regexEmail.test(document.getElementById('email').value)) {
-                    emailValid = true;
-                }
-
-                if (emailValid == false) {
-                    document.querySelector('.contactform__error_email').style.display = "flex";
-                }
-                if (firstValid == false) {
-                    document.querySelector('.contactform__error_first').style.display = "flex";
-                }
-                if (lastValid == false) {
-                    document.querySelector('.contactform__error_last').style.display = "flex";
-                }
-                if (messageValid == false) {
-                    document.querySelector('.contactform__error_message').style.display = "flex";
-                }
-                let formValid = firstValid && lastValid && emailValid && messageValid;
-                if (formValid == true) {
-                    document.querySelector('.contactform__error_email').style.display = "none";
-                    console.log("Prénom : " + document.getElementById('first').value);
-                    console.log("Nom : " + document.getElementById('last').value);
-                    console.log("Email : " + document.getElementById('email').value);
-                    console.log("Message : " + document.getElementById('message').value);
-                    document.querySelector('form').reset();
-                }
-            })
-        }
-    })
+<h1 class="contactform__contactMe">${photographer.name}</h1>
+</div>
+<form method="get" name="reserve" action="photographer-page.html" >
+    <div class="contactform__formData">
+        <label for="firstname">Prénom</label> <br>
+        <input type="text" class="contactform__input" id="first" aria-label="Firstname"> 
+        <p class="contactform__error_first">Vous devez entrer votre prénom</p>
+        
+    </div>
+    <div class="contactform__formData">
+        <label for="lastname">Nom</label> <br>
+        <input type="text" class="contactform__input" id="last" aria-label="Lastname"> <br>
+        <p class="contactform__error_last">Vous devez entrer votre nom</p>
+    </div>
+    <div class="contactform__formData">
+        <label for="email_test">Email</label> <br>
+        <input type="email" class="contactform__input" id="email" aria-label="Email"> <br>
+        <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
+    </div>
+    <div class="contactform__formData">
+        <label for="message">Votre message</label> <br>
+        <textarea type="text" class="contactform__message" id="message" aria-label="Message"></textarea> <br>
+        <p class="contactform__error_message">Vous devez entrer un message valide</p>
+    </div>
+                    <button class="contactform__send" type="submit" aria-label="Send">
+    Envoyer
+</button>
+</form>
+<br>
+    `
+}
 
 //fonctionnalité 'trier par'
 const select = document.getElementById('select');
@@ -282,7 +303,9 @@ select.addEventListener('change', (e) => {
     loadMedias(mediasArray)
 })
 
-//ouvrir media
+/**
+ * @description ouverture du média
+ */
 function openMedia() {
     const mediaSection = document.getElementById('media');
     document.getElementById('profile').style.display = "none";
@@ -293,8 +316,11 @@ function openMedia() {
     mediaSection.setAttribute('display-desktop',true);
     const banner = document.getElementById('banner');
     banner.setAttribute('close-banner-desktop',true);
+    index=null;
 }
-//fermer media
+/**
+ * @description fermeture du média
+ */
 function closeMedia() {
     const mediaSection = document.getElementById('media');
     document.getElementById('profile').style.display = "flex";
@@ -311,31 +337,39 @@ function closeMedia() {
     const media_title = document.getElementById('media_title');
     media_title.innerHTML = ``;
 }
-//fermer formulaire
+/**
+ * @description fermeture du formulaire
+ */
 function closeForm() {
     form.style.display = "none";
 }
-//fermer formulaire
+/**
+ * @description ouverture du formulaire
+ */
 function openForm() {
     form.style.display = "block";
 }
 
-//navigation suivant
-function navigateNext(){
-    index = index + 1;
+/**
+ * 
+ * @param {*} type navigation (suivant,précedent)
+ */
+function navigateMedia(type){
+    if(type=="next"){
+        index = index + 1;
             const media_title = document.getElementById('media_title');
             if (index > mediasArray.length - 1) {
                 console.log("limite atteinte fin");
                 index = 0;
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "public/medias/" + mediasArray[index].image;
+                    const url = "../public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "public/medias/" + mediasArray[index].video;
+                    const url = "../public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -346,13 +380,13 @@ function navigateNext(){
             } else {
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "public/medias/" + mediasArray[index].image;
+                    const url = "../public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "public/medias/" + mediasArray[index].video;
+                    const url = "../public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -361,22 +395,20 @@ function navigateNext(){
                 media_title.innerHTML += mediaTemplate;
                 closemedia.addEventListener('click', closeMedia)
             }
-}            
-//navigation précédent
-function navigatePrevious() {
-    index = index - 1;
+    }else if(type=="previous"){
+        index = index - 1;
             if (index < 0) {
                 console.log("limite atteinte debut");
                 index = mediasArray.length-1;
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "public/medias/" + mediasArray[index].image;
+                    const url = "../public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "public/medias/" + mediasArray[index].video;
+                    const url = "../public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -388,13 +420,13 @@ function navigatePrevious() {
                 const media_title = document.getElementById('media_title');
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "public/medias/" + mediasArray[index].image;
+                    const url = "../public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "public/medias/" + mediasArray[index].video;
+                    const url = "../public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -403,8 +435,14 @@ function navigatePrevious() {
                 media_title.innerHTML += mediaTemplate;
                 closemedia.addEventListener('click', closeMedia)
             }
+    }
+    console.log(index);
 }
 
+/**
+ * 
+ * @param {*} array affichage des médias
+ */
 function loadMedias(array){
     var images = document.getElementById('images');
     var banner=document.getElementById('banner');
@@ -412,7 +450,7 @@ function loadMedias(array){
     banner.innerHTML=``;
     for (var i = 0; i < array.length; i++) {
         if (array[i] instanceof Photo) {
-            const imageurl = "public/medias/" + array[i].image;
+            const imageurl = "../public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${imageurl}">
@@ -430,7 +468,7 @@ function loadMedias(array){
                             </article>
                            `;
         } else if (array[i] instanceof Video) {
-            const videourl = "public/medias/" + array[i].video;
+            const videourl = "../public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
                                            <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
@@ -450,7 +488,6 @@ function loadMedias(array){
         }
         images.innerHTML += articleTemplate;
     }
-    //fonctionnalité like
     const items = document.getElementsByClassName('images__icon');
     for (let item of items) {
     //fonctionnalité like
@@ -497,14 +534,13 @@ function loadMedias(array){
             })
             //affichage média séléctionné
             if (mediaType == "IMG") {
-                const url = e.target.attributes[3].nodeValue;
+                const url =  e.target.dataset.id;
                 const title = e.target.alt;
                 mediaTemplate = `
                     <img src="${url}" class="media__media">
                     <p class="media__title">${title}</p>
                 `
             } else if (mediaType == "VIDEO") {
-                //console.log(e);
                 const url = e.target.dataset.id;
                 const title = e.target.title;
                 mediaTemplate = `
@@ -517,9 +553,9 @@ function loadMedias(array){
             const closemedia = document.getElementById('closemedia');
             closemedia.addEventListener('click', closeMedia)
             //navigation média suivant
-            document.getElementById('next').addEventListener('click', navigateNext)
+            document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')});
             //navigation média précédent
-            document.getElementById('previous').addEventListener('click', navigatePrevious);
+            document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')});
             //navigation média touches fléchées
             document.addEventListener('keydown', (key)=>{
                 const value=key.code;
@@ -527,12 +563,14 @@ function loadMedias(array){
                 if(value=="Escape"){
                     closeMedia();
                 }else if(value=="ArrowLeft"){
-                    navigatePrevious();
+                    navigateMedia('previous');
                 }else if(value=="ArrowRight"){
-                    navigateNext();
+                    navigateMedia('next');
                 }
             })
         })
     }
     loadBanner(array)
 }
+
+getData();

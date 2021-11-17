@@ -76,7 +76,7 @@ function displayPhotographers(photographers) {
     for (var i = 0; i < photographersArray.length; i++) {
         var template = `
                 <article class="photographers__photographer" aria-label="Photographer">
-                                      <a href="/photographer-page/photographer-page.html?id=${photographersArray[i].id}">
+                                      <a href="/photographer-page.html?id=${photographersArray[i].id}">
                                       <img class="photographers__img" src="public/medias/${photographersArray[i].portrait}" alt="${photographersArray[i].name}">
                                       </a>
 

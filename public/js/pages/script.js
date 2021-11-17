@@ -1,4 +1,4 @@
-import Photographer from '/public/js/models/Photographer.js';
+import Photographer from 'public/js/models/Photographer.js';
 
 var tagsArray = [];
 var photographerTemplate;
@@ -16,7 +16,7 @@ function selectTag(event) {
 
 
 
-fetch('/public/datas/photographers.json')
+fetch('public/datas/photographers.json')
     .then(res => {
         return res.json();
     })
@@ -49,7 +49,7 @@ fetch('/public/datas/photographers.json')
                                     photographerTemplate=`
                               <article class="photographers__photographer" aria-label="Photographer">
                               <a href="/photographer-page/photographer-page.html?id=${photographer.id}">
-                              <img class="photographers__img" src="/public/medias/${photographer.portrait}" alt="${photographer.name}">
+                              <img class="photographers__img" src="public/medias/${photographer.portrait}" alt="${photographer.name}">
                               </a>
 
                               <h2 class="photographers__name">
@@ -93,7 +93,7 @@ function filterPhotographers(photographers) {
             var template = `
                 <article class="photographers__photographer" aria-label="Photographer">
                                       <a href="/photographer-page/photographer-page.html?id=${photographersArray[i].id}">
-                                      <img class="photographers__img" src="/public/medias/${photographersArray[i].portrait}" alt="${photographersArray[i].name}">
+                                      <img class="photographers__img" src="public/medias/${photographersArray[i].portrait}" alt="${photographersArray[i].name}">
                                       </a>
 
                                       <h2 class="photographers__name">

@@ -1,5 +1,5 @@
-import { MediaFactory, Photo, Video } from '/public/js/models/Media.js';
-import Photographer from '/public/js/models/Photographer.js';
+import { MediaFactory, Photo, Video } from 'public/js/models/Media.js';
+import Photographer from 'public/js/models/Photographer.js';
 
 
 const form = document.querySelector(".contactform");
@@ -35,7 +35,7 @@ var price;
 var index;
 var mediaTemplate;
 
-fetch('/public/datas/photographers.json')
+fetch('public/datas/photographers.json')
     .then(res => {
         return res.json();
     })
@@ -80,7 +80,7 @@ fetch('/public/datas/photographers.json')
         </button>
         </div>
 
-        <img class="profile__img" src="/public/medias/${photographer.portrait}">
+        <img class="profile__img" src="public/medias/${photographer.portrait}">
             `
                 //formulaire
             document.getElementById("contact").innerHTML = `
@@ -329,13 +329,13 @@ function navigateNext(){
                 index = 0;
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "/public/medias/" + mediasArray[index].image;
+                    const url = "public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "/public/medias/" + mediasArray[index].video;
+                    const url = "public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -346,13 +346,13 @@ function navigateNext(){
             } else {
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "/public/medias/" + mediasArray[index].image;
+                    const url = "public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "/public/medias/" + mediasArray[index].video;
+                    const url = "public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -370,13 +370,13 @@ function navigatePrevious() {
                 index = mediasArray.length-1;
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "/public/medias/" + mediasArray[index].image;
+                    const url = "public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "/public/medias/" + mediasArray[index].video;
+                    const url = "public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -388,13 +388,13 @@ function navigatePrevious() {
                 const media_title = document.getElementById('media_title');
                 media_title.innerHTML = ``;
                 if (mediasArray[index] instanceof Photo) {
-                    const url = "/public/medias/" + mediasArray[index].image;
+                    const url = "public/medias/" + mediasArray[index].image;
                     mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
                 } else if (mediasArray[index] instanceof Video) {
-                    const url = "/public/medias/" + mediasArray[index].video;
+                    const url = "public/medias/" + mediasArray[index].video;
                     mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
@@ -412,7 +412,7 @@ function loadMedias(array){
     banner.innerHTML=``;
     for (var i = 0; i < array.length; i++) {
         if (array[i] instanceof Photo) {
-            const imageurl = "/public/medias/" + array[i].image;
+            const imageurl = "public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${imageurl}">
@@ -430,7 +430,7 @@ function loadMedias(array){
                             </article>
                            `;
         } else if (array[i] instanceof Video) {
-            const videourl = "/public/medias/" + array[i].video;
+            const videourl = "public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
                                            <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>

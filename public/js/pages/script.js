@@ -6,7 +6,7 @@ var tagsArray = [];
  * @description obtention des données json
  */
 function getData() {
-    fetch('../public/datas/photographers.json')
+    fetch('./public/datas/photographers.json')
         .then(res => {
             return res.json();
         })
@@ -21,7 +21,7 @@ function getData() {
 
 /**
  * 
- * @param {*} photographers affichage des tags pour chaque photographes
+ * @param {*} photographers affichage des tags pour chaque photographe
  */
 function displayTags(photographers) {
     const tags = [...new Set(photographers.map((photographer) => photographer.tags).flat())];

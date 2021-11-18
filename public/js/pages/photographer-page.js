@@ -93,7 +93,7 @@ function loadProfile(photographer) {
         </button>
         </div>
 
-        <img class="profile__img" src="/public/medias/${photographer.portrait}">
+        <img class="profile__img" src="../public/medias/${photographer.portrait}">
             `
 }
 /**

@@ -7,7 +7,6 @@ var likes = 0;
 var price;
 var index;
 var mediaTemplate;
-
 const form = document.querySelector(".contactform");
 form.style.display = "none";
 
@@ -35,141 +34,9 @@ function getData() {
                     }
                 });
                 price = photographer.price;
-
                 loadMedias(mediasArray);
-
-
                 loadProfile(photographer);
                 loadForm(photographer);
-
-                const form = document.querySelector(".contactform");
-                form.style.display = "none";
-                //ouvrir formulaire
-                const openform = document.getElementById('openform');
-                openform.addEventListener('click', openForm);
-                //fermer formulaire
-                const closeform = document.getElementById('closeForm');
-                closeform.addEventListener('click', closeForm)
-
-                //verification prénom
-                const first = document.getElementById('first');
-                first.addEventListener('blur', function checkFirstandLastName(input, type) {
-                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                    const value = input.value;
-                    const test = regex.test(value);
-                    if (test && input.length !== 0) {
-                        if (type === "firstname") {
-                            document.querySelector('.contactform__error_first').style.display = "none";
-                        }
-                        if (type === "lastname") {
-                            document.querySelector('.contactform__error_last').style.display = "none";
-                        }
-                        return true;
-                    } else {
-                        if (type === "firstname") {
-                            document.querySelector('.contactform__error_first').style.display = "flex";
-                        }
-                        if (type === "lastname") {
-                            document.querySelector('.contactform__error_last').style.display = "flex";
-                        }
-                        return false
-                    }
-                })
-
-                //verification nom
-                const last = document.getElementById('last');
-                last.addEventListener('blur', function checkFirstandLastName(input, type) {
-                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                    const value = input.value;
-                    const test = regex.test(value);
-                    if (test && input.length !== 0) {
-                        if (type === "firstname") {
-                            document.querySelector('.contactform__error_first').style.display = "none";
-                        }
-                        if (type === "lastname") {
-                            document.querySelector('.contactform__error_last').style.display = "none";
-                        }
-                        return true;
-                    } else {
-                        if (type === "firstname") {
-                            document.querySelector('.contactform__error_first').style.display = "flex";
-                        }
-                        if (type === "lastname") {
-                            document.querySelector('.contactform__error_last').style.display = "flex";
-                        }
-                        return false
-                    }
-                })
-
-                //verification adresse email
-                const email = document.getElementById('email');
-                email.addEventListener('blur', function checkEmail(input) {
-                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    const test = re.test(String(input).toLowerCase());
-                    return test;
-                })
-
-                //verification message
-                const message = document.getElementById('message');
-                message.addEventListener('blur', function checkMessage(input) {
-                    const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                    const value = input.value;
-                    const test = regex.test(value);
-                    if (test && input.length !== 0) {
-                        document.querySelector('.contactform__error_message').style.display = "none";
-                        return true;
-                    } else {
-                        document.querySelector('.contactform__error_message').style.display = "flex";
-                        return false;
-                    }
-                })
-
-                //verification formulaire
-                form.addEventListener("submit", function(event) {
-                    event.preventDefault();
-
-                    let firstValid = false;
-                    let lastValid = false;
-                    let emailValid = false;
-                    let messageValid = false;
-
-                    const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-                    const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    if (regexFirstLastMessage.test(document.getElementById('first').value)) {
-                        firstValid = true;
-                    }
-                    if (regexFirstLastMessage.test(document.getElementById('last').value)) {
-                        lastValid = true;
-                    }
-                    if (regexFirstLastMessage.test(document.getElementById('message').value)) {
-                        messageValid = true;
-                    }
-                    if (regexEmail.test(document.getElementById('email').value)) {
-                        emailValid = true;
-                    }
-
-                    if (emailValid == false) {
-                        document.querySelector('.contactform__error_email').style.display = "flex";
-                    }
-                    if (firstValid == false) {
-                        document.querySelector('.contactform__error_first').style.display = "flex";
-                    }
-                    if (lastValid == false) {
-                        document.querySelector('.contactform__error_last').style.display = "flex";
-                    }
-                    if (messageValid == false) {
-                        document.querySelector('.contactform__error_message').style.display = "flex";
-                    }
-                    let formValid = firstValid && lastValid && emailValid && messageValid;
-                    if (formValid == true) {
-                        document.querySelector('.contactform__error_email').style.display = "none";
-                        console.log("Prénom : " + document.getElementById('first').value);
-                        console.log("Nom : " + document.getElementById('last').value);
-                        console.log("Email : " + document.getElementById('email').value);
-                        console.log("Message : " + document.getElementById('message').value);
-                        document.querySelector('form').reset();
-                    }
-                })
             }
         })
 }
@@ -272,6 +139,134 @@ function loadForm(photographer){
 </form>
 <br>
     `
+    const form = document.querySelector(".contactform");
+    form.style.display = "none";
+    //ouvrir formulaire
+    const openform = document.getElementById('openform');
+    openform.addEventListener('click', openForm);
+    //fermer formulaire
+    const closeform = document.getElementById('closeForm');
+    closeform.addEventListener('click', closeForm);
+
+    //verification prénom
+    const first = document.getElementById('first');
+    first.addEventListener('blur', function checkFirstandLastName(input, type) {
+        const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+        const value = input.value;
+        const test = regex.test(value);
+        if (test && input.length !== 0) {
+            if (type === "firstname") {
+                document.querySelector('.contactform__error_first').style.display = "none";
+            }
+            if (type === "lastname") {
+                document.querySelector('.contactform__error_last').style.display = "none";
+            }
+            return true;
+        } else {
+            if (type === "firstname") {
+                document.querySelector('.contactform__error_first').style.display = "flex";
+            }
+            if (type === "lastname") {
+                document.querySelector('.contactform__error_last').style.display = "flex";
+            }
+            return false
+        }
+    })
+
+    //verification nom
+    const last = document.getElementById('last');
+    last.addEventListener('blur', function checkFirstandLastName(input, type) {
+        const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+        const value = input.value;
+        const test = regex.test(value);
+        if (test && input.length !== 0) {
+            if (type === "firstname") {
+                document.querySelector('.contactform__error_first').style.display = "none";
+            }
+            if (type === "lastname") {
+                document.querySelector('.contactform__error_last').style.display = "none";
+            }
+            return true;
+        } else {
+            if (type === "firstname") {
+                document.querySelector('.contactform__error_first').style.display = "flex";
+            }
+            if (type === "lastname") {
+                document.querySelector('.contactform__error_last').style.display = "flex";
+            }
+            return false
+        }
+    })
+
+    //verification adresse email
+    const email = document.getElementById('email');
+    email.addEventListener('blur', function checkEmail(input) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const test = re.test(String(input).toLowerCase());
+        return test;
+    })
+
+    //verification message
+    const message = document.getElementById('message');
+    message.addEventListener('blur', function checkMessage(input) {
+        const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+        const value = input.value;
+        const test = regex.test(value);
+        if (test && input.length !== 0) {
+            document.querySelector('.contactform__error_message').style.display = "none";
+            return true;
+        } else {
+            document.querySelector('.contactform__error_message').style.display = "flex";
+            return false;
+        }
+    })
+
+    //verification formulaire
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let firstValid = false;
+        let lastValid = false;
+        let emailValid = false;
+        let messageValid = false;
+
+        const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+        const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (regexFirstLastMessage.test(document.getElementById('first').value)) {
+            firstValid = true;
+        }
+        if (regexFirstLastMessage.test(document.getElementById('last').value)) {
+            lastValid = true;
+        }
+        if (regexFirstLastMessage.test(document.getElementById('message').value)) {
+            messageValid = true;
+        }
+        if (regexEmail.test(document.getElementById('email').value)) {
+            emailValid = true;
+        }
+
+        if (emailValid == false) {
+            document.querySelector('.contactform__error_email').style.display = "flex";
+        }
+        if (firstValid == false) {
+            document.querySelector('.contactform__error_first').style.display = "flex";
+        }
+        if (lastValid == false) {
+            document.querySelector('.contactform__error_last').style.display = "flex";
+        }
+        if (messageValid == false) {
+            document.querySelector('.contactform__error_message').style.display = "flex";
+        }
+        let formValid = firstValid && lastValid && emailValid && messageValid;
+        if (formValid == true) {
+            document.querySelector('.contactform__error_email').style.display = "none";
+            console.log("Prénom : " + document.getElementById('first').value);
+            console.log("Nom : " + document.getElementById('last').value);
+            console.log("Email : " + document.getElementById('email').value);
+            console.log("Message : " + document.getElementById('message').value);
+            document.querySelector('form').reset();
+        }
+    })
 }
 
 //fonctionnalité 'trier par'
@@ -316,7 +311,7 @@ function openMedia() {
     mediaSection.setAttribute('display-desktop',true);
     const banner = document.getElementById('banner');
     banner.setAttribute('close-banner-desktop',true);
-    index=null;
+    //index=null;
 }
 /**
  * @description fermeture du média
@@ -356,7 +351,8 @@ function openForm() {
  */
 function navigateMedia(type){
     if(type=="next"){
-        index = index + 1;
+        index++
+        //console.log(index);
             const media_title = document.getElementById('media_title');
             if (index > mediasArray.length - 1) {
                 console.log("limite atteinte fin");
@@ -396,7 +392,8 @@ function navigateMedia(type){
                 closemedia.addEventListener('click', closeMedia)
             }
     }else if(type=="previous"){
-        index = index - 1;
+        index--;
+        //console.log(index);
             if (index < 0) {
                 console.log("limite atteinte debut");
                 index = mediasArray.length-1;
@@ -436,7 +433,6 @@ function navigateMedia(type){
                 closemedia.addEventListener('click', closeMedia)
             }
     }
-    console.log(index);
 }
 
 /**
@@ -453,7 +449,7 @@ function loadMedias(array){
             const imageurl = "../public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
-                           <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${imageurl}">
+                           <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${i}">
                            <div class="images__title_like">
                                 <div class="images__title">
                                     ${array[i].title}
@@ -471,7 +467,7 @@ function loadMedias(array){
             const videourl = "../public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
-                                           <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${videourl}"></video>
+                                           <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${i}"></video>
                                               <div class="images__title_like">
                                                    <div class="images__title">
                                                        ${array[i].title}
@@ -516,32 +512,33 @@ function loadMedias(array){
             openMedia();
             var mediaType = e.target.tagName;
             //obtenir indice du média dans le tableau
+            //var i=media.getAttribute("data-id");
             const media_title = document.getElementById('media_title');
             mediasArray.forEach((media, i) => {
                 if (media instanceof Photo) {
                     const title = e.target.alt;
                     if (media.title == title) {
                         index = i;
-                        //console.log(index);
                     }
                 } else if (media instanceof Video) {
                     const title = e.target.title;
                     if (media.title == title) {
                         index = i;
-                        //console.log(index);
                     }
                 }
             })
             //affichage média séléctionné
             if (mediaType == "IMG") {
-                const url =  e.target.dataset.id;
+                //console.log(e);
+                const url = "./public/medias/" + mediasArray[index].image;
                 const title = e.target.alt;
                 mediaTemplate = `
                     <img src="${url}" class="media__media">
                     <p class="media__title">${title}</p>
                 `
             } else if (mediaType == "VIDEO") {
-                const url = e.target.dataset.id;
+                //console.log(e)
+                const url = "./public/medias/" + mediasArray[index].video;
                 const title = e.target.title;
                 mediaTemplate = `
                     <video src="${url}" class="media__media" controls="controls" title="${title}"></video>
@@ -549,28 +546,29 @@ function loadMedias(array){
                 `
             }
             media_title.innerHTML += mediaTemplate;
-            //fermeture média
-            const closemedia = document.getElementById('closemedia');
-            closemedia.addEventListener('click', closeMedia)
-            //navigation média suivant
-            document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')});
-            //navigation média précédent
-            document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')});
-            //navigation média touches fléchées
-            document.addEventListener('keydown', (key)=>{
-                const value=key.code;
-                //console.log(value);
-                if(value=="Escape"){
-                    closeMedia();
-                }else if(value=="ArrowLeft"){
-                    navigateMedia('previous');
-                }else if(value=="ArrowRight"){
-                    navigateMedia('next');
-                }
-            })
         })
     }
     loadBanner(array)
 }
+
+//fermeture média
+const closemedia = document.getElementById('closemedia');
+closemedia.addEventListener('click', closeMedia,false);
+//navigation média suivant
+document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')},false);
+//navigation média précédent
+document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')},false);
+//navigation média touches fléchées
+document.addEventListener('keydown', (key)=>{
+    const value=key.code;
+    //console.log(value);
+    if(value=="Escape"){
+        closeMedia();
+    }else if(value=="ArrowLeft"){
+        navigateMedia('previous');
+    }else if(value=="ArrowRight"){
+        navigateMedia('next');
+    }
+})
 
 getData();

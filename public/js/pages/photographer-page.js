@@ -530,7 +530,7 @@ function loadMedias(array){
             //affichage média séléctionné
             if (mediaType == "IMG") {
                 //console.log(e);
-                const url = "../public/medias/" + mediasArray[index].image;
+                const url = "./public/medias/" + mediasArray[index].image;
                 const title = e.target.alt;
                 mediaTemplate = `
                     <img src="${url}" class="media__media">
@@ -538,7 +538,7 @@ function loadMedias(array){
                 `
             } else if (mediaType == "VIDEO") {
                 //console.log(e)
-                const url = "../public/medias/" + mediasArray[index].video;
+                const url = "./public/medias/" + mediasArray[index].video;
                 const title = e.target.title;
                 mediaTemplate = `
                     <video src="${url}" class="media__media" controls="controls" title="${title}"></video>

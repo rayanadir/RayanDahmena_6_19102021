@@ -14,7 +14,7 @@ form.style.display = "none";
  * @description obtention des données json
  */
 function getData() {
-    fetch('./public/datas/photographers.json')
+    fetch('public/datas/photographers.json')
         .then(res => {
             return res.json();
         })

@@ -352,7 +352,6 @@ function openForm() {
 function navigateMedia(type){
     if(type=="next"){
         index++
-        //console.log(index);
             const media_title = document.getElementById('media_title');
             if (index > mediasArray.length - 1) {
                 console.log("limite atteinte fin");
@@ -393,7 +392,6 @@ function navigateMedia(type){
             }
     }else if(type=="previous"){
         index--;
-        //console.log(index);
             if (index < 0) {
                 console.log("limite atteinte debut");
                 index = mediasArray.length-1;
@@ -488,7 +486,6 @@ function loadMedias(array){
     for (let item of items) {
     //fonctionnalité like
     item.addEventListener('click', (e) => {
-        //console.log("like");
         const id = e.target.attributes[1].nodeValue;
         mediasArray.forEach((media, index) => {
             if (media.id == id) {
@@ -512,7 +509,6 @@ function loadMedias(array){
             openMedia();
             var mediaType = e.target.tagName;
             //obtenir indice du média dans le tableau
-            //var i=media.getAttribute("data-id");
             const media_title = document.getElementById('media_title');
             mediasArray.forEach((media, i) => {
                 if (media instanceof Photo) {
@@ -529,7 +525,6 @@ function loadMedias(array){
             })
             //affichage média séléctionné
             if (mediaType == "IMG") {
-                //console.log(e);
                 const url = "./public/medias/" + mediasArray[index].image;
                 const title = e.target.alt;
                 mediaTemplate = `
@@ -537,7 +532,6 @@ function loadMedias(array){
                     <p class="media__title">${title}</p>
                 `
             } else if (mediaType == "VIDEO") {
-                //console.log(e)
                 const url = "./public/medias/" + mediasArray[index].video;
                 const title = e.target.title;
                 mediaTemplate = `
@@ -561,7 +555,6 @@ document.getElementById('previous').addEventListener('click', (e)=>{navigateMedi
 //navigation média touches fléchées
 document.addEventListener('keydown', (key)=>{
     const value=key.code;
-    //console.log(value);
     if(value=="Escape"){
         closeMedia();
     }else if(value=="ArrowLeft"){

@@ -84,7 +84,7 @@ function loadProfile(photographer) {
                 ${photographer.tagline}
             </p>
             <div class="profile__tags">
-                ${photographer.tags.map((tag) => `<li class="profile__tag" id="tag"> #${tag}</li>`).join('')}
+                ${photographer.tags.map((tag) => `<a class="profile__tag" id="tag" href="#"> #${tag}</a>`).join('')}
             </div>
         </article>
         <div class="profile__bouton">
@@ -92,8 +92,9 @@ function loadProfile(photographer) {
             Contactez-moi
         </button>
         </div>
-
-        <img class="profile__img" src="public/medias/${photographer.portrait}">
+        <a href="#" class="profile__a">
+            <img class="profile__img" src="public/medias/${photographer.portrait}">
+        </a>
             `
 }
 /**
@@ -102,10 +103,10 @@ function loadProfile(photographer) {
  */
 function loadForm(photographer){
     document.getElementById("contact").innerHTML = `
-    <div class="contactform__contact_close" aria-label="Form">
+    <div class="contactform__contact_close">
     <h1 class="contactform__contactMe">Contactez-moi</h1>
     <button class="contactform__close" id="closeForm">
-        <i class="fas fa-times contactform__icon" aria-label="Close"></i>
+        <i class="fas fa-times contactform__icon modal-close-btn" aria-label="Close"></i>
     </button>
 </div>
 
@@ -337,12 +338,16 @@ function closeMedia() {
  */
 function closeForm() {
     form.style.display = "none";
+    //document.getElementById("contact").blur();
 }
 /**
  * @description ouverture du formulaire
  */
 function openForm() {
     form.style.display = "block";
+    document.getElementById("contact").focus();
+    document.querySelector('main').blur();
+    document.querySelector('header').blur();
 }
 
 /**
@@ -447,7 +452,9 @@ function loadMedias(array){
             const imageurl = "./public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
-                           <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${i}">
+                        <a class="images__a" href="#">
+                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${i}">
+                        </a>
                            <div class="images__title_like">
                                 <div class="images__title">
                                     ${array[i].title}

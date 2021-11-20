@@ -12,12 +12,12 @@
 </head>
 
 <body>
-    <header class="header" id="header">
+    <header class="header" id="header" aria-hidden="false">
         <a href="index.html">
             <img class="header__logo" src="public/medias/logo/logo.svg" alt="logo">
         </a>
     </header>
-    <main>
+    <main aria-hidden="false">
         <section class="profile" id="profile">
         </section>
         <section class="images" id="imagesSection">
@@ -36,8 +36,6 @@
         </section>
         <section class="banner" id="banner">
         </section>
-        <section class="contactform" id="contact">
-        </section>
         <section class="media" id="media">
             <em class="fas fa-times media__close_icon" id="closemedia"></em>
             <div class="media__media_icons">
@@ -48,6 +46,8 @@
             </div>
         </section>
     </main>
+    <div class="contactform" id="contact" aria-label="Form" aria-hidden="true" role="dialog">
+    </div>
     <script type="module" src="./public/js/pages/photographer-page.js"></script>
 </body>
 

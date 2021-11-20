@@ -11,7 +11,7 @@ body {
   font-style: normal;
   font-weight: normal;
 }
-.header__tags_list {
+.header__tags {
   display: flex;
   column-gap: 0.5rem;
   padding: 0;
@@ -27,6 +27,7 @@ body {
   font-weight: 600;
   line-height: 16px;
   text-align: center;
+  text-decoration: none;
   font-size: 12px;
 }
 .header__tag:hover {
@@ -111,6 +112,7 @@ body {
   font-weight: 600;
   line-height: 16px;
   text-align: center;
+  text-decoration: none;
   font-size: 12px;
 }
 .photographers__tag:hover {

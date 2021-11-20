@@ -27,8 +27,8 @@ function displayTags(photographers) {
     const tags = [...new Set(photographers.map((photographer) => photographer.tags).flat())];
 
     tags.forEach((tag) => {
-        const li = document.createElement('li');
-        li.addEventListener('click', event => {
+        const a = document.createElement('a');
+        a.addEventListener('click', event => {
             let classValue = event.target.classList.value;
             if (classValue.indexOf('filtered') === -1) {
                 event.target.classList.add('filtered');
@@ -37,10 +37,11 @@ function displayTags(photographers) {
             }
             selectTag(event);
             displayPhotographers(photographers);
-        })
-        li.innerHTML = "#" + tag;
-        li.classList.add('header__tag');
-        document.getElementById('nav').appendChild(li);
+        });
+        a.href = "#";
+        a.innerHTML = "#" + tag;
+        a.classList.add('header__tag');
+        document.getElementById('nav').appendChild(a);
     })
 }
 /**

@@ -338,17 +338,19 @@ function closeMedia() {
  */
 function closeForm() {
     form.style.display = "none";
-    //document.getElementById("contact").blur();
 }
 /**
  * @description ouverture du formulaire
  */
 function openForm() {
     form.style.display = "block";
-    document.getElementById("contact").focus();
+    document.getElementById("closeForm").focus();
+    document.querySelector('main').tabIndex=-1;
+    document.querySelector('header').tabIndex=-1;
     document.querySelector('main').blur();
     document.querySelector('header').blur();
 }
+
 
 /**
  * 

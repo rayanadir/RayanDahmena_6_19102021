@@ -84,15 +84,15 @@ function loadProfile(photographer) {
                 ${photographer.tagline}
             </p>
             <div class="profile__tags">
-                ${photographer.tags.map((tag) => `<a class="profile__tag" id="tag" href="#"> #${tag}</a>`).join('')}
+                ${photographer.tags.map((tag) => `<a class="profile__tag" id="tag" data-id="${tag}" href="#"> #${tag}</a>`).join('')}
             </div>
         </article>
         <div class="profile__bouton">
-            <button class="profile__contact" id="openform">
+            <button class="profile__contact" id="openform" data-id="contact">
             Contactez-moi
         </button>
         </div>
-        <a href="#" class="profile__a">
+        <a href="#" class="profile__a" data-id="${photographer.portrait}">
             <img class="profile__img" src="public/medias/${photographer.portrait}">
         </a>
             `
@@ -454,8 +454,8 @@ function loadMedias(array){
             const imageurl = "./public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
-                        <a class="images__a" href="#">
-                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}" data-id="${i}">
+                        <a class="images__a" href="#" data-id=${i}>
+                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}">
                         </a>
                            <div class="images__title_like">
                                 <div class="images__title">
@@ -551,16 +551,42 @@ function loadMedias(array){
             media_title.innerHTML += mediaTemplate;
         })
     }
-    loadBanner(array)
+    document.addEventListener('focusin',(e)=>{
+    var value=e.target.dataset.id;
+    value=parseInt(value);
+    if(value>=0 && value<mediasArray.length){
+        document.addEventListener('keydown',(key)=>{
+            if(key.code=="Enter"){
+                openMedia();
+                index=value;
+                if(mediasArray[value] instanceof Photo){
+                    const url="./public/medias/"+ mediasArray[value].image;
+                    mediaTemplate=`
+                    <img src="${url}" class="media__media">
+                    <p class="media__title">${mediasArray[value].title}</p>
+                    `
+                }else if(mediasArray[value] instanceof Video){
+                    const url = "./public/medias/" + mediasArray[value].video;
+                    mediaTemplate = `
+                    <video src="${url}" class="media__media" controls="controls" title="${mediasArray[value].title}"></video>
+                    <p class="media__title">${mediasArray[value].title}</p>
+                    `
+                }
+                document.getElementById('media_title').innerHTML+=mediaTemplate;
+            }
+        })
+    }
+    })
+    loadBanner(array);
 }
 
 //fermeture média
 const closemedia = document.getElementById('closemedia');
-closemedia.addEventListener('click', closeMedia,false);
+closemedia.addEventListener('click', closeMedia);
 //navigation média suivant
-document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')},false);
+document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')});
 //navigation média précédent
-document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')},false);
+document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')});
 //navigation média touches fléchées
 document.addEventListener('keydown', (key)=>{
     const value=key.code;

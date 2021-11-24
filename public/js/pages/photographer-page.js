@@ -551,32 +551,7 @@ function loadMedias(array){
             media_title.innerHTML += mediaTemplate;
         })
     }
-    document.addEventListener('focusin',(e)=>{
-    var value=e.target.dataset.id;
-    value=parseInt(value);
-    if(value>=0 && value<mediasArray.length){
-        document.addEventListener('keydown',(key)=>{
-            if(key.code=="Enter"){
-                openMedia();
-                index=value;
-                if(mediasArray[value] instanceof Photo){
-                    const url="./public/medias/"+ mediasArray[value].image;
-                    mediaTemplate=`
-                    <img src="${url}" class="media__media">
-                    <p class="media__title">${mediasArray[value].title}</p>
-                    `
-                }else if(mediasArray[value] instanceof Video){
-                    const url = "./public/medias/" + mediasArray[value].video;
-                    mediaTemplate = `
-                    <video src="${url}" class="media__media" controls="controls" title="${mediasArray[value].title}"></video>
-                    <p class="media__title">${mediasArray[value].title}</p>
-                    `
-                }
-                document.getElementById('media_title').innerHTML+=mediaTemplate;
-            }
-        })
-    }
-    })
+    
     loadBanner(array);
 }
 
@@ -598,5 +573,31 @@ document.addEventListener('keydown', (key)=>{
         navigateMedia('next');
     }
 })
-
+document.addEventListener('focusin',(e)=>{
+    var value=e.target.dataset.id;
+    value=parseInt(value);
+    if(value>=0 && value<mediasArray.length){
+        document.addEventListener('keydown',(key)=>{
+            if(key.code=="Enter"){
+                openMedia();
+                index=value;
+                document.getElementById('media_title').innerHTML=``;
+                if(mediasArray[value] instanceof Photo){
+                    const url="./public/medias/"+ mediasArray[value].image;
+                    mediaTemplate=`
+                    <img src="${url}" class="media__media">
+                    <p class="media__title">${mediasArray[value].title}</p>
+                    `
+                }else if(mediasArray[value] instanceof Video){
+                    const url = "./public/medias/" + mediasArray[value].video;
+                    mediaTemplate = `
+                    <video src="${url}" class="media__media" controls="controls" title="${mediasArray[value].title}"></video>
+                    <p class="media__title">${mediasArray[value].title}</p>
+                    `
+                }
+                document.getElementById('media_title').innerHTML+=mediaTemplate;
+            }
+        })
+    }
+})
 getData();

@@ -11,13 +11,13 @@
 
 </head>
 
-<body>
-    <header class="header" id="header" aria-hidden="false">
-        <a href="index.html" data-id="logo">
+<body aria-hidden="false" aria-modal="false">
+    <header class="header" id="header">
+        <a href="index.html" data-id="logo" id="logo">
             <img class="header__logo" src="public/medias/logo/logo.svg" alt="logo">
         </a>
     </header>
-    <main aria-hidden="false">
+    <main>
         <section class="profile" id="profile">
         </section>
         <section class="images" id="imagesSection">
@@ -25,7 +25,7 @@
                 <label for="select" class="images__filter">
                     Trier par
                 </label>
-                <select class="images__select" id="select" data-id="filter">
+                <select class="images__select" id="select" data-id="-1">
                     <option value="popularite" class="images__option">Popularité</option>
                     <option value="date" class="images__option">Date</option>
                     <option value="titre" class="images__option">Titre</option>
@@ -46,9 +46,9 @@
             </div>
         </section>
     </main>
-    <div class="contactform" tabindex="1" id="contact" aria-label="Form" aria-hidden="true" role="dialog">
-    </div>
     <script type="module" src="./public/js/pages/photographer-page.js"></script>
 </body>
+<div class="contactform" id="contact" aria-label="Form" aria-modal="true" aria-hidden="true" role="dialog">
+</div>
 
 </html>

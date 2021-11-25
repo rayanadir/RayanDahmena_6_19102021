@@ -9,6 +9,9 @@ var index;
 var mediaTemplate;
 const form = document.querySelector(".contactform");
 form.style.display = "none";
+const header = document.querySelector('header');
+const main = document.querySelector('main');
+const body = document.querySelector('body');
 
 /**
  * @description obtention des données json
@@ -92,7 +95,7 @@ function loadProfile(photographer) {
             Contactez-moi
         </button>
         </div>
-        <a href="#" class="profile__a" data-id="${photographer.portrait}">
+        <a href="#" class="profile__a" id="profile_picture" data-id="${photographer.portrait}">
             <img class="profile__img" src="public/medias/${photographer.portrait}">
         </a>
             `
@@ -101,7 +104,7 @@ function loadProfile(photographer) {
  * 
  * @param {*} photographer chargement du formulaire 
  */
-function loadForm(photographer){
+function loadForm(photographer) {
     document.getElementById("contact").innerHTML = `
     <div class="contactform__contact_close">
     <h1 class="contactform__contactMe">Contactez-moi</h1>
@@ -223,7 +226,7 @@ function loadForm(photographer){
     })
 
     //verification formulaire
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         let firstValid = false;
@@ -308,10 +311,10 @@ function openMedia() {
     document.getElementById('imagesSection').style.display = "none";
     document.getElementById('contact').style.display = "none";
     document.getElementById('header').style.display = "none";
-    mediaSection.setAttribute('display-mobile-media',true);
-    mediaSection.setAttribute('display-desktop',true);
+    mediaSection.setAttribute('display-mobile-media', true);
+    mediaSection.setAttribute('display-desktop', true);
     const banner = document.getElementById('banner');
-    banner.setAttribute('close-banner-desktop',true);
+    banner.setAttribute('close-banner-desktop', true);
     //index=null;
 }
 /**
@@ -324,7 +327,7 @@ function closeMedia() {
     document.getElementById('contact').style.display = "none";
     document.getElementById('header').style.display = "flex";
     index = null;
-    const banner=document.getElementById('banner');
+    const banner = document.getElementById('banner');
     banner.setAttribute('display-mobile', true);
     banner.setAttribute('display-desktop', true);
     banner.removeAttribute('close-banner-desktop');
@@ -338,6 +341,26 @@ function closeMedia() {
  */
 function closeForm() {
     form.style.display = "none";
+    document.querySelector('header').ariaHidden = "false";
+    document.querySelector('main').ariaHidden = "false";
+    document.getElementById('contact').ariaHidden = "true";
+    body.style.overflow = "auto";
+    document.querySelector('header').style.pointerEvents = "all";
+    document.querySelector('main').style.pointerEvents = "all";
+    document.getElementById('logo').tabIndex = 0;
+    document.getElementById('tag').tabIndex = 0;
+    document.getElementById('openform').tabIndex = 0;
+    document.getElementById('profile_picture').tabIndex = 0;
+    document.getElementById('select').tabIndex = 0;
+    const medias_element = document.getElementsByClassName('images__a')
+    for (let media of medias_element) {
+        media.tabIndex = 0;
+    }
+    const tags = document.getElementsByClassName('profile__tag')
+    for (let tag of tags) {
+        tag.tabIndex = 0;
+    }
+    document.querySelector('video').tabIndex = 0;
 }
 /**
  * @description ouverture du formulaire
@@ -345,10 +368,24 @@ function closeForm() {
 function openForm() {
     form.style.display = "block";
     document.getElementById("closeForm").focus();
-    document.querySelector('main').tabIndex=-1;
-    document.querySelector('header').tabIndex=-1;
-    document.querySelector('main').blur();
-    document.querySelector('header').blur();
+    document.getElementById('contact').ariaHidden = "false";
+    body.style.overflow = "hidden";
+    document.querySelector('header').style.pointerEvents = "none";
+    document.querySelector('main').style.pointerEvents = "none";
+    document.getElementById('logo').tabIndex = -1;
+    document.getElementById('tag').tabIndex = -1;
+    document.getElementById('openform').tabIndex = -1;
+    document.getElementById('profile_picture').tabIndex = -1;
+    document.getElementById('select').tabIndex = -1;
+    const medias_element = document.getElementsByClassName('images__a')
+    for (let media of medias_element) {
+        media.tabIndex = -1;
+    }
+    const tags = document.getElementsByClassName('profile__tag')
+    for (let tag of tags) {
+        tag.tabIndex = -1;
+    }
+    document.querySelector('video').tabIndex = -1;
 }
 
 
@@ -356,87 +393,87 @@ function openForm() {
  * 
  * @param {*} type navigation (suivant,précedent)
  */
-function navigateMedia(type){
-    if(type=="next"){
+function navigateMedia(type) {
+    if (type == "next") {
         index++
-            const media_title = document.getElementById('media_title');
-            if (index > mediasArray.length - 1) {
-                console.log("limite atteinte fin");
-                index = 0;
-                media_title.innerHTML = ``;
-                if (mediasArray[index] instanceof Photo) {
-                    const url = "./public/medias/" + mediasArray[index].image;
-                    mediaTemplate = `
+        const media_title = document.getElementById('media_title');
+        if (index > mediasArray.length - 1) {
+            //console.log("limite atteinte fin");
+            index = 0;
+            media_title.innerHTML = ``;
+            if (mediasArray[index] instanceof Photo) {
+                const url = "./public/medias/" + mediasArray[index].image;
+                mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
-                } else if (mediasArray[index] instanceof Video) {
-                    const url = "./public/medias/" + mediasArray[index].video;
-                    mediaTemplate = `
+            } else if (mediasArray[index] instanceof Video) {
+                const url = "./public/medias/" + mediasArray[index].video;
+                mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
-                }
-                media_title.innerHTML += mediaTemplate;
-                closemedia.addEventListener('click', closeMedia)
-            } else {
-                media_title.innerHTML = ``;
-                if (mediasArray[index] instanceof Photo) {
-                    const url = "./public/medias/" + mediasArray[index].image;
-                    mediaTemplate = `
-                <img src="${url}" class="media__media">
-                <p class="media__title">${mediasArray[index].title}</p>
-                `
-                } else if (mediasArray[index] instanceof Video) {
-                    const url = "./public/medias/" + mediasArray[index].video;
-                    mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                <p class="media__title">${mediasArray[index].title}</p>
-                `
-                }
-                media_title.innerHTML += mediaTemplate;
-                closemedia.addEventListener('click', closeMedia)
             }
-    }else if(type=="previous"){
+            media_title.innerHTML += mediaTemplate;
+            closemedia.addEventListener('click', closeMedia)
+        } else {
+            media_title.innerHTML = ``;
+            if (mediasArray[index] instanceof Photo) {
+                const url = "./public/medias/" + mediasArray[index].image;
+                mediaTemplate = `
+                <img src="${url}" class="media__media">
+                <p class="media__title">${mediasArray[index].title}</p>
+                `
+            } else if (mediasArray[index] instanceof Video) {
+                const url = "./public/medias/" + mediasArray[index].video;
+                mediaTemplate = `
+                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <p class="media__title">${mediasArray[index].title}</p>
+                `
+            }
+            media_title.innerHTML += mediaTemplate;
+            closemedia.addEventListener('click', closeMedia)
+        }
+    } else if (type == "previous") {
         index--;
-            if (index < 0) {
-                console.log("limite atteinte debut");
-                index = mediasArray.length-1;
-                media_title.innerHTML = ``;
-                if (mediasArray[index] instanceof Photo) {
-                    const url = "./public/medias/" + mediasArray[index].image;
-                    mediaTemplate = `
+        if (index < 0) {
+            //console.log("limite atteinte debut");
+            index = mediasArray.length - 1;
+            media_title.innerHTML = ``;
+            if (mediasArray[index] instanceof Photo) {
+                const url = "./public/medias/" + mediasArray[index].image;
+                mediaTemplate = `
                 <img src="${url}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
-                } else if (mediasArray[index] instanceof Video) {
-                    const url = "./public/medias/" + mediasArray[index].video;
-                    mediaTemplate = `
+            } else if (mediasArray[index] instanceof Video) {
+                const url = "./public/medias/" + mediasArray[index].video;
+                mediaTemplate = `
                 <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
-                }
-                media_title.innerHTML += mediaTemplate;
-                closemedia.addEventListener('click', closeMedia)
-            }else {
-                const media_title = document.getElementById('media_title');
-                media_title.innerHTML = ``;
-                if (mediasArray[index] instanceof Photo) {
-                    const url = "./public/medias/" + mediasArray[index].image;
-                    mediaTemplate = `
-                <img src="${url}" class="media__media">
-                <p class="media__title">${mediasArray[index].title}</p>
-                `
-                } else if (mediasArray[index] instanceof Video) {
-                    const url = "./public/medias/" + mediasArray[index].video;
-                    mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
-                <p class="media__title">${mediasArray[index].title}</p>
-                `
-                }
-                media_title.innerHTML += mediaTemplate;
-                closemedia.addEventListener('click', closeMedia)
             }
+            media_title.innerHTML += mediaTemplate;
+            closemedia.addEventListener('click', closeMedia)
+        } else {
+            const media_title = document.getElementById('media_title');
+            media_title.innerHTML = ``;
+            if (mediasArray[index] instanceof Photo) {
+                const url = "./public/medias/" + mediasArray[index].image;
+                mediaTemplate = `
+                <img src="${url}" class="media__media">
+                <p class="media__title">${mediasArray[index].title}</p>
+                `
+            } else if (mediasArray[index] instanceof Video) {
+                const url = "./public/medias/" + mediasArray[index].video;
+                mediaTemplate = `
+                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <p class="media__title">${mediasArray[index].title}</p>
+                `
+            }
+            media_title.innerHTML += mediaTemplate;
+            closemedia.addEventListener('click', closeMedia)
+        }
     }
 }
 
@@ -444,11 +481,11 @@ function navigateMedia(type){
  * 
  * @param {*} array affichage des médias
  */
-function loadMedias(array){
+function loadMedias(array) {
     var images = document.getElementById('images');
-    var banner=document.getElementById('banner');
-    images.innerHTML=``;
-    banner.innerHTML=``;
+    var banner = document.getElementById('banner');
+    images.innerHTML = ``;
+    banner.innerHTML = ``;
     for (var i = 0; i < array.length; i++) {
         if (array[i] instanceof Photo) {
             const imageurl = "./public/medias/" + array[i].image;
@@ -474,8 +511,8 @@ function loadMedias(array){
             const videourl = "./public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
-                                           <video src="${videourl}" class="images__image" aria-label="Video" title="${array[i].title}" controls="controls" data-id="${i}"></video>
-                                              <div class="images__title_like">
+                                                <video src="${videourl}" id="media_element" data-id=${i} class="images__image" aria-label="Video" title="${array[i].title}" controls="controls"></video>
+                                           <div class="images__title_like">
                                                    <div class="images__title">
                                                        ${array[i].title}
                                                    </div>
@@ -493,24 +530,24 @@ function loadMedias(array){
     }
     const items = document.getElementsByClassName('images__icon');
     for (let item of items) {
-    //fonctionnalité like
-    item.addEventListener('click', (e) => {
-        const id = e.target.attributes[1].nodeValue;
-        mediasArray.forEach((media, index) => {
-            if (media.id == id) {
-                if (likedMedias.includes(id) == true) {
-                    likedMedias.splice(likedMedias.indexOf(id), 1);
-                    mediasArray[index].likes = mediasArray[index].likes - 1
-                    return mediasArray[index].likes;
-                } else {
-                    likedMedias.push(id);
-                    return mediasArray[index].likes++;
+        //fonctionnalité like
+        item.addEventListener('click', (e) => {
+            const id = e.target.attributes[1].nodeValue;
+            mediasArray.forEach((media, index) => {
+                if (media.id == id) {
+                    if (likedMedias.includes(id) == true) {
+                        likedMedias.splice(likedMedias.indexOf(id), 1);
+                        mediasArray[index].likes = mediasArray[index].likes - 1
+                        return mediasArray[index].likes;
+                    } else {
+                        likedMedias.push(id);
+                        return mediasArray[index].likes++;
+                    }
                 }
-            }  
+            })
+            loadMedias(mediasArray);
         })
-        loadMedias(mediasArray);
-    })
-}
+    }
     //fonctionnalité média (affichage + navigation + fermeture)
     const medias = document.getElementsByClassName('images__image');
     for (let media of medias) {
@@ -551,7 +588,7 @@ function loadMedias(array){
             media_title.innerHTML += mediaTemplate;
         })
     }
-    
+
     loadBanner(array);
 }
 
@@ -559,45 +596,47 @@ function loadMedias(array){
 const closemedia = document.getElementById('closemedia');
 closemedia.addEventListener('click', closeMedia);
 //navigation média suivant
-document.getElementById('next').addEventListener('click', (e)=>{navigateMedia('next')});
+document.getElementById('next').addEventListener('click', (e) => { navigateMedia('next') });
 //navigation média précédent
-document.getElementById('previous').addEventListener('click', (e)=>{navigateMedia('previous')});
+document.getElementById('previous').addEventListener('click', (e) => { navigateMedia('previous') });
 //navigation média touches fléchées
-document.addEventListener('keydown', (key)=>{
-    const value=key.code;
-    if(value=="Escape"){
+document.addEventListener('keydown', (key) => {
+    const value = key.code;
+    if (value == "Escape") {
         closeMedia();
-    }else if(value=="ArrowLeft"){
+    } else if (value == "ArrowLeft") {
         navigateMedia('previous');
-    }else if(value=="ArrowRight"){
+    } else if (value == "ArrowRight") {
         navigateMedia('next');
     }
 })
-document.addEventListener('focusin',(e)=>{
-    var value=e.target.dataset.id;
-    value=parseInt(value);
-    if(value>=0 && value<mediasArray.length){
-        document.addEventListener('keydown',(key)=>{
-            if(key.code=="Enter"){
+
+
+
+document.addEventListener('keydown', (key)=>{
+        if(key.code=="Enter"){
+            var id=document.activeElement.getAttribute('data-id');
+            id=parseInt(id);
+            if(id>=0 && id < mediasArray.length){
                 openMedia();
-                index=value;
-                document.getElementById('media_title').innerHTML=``;
-                if(mediasArray[value] instanceof Photo){
-                    const url="./public/medias/"+ mediasArray[value].image;
-                    mediaTemplate=`
-                    <img src="${url}" class="media__media">
-                    <p class="media__title">${mediasArray[value].title}</p>
-                    `
-                }else if(mediasArray[value] instanceof Video){
-                    const url = "./public/medias/" + mediasArray[value].video;
+                index = id;
+                document.getElementById('media_title').innerHTML = ``;
+                if (mediasArray[id] instanceof Photo) {
+                    const url = "./public/medias/" + mediasArray[id].image;
                     mediaTemplate = `
-                    <video src="${url}" class="media__media" controls="controls" title="${mediasArray[value].title}"></video>
-                    <p class="media__title">${mediasArray[value].title}</p>
+                    <img src="${url}" class="media__media">
+                    <p class="media__title">${mediasArray[id].title}</p>
+                    `
+                } else if (mediasArray[id] instanceof Video) {
+                    const url = "./public/medias/" + mediasArray[id].video;
+                    mediaTemplate = `
+                    <video src="${url}" class="media__media" controls="controls" title="${mediasArray[id].title}"></video>
+                    <p class="media__title">${mediasArray[id].title}</p>
                     `
                 }
-                document.getElementById('media_title').innerHTML+=mediaTemplate;
+                document.getElementById('media_title').innerHTML += mediaTemplate;
             }
-        })
-    }
+        }
 })
+
 getData();

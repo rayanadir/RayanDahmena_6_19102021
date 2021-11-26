@@ -96,7 +96,7 @@ function loadProfile(photographer) {
         </button>
         </div>
         <a href="#" class="profile__a" id="profile_picture" data-id="${photographer.portrait}">
-            <img class="profile__img" src="public/medias/${photographer.portrait}">
+            <img class="profile__img" aria-label="photo de profil du photographe ${photographer.name}" src="public/medias/${photographer.portrait}">
         </a>
             `
 }
@@ -108,7 +108,7 @@ function loadForm(photographer) {
     document.getElementById("contact").innerHTML = `
     <div class="contactform__contact_close">
     <h1 class="contactform__contactMe">Contactez-moi</h1>
-    <button class="contactform__close" id="closeForm">
+    <button class="contactform__close" aria-label="fermer le formulaire" id="closeForm">
         <i class="fas fa-times contactform__icon modal-close-btn" aria-label="Close"></i>
     </button>
 </div>
@@ -118,26 +118,26 @@ function loadForm(photographer) {
 <form method="get" name="reserve" action="photographer-page.html" >
     <div class="contactform__formData">
         <label for="firstname">Prénom</label> <br>
-        <input type="text" class="contactform__input" id="first" aria-label="Firstname"> 
+        <input type="text" class="contactform__input" id="first" aria-label="entrez votre prénom"> 
         <p class="contactform__error_first">Vous devez entrer votre prénom</p>
         
     </div>
     <div class="contactform__formData">
         <label for="lastname">Nom</label> <br>
-        <input type="text" class="contactform__input" id="last" aria-label="Lastname"> <br>
+        <input type="text" class="contactform__input" id="last" aria-label="entrez votre nom"> <br>
         <p class="contactform__error_last">Vous devez entrer votre nom</p>
     </div>
     <div class="contactform__formData">
         <label for="email_test">Email</label> <br>
-        <input type="email" class="contactform__input" id="email" aria-label="Email"> <br>
+        <input type="email" class="contactform__input" id="email" aria-label="entrez votre email"> <br>
         <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
     </div>
     <div class="contactform__formData">
         <label for="message">Votre message</label> <br>
-        <textarea type="text" class="contactform__message" id="message" aria-label="Message"></textarea> <br>
+        <textarea type="text" class="contactform__message" id="message" aria-label="entrez votre message"></textarea> <br>
         <p class="contactform__error_message">Vous devez entrer un message valide</p>
     </div>
-                    <button class="contactform__send" type="submit" aria-label="Send">
+                    <button class="contactform__send" type="submit" aria-label="envoyer">
     Envoyer
 </button>
 </form>
@@ -388,7 +388,6 @@ function openForm() {
     document.querySelector('video').tabIndex = -1;
 }
 
-
 /**
  * 
  * @param {*} type navigation (suivant,précedent)
@@ -404,13 +403,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -421,13 +420,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -443,13 +442,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -461,13 +460,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -492,7 +491,7 @@ function loadMedias(array) {
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
                         <a class="images__a" href="#" data-id=${i}>
-                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}">
+                            <img src="${imageurl}" class="images__image" aria-label="${array[i].title}" alt="${array[i].title}">
                         </a>
                            <div class="images__title_like">
                                 <div class="images__title">
@@ -502,7 +501,7 @@ function loadMedias(array) {
                                     <div class="images__count">
                                         ${array[i].likes}
                                     </div>
-                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
+                                    <i class="fas fa-heart images__icon" title="like" data-id="${array[i].id}" aria-label="like"></i>
                                 </div>
                             </div>
                             </article>
@@ -511,7 +510,7 @@ function loadMedias(array) {
             const videourl = "./public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
-                                                <video src="${videourl}" id="media_element" data-id=${i} class="images__image" aria-label="Video" title="${array[i].title}" controls="controls"></video>
+                                                <video src="${videourl}" id="media_element"  data-id=${i} class="images__image" aria-label="${array[i].title}" controls="controls"></video>
                                            <div class="images__title_like">
                                                    <div class="images__title">
                                                        ${array[i].title}
@@ -520,7 +519,7 @@ function loadMedias(array) {
                                                        <div class="images__count">
                                                            ${array[i].likes}
                                                        </div>
-                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
+                                                       <i class="fas fa-heart images__icon" title="like" data-id="${array[i].id}" aria-label="like"></i>
                                                    </div>
                                                </div>
                                                </article>
@@ -611,8 +610,7 @@ document.addEventListener('keydown', (key) => {
     }
 })
 
-
-
+//navigation page
 document.addEventListener('keydown', (key)=>{
         if(key.code=="Enter"){
             var id=document.activeElement.getAttribute('data-id');

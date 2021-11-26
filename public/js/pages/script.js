@@ -78,7 +78,7 @@ function displayPhotographers(photographers) {
         var template = `
                 <article class="photographers__photographer" aria-label="Photographer">
                                       <a href="./photographer-page.html?id=${photographersArray[i].id}">
-                                      <img class="photographers__img" src="public/medias/${photographersArray[i].portrait}" alt="${photographersArray[i].name}">
+                                      <img class="photographers__img" src="public/medias/${photographersArray[i].portrait}" aria-label="accéder au profil du photographe ${photographersArray[i].name}" alt="${photographersArray[i].name}">
                                       </a>
 
                                       <h2 class="photographers__name">

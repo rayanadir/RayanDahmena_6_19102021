@@ -9,8 +9,6 @@ var index;
 var mediaTemplate;
 const form = document.querySelector(".contactform");
 form.style.display = "none";
-const header = document.querySelector('header');
-const main = document.querySelector('main');
 const body = document.querySelector('body');
 
 /**
@@ -501,7 +499,7 @@ function loadMedias(array) {
                                     <div class="images__count">
                                         ${array[i].likes}
                                     </div>
-                                    <i class="fas fa-heart images__icon" title="like" data-id="${array[i].id}" aria-label="like"></i>
+                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="like"></i>
                                 </div>
                             </div>
                             </article>
@@ -519,7 +517,7 @@ function loadMedias(array) {
                                                        <div class="images__count">
                                                            ${array[i].likes}
                                                        </div>
-                                                       <i class="fas fa-heart images__icon" title="like" data-id="${array[i].id}" aria-label="like"></i>
+                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="like"></i>
                                                    </div>
                                                </div>
                                                </article>

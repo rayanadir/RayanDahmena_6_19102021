@@ -89,11 +89,11 @@ function loadProfile(photographer) {
             </div>
         </article>
         <div class="profile__bouton">
-            <button class="profile__contact" id="openform" data-id="contact">
+            <button class="profile__contact" title="contacter le photographe" id="openform" data-id="contact">
             Contactez-moi
         </button>
         </div>
-        <a href="#" class="profile__a" id="profile_picture" data-id="${photographer.portrait}">
+        <a href="#" class="profile__a" title="${photographer.name}" id="profile_picture" data-id="${photographer.portrait}">
             <img class="profile__img" aria-label="photo de profil du photographe ${photographer.name}" src="public/medias/${photographer.portrait}">
         </a>
             `
@@ -488,7 +488,7 @@ function loadMedias(array) {
             const imageurl = "./public/medias/" + array[i].image;
             var articleTemplate = `
                         <article class="images__article" aria-label="Media">
-                        <a class="images__a" href="#" data-id=${i}>
+                        <a class="images__a" href="#" title="${array[i].title}" data-id=${i}>
                             <img src="${imageurl}" class="images__image" aria-label="${array[i].title}" alt="${array[i].title}">
                         </a>
                            <div class="images__title_like">
@@ -508,7 +508,7 @@ function loadMedias(array) {
             const videourl = "./public/medias/" + array[i].video;
             var articleTemplate = `
                                            <article class="images__article" aria-label="Media">
-                                                <video src="${videourl}" id="media_element"  data-id=${i} class="images__image" aria-label="${array[i].title}" controls="controls"></video>
+                                                <video src="${videourl}" id="media_element" title="${array[i].title}" data-id=${i} class="images__image" aria-label="${array[i].title}" controls="controls"></video>
                                            <div class="images__title_like">
                                                    <div class="images__title">
                                                        ${array[i].title}

@@ -1,4 +1,5 @@
 export default class Photographer {
+    //initialisation champs photographe
     id;
     name;
     city;
@@ -9,6 +10,7 @@ export default class Photographer {
     portrait;
 
     constructor(data) {
+        //déclaration photographe
         this.id = data.id;
         this.name = data.name;
         this.city = data.city;

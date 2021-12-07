@@ -14,7 +14,10 @@ body {
     &__tags {
         display: flex;
         column-gap: .5rem;
+        row-gap: .5rem;
         padding: 0;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     &__tag {
         @include tag();

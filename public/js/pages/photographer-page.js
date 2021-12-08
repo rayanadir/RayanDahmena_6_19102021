@@ -342,7 +342,6 @@ function openMedia() {
     mediaSection.setAttribute('display-desktop', true);
     const banner = document.getElementById('banner');
     banner.setAttribute('close-banner-desktop', true);
-    //index=null;
 }
 /**
  * @description fermeture du média
@@ -363,7 +362,6 @@ function closeMedia() {
     const media_title = document.getElementById('media_title');
     media_title.innerHTML = ``;
     if(a_tag!==undefined){
-        //document.getElementById('a_tag_id_'+index).focus();
         console.log(a_tag)
         a_tag.focus();
     }
@@ -456,7 +454,6 @@ function navigateMedia(type) {
     if (type == "next") {
         index++
         if (index > mediasArray.length - 1) {
-            //console.log("limite atteinte fin");
             index = 0;
             media_title.innerHTML = ``;
             if (mediasArray[index] instanceof Photo) {
@@ -495,7 +492,6 @@ function navigateMedia(type) {
     } else if (type == "previous") {
         index--;
         if (index < 0) {
-            //console.log("limite atteinte debut");
             index = mediasArray.length - 1;
             media_title.innerHTML = ``;
             if (mediasArray[index] instanceof Photo) {
@@ -611,8 +607,6 @@ function loadMedias(array) {
                                                </article>
                                               `;
         }
-
-        //<i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="like"></i>
         images.innerHTML += articleTemplate;
     }
     const items = document.getElementsByClassName('images__icon');
@@ -663,7 +657,6 @@ function loadMedias(array) {
             media_title.innerHTML += mediaTemplate;
         })
     }
-
     loadBanner(array);
 }
 
@@ -688,9 +681,6 @@ document.addEventListener('keydown', (key) => {
 
 //navigation page
 document.addEventListener('keyup', (key) => {
-    //console.log(document.activeElement.id)
-    //console.log("actuel : "+activeElement);
-    //console.log("precedent : " +previousActiveElement)
     const code=key.code
     if (code == "Enter") {
         var id = document.activeElement.getAttribute('data-id');
@@ -700,15 +690,10 @@ document.addEventListener('keyup', (key) => {
         id_like = parseInt(id_like);
         index_active = parseInt(index_active);
         const action = key.target.className;
-        //console.log(action);
-        //console.log(index_active);
-        //console.log(id_like);
 
         //pour accéder à la lightbox
         if (action == "images__a") {
             a_tag = document.getElementById('a_tag_id_' + id);
-            //console.log(a);
-            //a_tag.focus();
             if (id >= 0 && id < mediasArray.length) {
                 openMedia();
                 index = id;
@@ -744,7 +729,6 @@ document.addEventListener('keyup', (key) => {
         popularite.focus();
         disableFocus();
     }
-    //enableFocus();
 })
 
 //récuperer le précédent element activé pour la navigation entre les filtres
@@ -755,7 +739,5 @@ document.addEventListener('keydown',(key)=>{
         disableFocus();
     }
 })
-
-
 
 getData();

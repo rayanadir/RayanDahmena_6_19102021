@@ -14,7 +14,10 @@ body {
 .header__tags {
   display: flex;
   column-gap: 0.5rem;
+  row-gap: 0.5rem;
   padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .header__tag {
   list-style-type: none;
@@ -222,6 +225,9 @@ body {
   }
   .header__tags {
     order: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.5rem;
   }
   .header__photographers {
     font-size: 15px;

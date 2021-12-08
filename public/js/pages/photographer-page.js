@@ -8,7 +8,6 @@ var price;
 var index;
 var a_tag;
 var mediaTemplate;
-var activeElement;
 var previousActiveElement;
 const form = document.querySelector(".contactform");
 form.style.display = "none";
@@ -16,6 +15,9 @@ const body = document.querySelector('body');
 const select_triple = document.getElementById('select_triple');
 const select = document.getElementById('select');
 select_triple.style.display = "none";
+const popularite = document.getElementById('popularite');
+const date = document.getElementById('date');
+const title = document.getElementById('title');
 
 /**
  * @description obtention des données json
@@ -268,19 +270,15 @@ function loadForm(photographer) {
         }
     })
 }
-
-const popularite=document.getElementById('popularite');
-const date=document.getElementById('date');
-const title=document.getElementById('title');
-
-select.addEventListener('click',(e)=>{
+//ouvrir les tris
+select.addEventListener('click',()=>{
     select.style.display="none";
     select_triple.style.display="flex";
     document.getElementById('filter').style.alignItems="baseline";
     popularite.focus();
 })
-
-popularite.addEventListener('click',(e)=>{
+//trier par la popularité
+popularite.addEventListener('click',()=>{
     select_triple.style.display="none";
     select.style.display="flex";
     select.innerHTML=`
@@ -294,8 +292,8 @@ popularite.addEventListener('click',(e)=>{
     loadMedias(mediasArray);
     select.focus();
 })
-
-date.addEventListener('click',(e)=>{
+//trier par la date
+date.addEventListener('click',()=>{
     select_triple.style.display="none";
     select.style.display="flex";
     select.innerHTML=`
@@ -309,8 +307,8 @@ date.addEventListener('click',(e)=>{
     loadMedias(mediasArray);
     select.focus();
 })
-
-title.addEventListener('click',(e)=>{
+//trier par le titre
+title.addEventListener('click',()=>{
     select_triple.style.display="none";
     select.style.display="flex";
     select.innerHTML=`
@@ -350,11 +348,6 @@ function openMedia() {
  * @description fermeture du média
  */
 function closeMedia() {
-    if(a_tag!==undefined){
-        //document.getElementById('a_tag_id_'+index).focus();
-        console.log(a_tag)
-        a_tag.focus();
-    }
     const mediaSection = document.getElementById('media');
     document.getElementById('profile').style.display = "flex";
     document.getElementById('imagesSection').style.display = "block";
@@ -369,6 +362,11 @@ function closeMedia() {
     mediaSection.removeAttribute('display-desktop');
     const media_title = document.getElementById('media_title');
     media_title.innerHTML = ``;
+    if(a_tag!==undefined){
+        //document.getElementById('a_tag_id_'+index).focus();
+        console.log(a_tag)
+        a_tag.focus();
+    }
 }
 /**
  * @description fermeture du formulaire
@@ -454,9 +452,9 @@ function enableFocus() {
  * @param {*} type navigation (suivant,précedent)
  */
 function navigateMedia(type) {
+    const media_title = document.getElementById('media_title');
     if (type == "next") {
         index++
-        const media_title = document.getElementById('media_title');
         if (index > mediasArray.length - 1) {
             //console.log("limite atteinte fin");
             index = 0;
@@ -564,12 +562,13 @@ function likeMedia(id) {
 function loadMedias(array) {
     var images = document.getElementById('images');
     var banner = document.getElementById('banner');
+    var articleTemplate;
     images.innerHTML = ``;
     banner.innerHTML = ``;
     for (var i = 0; i < array.length; i++) {
         if (array[i] instanceof Photo) {
             const imageurl = "./public/medias/" + array[i].image;
-            var articleTemplate = `
+             articleTemplate = `
                         <article class="images__article" aria-label="Media">
                         <a class="images__a" href="#" title="${array[i].title}" id="a_tag_id_${i}" data-id="${i}">
                             <img src="${imageurl}" class="images__image" aria-label="${array[i].title}" alt="${array[i].title}">
@@ -591,7 +590,7 @@ function loadMedias(array) {
                            `;
         } else if (array[i] instanceof Video) {
             const videourl = "./public/medias/" + array[i].video;
-            var articleTemplate = `
+             articleTemplate = `
                                            <article class="images__article" aria-label="Media">
                                            <a class="images__a" href="#" id="a_tag_id_${i}" title="${array[i].title}" data-id="${i}">
                                                <video src="${videourl}" id="media_element" title="${array[i].title}" data-id="${i}" class="images__image" aria-label="${array[i].title}" ></video>
@@ -670,11 +669,11 @@ function loadMedias(array) {
 
 //fermeture média
 const closemedia = document.getElementById('closemedia');
-closemedia.addEventListener('click', (e)=>{closeMedia()});
+closemedia.addEventListener('click', ()=>{closeMedia()});
 //navigation média suivant
-document.getElementById('next').addEventListener('click', (e) => { navigateMedia('next') });
+document.getElementById('next').addEventListener('click', () => { navigateMedia('next') });
 //navigation média précédent
-document.getElementById('previous').addEventListener('click', (e) => { navigateMedia('previous') });
+document.getElementById('previous').addEventListener('click', () => { navigateMedia('previous') });
 //navigation média touches fléchées
 document.addEventListener('keydown', (key) => {
     const value = key.code;
@@ -690,7 +689,6 @@ document.addEventListener('keydown', (key) => {
 //navigation page
 document.addEventListener('keyup', (key) => {
     //console.log(document.activeElement.id)
-    activeElement=document.activeElement.id;
     //console.log("actuel : "+activeElement);
     //console.log("precedent : " +previousActiveElement)
     const code=key.code
@@ -757,5 +755,7 @@ document.addEventListener('keydown',(key)=>{
         disableFocus();
     }
 })
+
+
 
 getData();

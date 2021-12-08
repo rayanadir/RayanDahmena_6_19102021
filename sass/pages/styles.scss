@@ -201,6 +201,9 @@ body {
         flex-wrap: wrap;
         &__tags {
             order: 1;
+            flex-wrap: wrap;
+            justify-content: center;
+            row-gap: 0.5rem;
         }
         &__photographers {
             font-size: 15px;

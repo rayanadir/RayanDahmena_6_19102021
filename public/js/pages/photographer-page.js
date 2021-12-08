@@ -362,7 +362,6 @@ function closeMedia() {
     const media_title = document.getElementById('media_title');
     media_title.innerHTML = ``;
     if(a_tag!==undefined){
-        console.log(a_tag)
         a_tag.focus();
     }
 }

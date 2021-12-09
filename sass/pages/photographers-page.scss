@@ -598,6 +598,14 @@ body {
     }
 }
 
+@media (max-width:1024px) {
+    .images {
+        &__wrap_filter_button {
+            display: none;
+        }
+    }
+}
+
 hr {
     width: 100%;
     color: white;

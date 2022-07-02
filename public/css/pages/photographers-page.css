@@ -219,6 +219,7 @@ body {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 }
 .images__title {
   color: #911C1C;

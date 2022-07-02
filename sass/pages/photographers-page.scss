@@ -11,7 +11,7 @@ body {
 .header {
     display: flex;
     height: 95px;
-    align-items: center;
+    align-items: center; 
 }
 
 .profile {
@@ -207,6 +207,7 @@ body {
         display: flex;
         justify-content: space-between;
         width: 100%;
+        align-items: center;
     }
     &__title {
         color: #911C1C;
@@ -273,7 +274,7 @@ body {
 }
 
 .contactform {
-    width: 669px;
+    width: 486px;
     height: 775px;
     background: #DB8876;
     border-radius: 5px;
@@ -284,7 +285,7 @@ body {
     font-weight: normal;
     z-index: 10;
     top: 3rem;
-    transform: translateX(50%);
+    transform: translateX(74%);
     display: none;
     &__contact_close {
         display: flex;
@@ -337,14 +338,14 @@ body {
         align-items: center;
     }
     &__input {
-        width: 669px;
+        width: 100%;
         height: 40px;
         border-radius: 5px;
         border: 0;
         font-size: 22px;
     }
     &__message {
-        width: 669px;
+        width: 100%;
         height: 110px;
         border-radius: 5px;
         border: 0;
@@ -584,18 +585,8 @@ body {
         }
     }
     .contactform {
-        width: auto;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        transform: none;
-        &__input {
-            width: 100%;
-        }
-        &__message {
-            width: 100%;
-        }
+        
+        
         &__contactMe {
             font-size: 29px;
             line-height: 20px;
@@ -635,6 +626,30 @@ body {
         &__wrap_filter_button {
             display: none;
         }
+    }
+    
+}
+
+@media (max-width:1240px) {
+.contactform{
+        width: auto;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        &__input {
+            width: 100%;
+        }
+        &__message {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 1241px) and (max-width : 1440px) {
+    .contactform{
+        transform: translateX(70%);
     }
 }
 

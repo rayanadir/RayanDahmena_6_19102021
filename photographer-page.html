@@ -14,7 +14,7 @@
 <body aria-hidden="false" aria-modal="false">
     <header class="header" id="header">
         <a href="index.html" data-id="logo" id="logo">
-            <img class="header__logo" src="public/medias/logo/logo.svg" alt="logo">
+            <img class="header__logo" src="public/medias/logo/logo.svg" alt="retour à la page d'accueil">
         </a>
     </header>
     <main>
@@ -25,11 +25,34 @@
                 <label for="select" class="images__filter">
                     Trier par
                 </label>
+
+                <button class="images__select" id="select">
+                    Popularité
+                    <em class="fas fa-chevron-down"></em>
+                </button>
+
+                <div class="images__triple" id="select_triple">
+                    <button class="images__select images__popularite" id="popularite">
+                        Popularité
+                    <em class="fas fa-chevron-up"></em>
+                    </button>
+                    <button class="images__select images__date" id="date">
+                        <hr class="hr_top">
+                        Date
+                        <hr class="hr_bottom">
+                    </button>
+                    <button class="images__select images__titre" id="title">
+                        Titre
+                    </button>
+                </div>
+
+
+                <!--
                 <select class="images__select" id="select" data-id="-1">
                     <option value="popularite" class="images__option">Popularité</option>
                     <option value="date" class="images__option">Date</option>
                     <option value="titre" class="images__option">Titre</option>
-                </select>
+                </select>-->
             </div>
             <div class="images__collection" id="images">
             </div>
@@ -37,12 +60,14 @@
         <section class="banner" id="banner">
         </section>
         <section class="media" id="media">
-            <em class="fas fa-times media__close_icon" id="closemedia"></em>
-            <div class="media__media_icons">
-                <em class="fas fa-chevron-left media__icon" id="previous"></em>
-                <div class="media__media_title" id="media_title">
-                </div>
-                <em class="fas fa-chevron-right media__icon" id="next"></em>
+            <div class="media__left">
+                <em class="fas fa-chevron-left media__icon" id="previous" title="média précédent"></em>
+            </div>
+            <div class="media__media_title" id="media_title">
+            </div>
+            <div class="media__right">
+                <em class="fas fa-times media__close_icon" id="closemedia" title="fermer média"></em>
+                <em class="fas fa-chevron-right media__icon" id="next" title="média suivant"></em>
             </div>
         </section>
     </main>

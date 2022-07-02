@@ -1,6 +1,7 @@
 @mixin tags() {
     display: flex;
     column-gap: .2rem;
+    flex-wrap: wrap;
 }
 
 @mixin tag() {

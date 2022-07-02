@@ -1,4 +1,5 @@
 export class Media {
+    //initialisation champs média
     id;
     photographerId;
     title;
@@ -9,6 +10,7 @@ export class Media {
 
 
     constructor(data) {
+        //déclaration média
         this.id = data.id;
         this.photographerId = data.photographerId;
         this.title = data.title;
@@ -20,22 +22,27 @@ export class Media {
 }
 
 export class Photo extends Media {
+    //initialisation champ image
     image;
     constructor(data) {
+        //déclaration média photo
         super(data);
         this.image = data.image;
     }
 }
 
 export class Video extends Media {
+    //initialisation champ vidéo
     video;
     constructor(data) {
+        //déclaration média vidéo
         super(data);
         this.video = data.video;
     }
 }
 
 export class MediaFactory {
+    //méthode de création d'un média
     static createMedia(data) {
         if (data.video) {
             return new Video(data);

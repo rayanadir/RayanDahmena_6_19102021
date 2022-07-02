@@ -6,12 +6,18 @@ var mediasArray = [];
 var likes = 0;
 var price;
 var index;
+var a_tag;
 var mediaTemplate;
+var previousActiveElement;
 const form = document.querySelector(".contactform");
 form.style.display = "none";
-const header = document.querySelector('header');
-const main = document.querySelector('main');
 const body = document.querySelector('body');
+const select_triple = document.getElementById('select_triple');
+const select = document.getElementById('select');
+select_triple.style.display = "none";
+const popularite = document.getElementById('popularite');
+const date = document.getElementById('date');
+const title = document.getElementById('title');
 
 /**
  * @description obtention des données json
@@ -91,12 +97,12 @@ function loadProfile(photographer) {
             </div>
         </article>
         <div class="profile__bouton">
-            <button class="profile__contact" id="openform" data-id="contact">
+            <button class="profile__contact" title="contacter le photographe" id="openform" data-id="contact">
             Contactez-moi
         </button>
         </div>
-        <a href="#" class="profile__a" id="profile_picture" data-id="${photographer.portrait}">
-            <img class="profile__img" src="public/medias/${photographer.portrait}">
+        <a href="#" class="profile__a" title="${photographer.name}" id="profile_picture" data-id="${photographer.portrait}">
+            <img class="profile__img" aria-label="photo de profil du photographe ${photographer.name}" src="public/medias/${photographer.portrait}">
         </a>
             `
 }
@@ -108,7 +114,7 @@ function loadForm(photographer) {
     document.getElementById("contact").innerHTML = `
     <div class="contactform__contact_close">
     <h1 class="contactform__contactMe">Contactez-moi</h1>
-    <button class="contactform__close" id="closeForm">
+    <button class="contactform__close" aria-label="fermer le formulaire" id="closeForm">
         <i class="fas fa-times contactform__icon modal-close-btn" aria-label="Close"></i>
     </button>
 </div>
@@ -118,26 +124,26 @@ function loadForm(photographer) {
 <form method="get" name="reserve" action="photographer-page.html" >
     <div class="contactform__formData">
         <label for="firstname">Prénom</label> <br>
-        <input type="text" class="contactform__input" id="first" aria-label="Firstname"> 
+        <input type="text" class="contactform__input" id="first" aria-label="entrez votre prénom"> 
         <p class="contactform__error_first">Vous devez entrer votre prénom</p>
         
     </div>
     <div class="contactform__formData">
         <label for="lastname">Nom</label> <br>
-        <input type="text" class="contactform__input" id="last" aria-label="Lastname"> <br>
+        <input type="text" class="contactform__input" id="last" aria-label="entrez votre nom"> <br>
         <p class="contactform__error_last">Vous devez entrer votre nom</p>
     </div>
     <div class="contactform__formData">
         <label for="email_test">Email</label> <br>
-        <input type="email" class="contactform__input" id="email" aria-label="Email"> <br>
+        <input type="email" class="contactform__input" id="email" aria-label="entrez votre email"> <br>
         <p class="contactform__error_email">Vous devez entrer une adresse email valide</p>
     </div>
     <div class="contactform__formData">
         <label for="message">Votre message</label> <br>
-        <textarea type="text" class="contactform__message" id="message" aria-label="Message"></textarea> <br>
+        <textarea type="text" minlength="5" class="contactform__message" id="message" aria-label="entrez votre message"></textarea> <br>
         <p class="contactform__error_message">Vous devez entrer un message valide</p>
     </div>
-                    <button class="contactform__send" type="submit" aria-label="Send">
+                    <button class="contactform__send" type="submit" aria-label="envoyer">
     Envoyer
 </button>
 </form>
@@ -213,10 +219,7 @@ function loadForm(photographer) {
     //verification message
     const message = document.getElementById('message');
     message.addEventListener('blur', function checkMessage(input) {
-        const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
-        const value = input.value;
-        const test = regex.test(value);
-        if (test && input.length !== 0) {
+        if (input.length !== 0) {
             document.querySelector('.contactform__error_message').style.display = "none";
             return true;
         } else {
@@ -232,19 +235,17 @@ function loadForm(photographer) {
         let firstValid = false;
         let lastValid = false;
         let emailValid = false;
-        let messageValid = false;
+        
 
-        const regexFirstLastMessage = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
+        const regexFirstLast = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
         const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (regexFirstLastMessage.test(document.getElementById('first').value)) {
+        if (regexFirstLast.test(document.getElementById('first').value)) {
             firstValid = true;
         }
-        if (regexFirstLastMessage.test(document.getElementById('last').value)) {
+        if (regexFirstLast.test(document.getElementById('last').value)) {
             lastValid = true;
         }
-        if (regexFirstLastMessage.test(document.getElementById('message').value)) {
-            messageValid = true;
-        }
+        
         if (regexEmail.test(document.getElementById('email').value)) {
             emailValid = true;
         }
@@ -258,10 +259,7 @@ function loadForm(photographer) {
         if (lastValid == false) {
             document.querySelector('.contactform__error_last').style.display = "flex";
         }
-        if (messageValid == false) {
-            document.querySelector('.contactform__error_message').style.display = "flex";
-        }
-        let formValid = firstValid && lastValid && emailValid && messageValid;
+        let formValid = firstValid && lastValid && emailValid;
         if (formValid == true) {
             document.querySelector('.contactform__error_email').style.display = "none";
             console.log("Prénom : " + document.getElementById('first').value);
@@ -272,34 +270,63 @@ function loadForm(photographer) {
         }
     })
 }
-
-//fonctionnalité 'trier par'
-const select = document.getElementById('select');
-select.addEventListener('change', (e) => {
-    var type = e.target.value;
-    document.getElementById('images').innerHTML = ``;
-    if (type == "popularite") {
-        mediasArray.sort((x, y) => {
-            return y.likes - x.likes;
-        })
-    }
-    if (type == "date") {
-        mediasArray.sort((x, y) => {
-            return new Date(x.date) - new Date(y.date);
-        })
-    }
-    if (type == "titre") {
-        mediasArray.sort((x, y) => {
-            if (x.title.toLowerCase() < y.title.toLowerCase()) {
-                return -1;
-            }
-            if (x.title.toLowerCase() > y.title.toLowerCase()) {
-                return 1;
-            }
-            return 0;
-        })
-    }
-    loadMedias(mediasArray)
+//ouvrir les tris
+select.addEventListener('click',()=>{
+    select.style.display="none";
+    select_triple.style.display="flex";
+    document.getElementById('filter').style.alignItems="baseline";
+    popularite.focus();
+})
+//trier par la popularité
+popularite.addEventListener('click',()=>{
+    select_triple.style.display="none";
+    select.style.display="flex";
+    select.innerHTML=`
+    Popularité
+    <i class="fas fa-chevron-down"></i>
+    `;
+    document.getElementById('filter').style.alignItems="center";
+    mediasArray.sort((x, y) => {
+        return y.likes - x.likes;
+    })
+    loadMedias(mediasArray);
+    select.focus();
+})
+//trier par la date
+date.addEventListener('click',()=>{
+    select_triple.style.display="none";
+    select.style.display="flex";
+    select.innerHTML=`
+    Date
+    <i class="fas fa-chevron-down"></i>
+    `;
+    document.getElementById('filter').style.alignItems="center";
+    mediasArray.sort((x, y) => {
+        return new Date(x.date) - new Date(y.date);
+    })
+    loadMedias(mediasArray);
+    select.focus();
+})
+//trier par le titre
+title.addEventListener('click',()=>{
+    select_triple.style.display="none";
+    select.style.display="flex";
+    select.innerHTML=`
+    Titre
+    <i class="fas fa-chevron-down"></i>
+    `;
+    document.getElementById('filter').style.alignItems="center";
+    mediasArray.sort((x, y) => {
+        if (x.title.toLowerCase() < y.title.toLowerCase()) {
+            return -1;
+        }
+        if (x.title.toLowerCase() > y.title.toLowerCase()) {
+            return 1;
+        }
+        return 0;
+    })
+    loadMedias(mediasArray);
+    select.focus();
 })
 
 /**
@@ -315,7 +342,6 @@ function openMedia() {
     mediaSection.setAttribute('display-desktop', true);
     const banner = document.getElementById('banner');
     banner.setAttribute('close-banner-desktop', true);
-    //index=null;
 }
 /**
  * @description fermeture du média
@@ -335,6 +361,9 @@ function closeMedia() {
     mediaSection.removeAttribute('display-desktop');
     const media_title = document.getElementById('media_title');
     media_title.innerHTML = ``;
+    if(a_tag!==undefined){
+        a_tag.focus();
+    }
 }
 /**
  * @description fermeture du formulaire
@@ -347,20 +376,8 @@ function closeForm() {
     body.style.overflow = "auto";
     document.querySelector('header').style.pointerEvents = "all";
     document.querySelector('main').style.pointerEvents = "all";
-    document.getElementById('logo').tabIndex = 0;
-    document.getElementById('tag').tabIndex = 0;
-    document.getElementById('openform').tabIndex = 0;
-    document.getElementById('profile_picture').tabIndex = 0;
     document.getElementById('select').tabIndex = 0;
-    const medias_element = document.getElementsByClassName('images__a')
-    for (let media of medias_element) {
-        media.tabIndex = 0;
-    }
-    const tags = document.getElementsByClassName('profile__tag')
-    for (let tag of tags) {
-        tag.tabIndex = 0;
-    }
-    document.querySelector('video').tabIndex = 0;
+    enableFocus();
 }
 /**
  * @description ouverture du formulaire
@@ -372,11 +389,21 @@ function openForm() {
     body.style.overflow = "hidden";
     document.querySelector('header').style.pointerEvents = "none";
     document.querySelector('main').style.pointerEvents = "none";
+    document.getElementById('select').tabIndex = -1;
+    document.getElementById('popularite').tabIndex=-1;
+    document.getElementById('date').tabIndex=-1;
+    document.getElementById('title').tabIndex=-1;
+    disableFocus();
+}
+
+/**
+ * désactive le focus sur la page
+ */
+function disableFocus(){
     document.getElementById('logo').tabIndex = -1;
     document.getElementById('tag').tabIndex = -1;
     document.getElementById('openform').tabIndex = -1;
     document.getElementById('profile_picture').tabIndex = -1;
-    document.getElementById('select').tabIndex = -1;
     const medias_element = document.getElementsByClassName('images__a')
     for (let media of medias_element) {
         media.tabIndex = -1;
@@ -385,32 +412,59 @@ function openForm() {
     for (let tag of tags) {
         tag.tabIndex = -1;
     }
+    const likes=document.getElementsByClassName('images__button');
+    for(let like of likes){
+        like.tabIndex=-1;
+    }
     document.querySelector('video').tabIndex = -1;
 }
-
+/**
+ * active le focus sur la page
+ */
+function enableFocus() {
+    document.getElementById('logo').tabIndex = 0;
+    document.getElementById('tag').tabIndex = 0;
+    document.getElementById('openform').tabIndex = 0;
+    document.getElementById('profile_picture').tabIndex = 0;
+    document.getElementById('popularite').tabIndex=0;
+    document.getElementById('date').tabIndex=0;
+    document.getElementById('title').tabIndex=0;
+    const medias_element = document.getElementsByClassName('images__a')
+    for (let media of medias_element) {
+        media.tabIndex = 0;
+    }
+    const tags = document.getElementsByClassName('profile__tag')
+    for (let tag of tags) {
+        tag.tabIndex = 0;
+    }
+    const likes=document.getElementsByClassName('images__button');
+    for(let like of likes){
+        like.tabIndex=0;
+    }
+    document.querySelector('video').tabIndex = 0;
+}
 
 /**
  * 
  * @param {*} type navigation (suivant,précedent)
  */
 function navigateMedia(type) {
+    const media_title = document.getElementById('media_title');
     if (type == "next") {
         index++
-        const media_title = document.getElementById('media_title');
         if (index > mediasArray.length - 1) {
-            //console.log("limite atteinte fin");
             index = 0;
             media_title.innerHTML = ``;
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -421,13 +475,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -437,19 +491,18 @@ function navigateMedia(type) {
     } else if (type == "previous") {
         index--;
         if (index < 0) {
-            //console.log("limite atteinte debut");
             index = mediasArray.length - 1;
             media_title.innerHTML = ``;
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -461,13 +514,13 @@ function navigateMedia(type) {
             if (mediasArray[index] instanceof Photo) {
                 const url = "./public/medias/" + mediasArray[index].image;
                 mediaTemplate = `
-                <img src="${url}" class="media__media">
+                <img src="${url}" aria-label="${mediasArray[index].title}" class="media__media">
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             } else if (mediasArray[index] instanceof Video) {
                 const url = "./public/medias/" + mediasArray[index].video;
                 mediaTemplate = `
-                <video src="${url}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
+                <video src="${url}" aria-label="${mediasArray[index].title}" class="media__media" controls="controls" title="${mediasArray[index].title}"></video>
                 <p class="media__title">${mediasArray[index].title}</p>
                 `
             }
@@ -479,48 +532,77 @@ function navigateMedia(type) {
 
 /**
  * 
+ * @param {*} id aimer un média
+ */
+function likeMedia(id) {
+    mediasArray.forEach((media, index) => {
+        if (media.id == id) {
+            if (likedMedias.includes(id) == true) {
+                likedMedias.splice(likedMedias.indexOf(id), 1);
+                mediasArray[index].likes = mediasArray[index].likes - 1
+                return mediasArray[index].likes;
+            } else {
+                likedMedias.push(id);
+                return mediasArray[index].likes++;
+            }
+        }
+    })
+    loadMedias(mediasArray);
+}
+
+/**
+ * 
  * @param {*} array affichage des médias
  */
 function loadMedias(array) {
     var images = document.getElementById('images');
     var banner = document.getElementById('banner');
+    var articleTemplate;
     images.innerHTML = ``;
     banner.innerHTML = ``;
     for (var i = 0; i < array.length; i++) {
         if (array[i] instanceof Photo) {
             const imageurl = "./public/medias/" + array[i].image;
-            var articleTemplate = `
+             articleTemplate = `
                         <article class="images__article" aria-label="Media">
-                        <a class="images__a" href="#" data-id=${i}>
-                            <img src="${imageurl}" class="images__image" aria-label="Photo" alt="${array[i].title}">
+                        <a class="images__a" href="#" title="${array[i].title}" id="a_tag_id_${i}" data-id="${i}">
+                            <img src="${imageurl}" class="images__image" aria-label="${array[i].title}" alt="${array[i].title}">
                         </a>
                            <div class="images__title_like">
-                                <div class="images__title">
-                                    ${array[i].title}
-                                </div>
+                                
+                                <p class="images__title">${array[i].title}</p>
+                                    
+                                
                                 <div class="images__like">
                                     <div class="images__count">
                                         ${array[i].likes}
                                     </div>
-                                    <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
+                                        <button class="images__button" data-index="${i}" data-id-like="${array[i].id}">
+                                            <i class="fas fa-heart images__icon"  aria-label="like"></i>
+                                        </button>
                                 </div>
                             </div>
                             </article>
                            `;
         } else if (array[i] instanceof Video) {
             const videourl = "./public/medias/" + array[i].video;
-            var articleTemplate = `
+             articleTemplate = `
                                            <article class="images__article" aria-label="Media">
-                                                <video src="${videourl}" id="media_element" data-id=${i} class="images__image" aria-label="Video" title="${array[i].title}" controls="controls"></video>
+                                           <a class="images__a" href="#" id="a_tag_id_${i}" title="${array[i].title}" data-id="${i}">
+                                               <video src="${videourl}" id="media_element" title="${array[i].title}" data-id="${i}" class="images__image" aria-label="${array[i].title}" ></video>
+                                           </a>   
                                            <div class="images__title_like">
-                                                   <div class="images__title">
-                                                       ${array[i].title}
-                                                   </div>
+                                                   
+                                                   <p class="images__title">${array[i].title}</p>
+                                                       
+                                                   
                                                    <div class="images__like">
                                                        <div class="images__count">
                                                            ${array[i].likes}
                                                        </div>
-                                                       <i class="fas fa-heart images__icon" data-id="${array[i].id}" aria-label="Like"></i>
+                                                        <button class="images__button" data-index="${i}" data-id-like="${array[i].id}">
+                                                            <i class="fas fa-heart images__icon" aria-label="like"></i>
+                                                        </button>
                                                    </div>
                                                </div>
                                                </article>
@@ -532,20 +614,8 @@ function loadMedias(array) {
     for (let item of items) {
         //fonctionnalité like
         item.addEventListener('click', (e) => {
-            const id = e.target.attributes[1].nodeValue;
-            mediasArray.forEach((media, index) => {
-                if (media.id == id) {
-                    if (likedMedias.includes(id) == true) {
-                        likedMedias.splice(likedMedias.indexOf(id), 1);
-                        mediasArray[index].likes = mediasArray[index].likes - 1
-                        return mediasArray[index].likes;
-                    } else {
-                        likedMedias.push(id);
-                        return mediasArray[index].likes++;
-                    }
-                }
-            })
-            loadMedias(mediasArray);
+            const id = e.path[1].dataset.idLike;
+            likeMedia(id);
         })
     }
     //fonctionnalité média (affichage + navigation + fermeture)
@@ -588,17 +658,16 @@ function loadMedias(array) {
             media_title.innerHTML += mediaTemplate;
         })
     }
-
     loadBanner(array);
 }
 
 //fermeture média
 const closemedia = document.getElementById('closemedia');
-closemedia.addEventListener('click', closeMedia);
+closemedia.addEventListener('click', ()=>{closeMedia()});
 //navigation média suivant
-document.getElementById('next').addEventListener('click', (e) => { navigateMedia('next') });
+document.getElementById('next').addEventListener('click', () => { navigateMedia('next') });
 //navigation média précédent
-document.getElementById('previous').addEventListener('click', (e) => { navigateMedia('previous') });
+document.getElementById('previous').addEventListener('click', () => { navigateMedia('previous') });
 //navigation média touches fléchées
 document.addEventListener('keydown', (key) => {
     const value = key.code;
@@ -611,13 +680,22 @@ document.addEventListener('keydown', (key) => {
     }
 })
 
+//navigation page
+document.addEventListener('keyup', (key) => {
+    const code=key.code
+    if (code == "Enter") {
+        var id = document.activeElement.getAttribute('data-id');
+        var id_like = document.activeElement.getAttribute('data-id-like');
+        var index_active = document.activeElement.getAttribute('data-index');
+        id = parseInt(id);
+        id_like = parseInt(id_like);
+        index_active = parseInt(index_active);
+        const action = key.target.className;
 
-
-document.addEventListener('keydown', (key)=>{
-        if(key.code=="Enter"){
-            var id=document.activeElement.getAttribute('data-id');
-            id=parseInt(id);
-            if(id>=0 && id < mediasArray.length){
+        //pour accéder à la lightbox
+        if (action == "images__a") {
+            a_tag = document.getElementById('a_tag_id_' + id);
+            if (id >= 0 && id < mediasArray.length) {
                 openMedia();
                 index = id;
                 document.getElementById('media_title').innerHTML = ``;
@@ -637,6 +715,30 @@ document.addEventListener('keydown', (key)=>{
                 document.getElementById('media_title').innerHTML += mediaTemplate;
             }
         }
+        //pour liker un média
+        else if (action == "images__button") {
+            likeMedia(id_like);
+            var buttons = document.getElementsByClassName('images__button');
+            for (var i = 0; i < buttons.length; i++) {
+                if (i == index_active) {
+                    buttons[i].focus();
+                }
+            }
+        }
+    }//pour naviguer entre les filtres
+    else if(code=="Tab" && previousActiveElement=="title"){
+        popularite.focus();
+        disableFocus();
+    }
+})
+
+//récuperer le précédent element activé pour la navigation entre les filtres
+document.addEventListener('keydown',(key)=>{
+    previousActiveElement=document.activeElement.id;
+    if(key.key=="Tab" && previousActiveElement=="title"){
+        popularite.focus();
+        disableFocus();
+    }
 })
 
 getData();

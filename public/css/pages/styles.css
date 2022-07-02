@@ -1,7 +1,8 @@
 body {
-  width: 1440px;
+  max-width: 1440px;
   margin: auto;
   font-family: "DM Sans", sans-serif;
+  padding: 2rem;
 }
 
 .header {
@@ -41,7 +42,6 @@ body {
 .header__photographers {
   font-style: normal;
   font-weight: normal;
-  font-size: 36px;
   line-height: 47px;
   color: #911C1C;
 }
@@ -103,6 +103,7 @@ body {
 .photographers__tags {
   display: flex;
   column-gap: 0.2rem;
+  flex-wrap: wrap;
 }
 .photographers__tag {
   list-style-type: none;
@@ -129,20 +130,10 @@ body {
     display: none;
   }
 }
-@media (min-width: 667px) and (max-width: 768px) {
-  .header {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .header__photographers {
-    order: 1;
-  }
-}
 @media (min-width: 768px) and (max-width: 1024px) {
-  .header__tag {
-    font-size: 1.3rem;
-    padding: 0.3rem;
+  .header {
+    flex-direction: column;
+    row-gap: 2rem;
   }
 
   .content {
@@ -171,11 +162,8 @@ body {
     padding-bottom: 3rem;
   }
   .photographers__img {
-    width: 300px;
-    height: 300px;
-  }
-  .photographers__name {
-    font-size: 3rem;
+    width: 240px;
+    height: 240px;
   }
   .photographers__localisation {
     font-size: 1rem;
@@ -192,16 +180,8 @@ body {
   .photographers__tags {
     margin-top: 0.7rem;
   }
-  .photographers__tag {
-    font-size: 19px;
-  }
 }
 @media (max-width: 768px) {
-  body {
-    margin: 1rem;
-    width: auto;
-  }
-
   .content {
     display: none;
     justify-content: center;

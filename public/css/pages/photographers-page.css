@@ -1,9 +1,10 @@
 body {
-  width: 1440px;
+  max-width: 1440px;
   margin: auto;
   font-family: "DM Sans", sans-serif;
   font-style: normal;
   font-weight: normal;
+  padding: 2rem;
 }
 
 .header {
@@ -71,6 +72,7 @@ body {
 .profile__tags {
   display: flex;
   column-gap: 0.2rem;
+  flex-wrap: wrap;
 }
 .profile__tag {
   list-style-type: none;
@@ -97,7 +99,7 @@ body {
   padding-bottom: 10rem;
 }
 .images__article {
-  width: 350px;
+  width: 100%;
   margin-top: 5rem;
   place-self: center;
 }
@@ -110,6 +112,7 @@ body {
 .images__collection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 1rem;
 }
 .images__wrap_filter_button {
   display: flex;
@@ -165,6 +168,10 @@ body {
   column-gap: 1rem;
 }
 .images__select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 0.5rem;
   padding: 1rem;
   border: 0;
   background: #911C1C;
@@ -173,13 +180,36 @@ body {
   font-size: 17px;
   color: white;
   cursor: pointer;
+  width: 132px;
+}
+.images__popularite {
+  border-radius: 5px 5px 0 0;
+}
+.images__date {
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-items: start;
+}
+.images__titre {
+  border-radius: 0 0 5px 5px;
+  padding-top: 10px;
+}
+.images__triple {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 .images__option {
   height: 30px;
   cursor: pointer;
+  display: flex;
+  column-gap: 0.5rem;
 }
 .images__image {
-  width: 350px;
+  width: 100%;
   height: 300px;
   object-fit: cover;
   border-radius: 5px;
@@ -188,16 +218,13 @@ body {
 .images__title_like {
   display: flex;
   justify-content: space-between;
-  width: 350px;
+  width: 100%;
 }
 .images__title {
-  font-size: 20px;
-  line-height: 31px;
   color: #911C1C;
 }
 .images__like {
   display: flex;
-  column-gap: 0.5rem;
   align-items: center;
 }
 .images__count {
@@ -206,6 +233,10 @@ body {
   line-height: 31px;
   text-align: right;
   color: #911C1C;
+}
+.images__button {
+  border: 0;
+  background: transparent;
 }
 .images__icon {
   color: #911C1C;
@@ -347,7 +378,9 @@ body {
 }
 
 .media[display-desktop=true] {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  transform: translateY(20%);
 }
 
 .media {
@@ -355,7 +388,8 @@ body {
   flex-direction: column;
   width: 950px;
   margin: auto;
-  align-items: end;
+  align-items: center;
+  z-index: 10;
 }
 .media__media_icons {
   display: flex;
@@ -369,14 +403,15 @@ body {
   flex-direction: column;
 }
 .media__media {
-  width: 800px;
-  height: 600px;
-  object-fit: contain;
+  min-width: 300px;
+  min-height: 300px;
+  max-height: 600px;
+  max-width: 800px;
 }
 .media__title {
   font-size: 24px;
   color: #911C1C;
-  align-self: center;
+  margin: 0;
 }
 .media__icon {
   font-size: xx-large;
@@ -384,11 +419,21 @@ body {
   cursor: pointer;
 }
 .media__close_icon {
-  margin-top: 2rem;
   font-size: xx-large;
   color: #911C1C;
   cursor: pointer;
   width: fit-content;
+  flex: 0.5;
+}
+.media__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.media__left {
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 530px) and (max-width: 1024px) {
@@ -405,22 +450,15 @@ body {
     padding: 0;
   }
   .images__article {
-    place-self: center;
     margin-top: 1rem;
     width: 100%;
-  }
-  .images__article:nth-child(3n) {
-    place-self: center;
-  }
-  .images__article:nth-child(3n+1) {
-    place-self: center;
   }
   .images__image {
     height: 300px;
     width: 100%;
   }
   .images__title {
-    font-size: 14px;
+    font-size: 13px;
   }
   .images__title_like {
     width: auto;
@@ -430,6 +468,46 @@ body {
   }
   .images__icon {
     font-size: 16px;
+  }
+}
+@media (min-width: 530px) and (max-width: 600px) {
+  .images__title {
+    font-size: 11px;
+  }
+}
+@media (min-width: 601px) and (max-width: 1024px) {
+  .images__title {
+    font-size: 13px;
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .profile {
+    padding: 1rem;
+  }
+  .profile__img {
+    width: 100px;
+    height: 100px;
+  }
+  .profile__name {
+    font-size: 32px;
+  }
+  .profile__localisation {
+    margin: 0;
+    font-size: 21px;
+  }
+  .profile__description {
+    font-size: 14px;
+  }
+  .profile__contact {
+    width: 120px;
+    height: 40px;
+    font-size: 14px;
+  }
+  .profile__tag {
+    font-size: 12px;
+  }
+  .profile__bouton {
+    justify-content: center;
   }
 }
 @media (max-width: 529px) {
@@ -460,15 +538,8 @@ body {
   }
 
   .images__article {
-    place-self: center;
     margin-top: 1rem;
     width: 100%;
-  }
-  .images__article:nth-child(3n) {
-    place-self: center;
-  }
-  .images__article:nth-child(3n+1) {
-    place-self: center;
   }
   .images__title_like {
     width: auto;
@@ -537,7 +608,7 @@ body {
   }
 
   .media[display-mobile-media=true] {
-    display: initial;
+    display: grid;
   }
 
   .media {
@@ -546,16 +617,70 @@ body {
     align-items: center;
   }
   .media__media {
-    width: 250px;
-    height: 300px;
     object-fit: contain;
+    min-width: 100px;
+    max-width: 300px;
+    max-height: 400px;
   }
   .media__close_icon {
     float: right;
+    font-size: x-large;
   }
   .media__media_icons {
     justify-content: space-between;
   }
+  .media__icon {
+    font-size: x-large;
+  }
+}
+@media (max-width: 1024px) {
+  .images__wrap_filter_button {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .profile__img {
+    width: 50px;
+    height: 50px;
+  }
+  .profile__name {
+    font-size: 21px;
+  }
+  .profile__localisation {
+    font-size: 12px;
+  }
+  .profile__description {
+    font-size: 11px;
+  }
+  .profile__tag {
+    font-size: 10px;
+  }
+}
+@media (max-width: 425px) {
+  .profile__tag {
+    font-size: 10px;
+  }
+}
+@media (min-width: 1025px) and (max-width: 1240px) {
+  .images__article {
+    width: 100%;
+  }
+  .images__image {
+    width: 100%;
+    height: 200px;
+  }
+  .images__title_like {
+    width: 100%;
+  }
+}
+hr {
+  width: 100%;
+  color: white;
+}
+
+.hr_top {
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 /*# sourceMappingURL=photographers-page.css.map */

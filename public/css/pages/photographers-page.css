@@ -379,15 +379,15 @@ body {
 }
 
 .media[display-desktop=true] {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   transform: translateY(20%);
+  flex-direction: row;
+  justify-content: center;
 }
 
 .media {
   display: none;
   flex-direction: column;
-  width: 950px;
   margin: auto;
   align-items: center;
   z-index: 10;
@@ -404,10 +404,10 @@ body {
   flex-direction: column;
 }
 .media__media {
-  min-width: 300px;
-  min-height: 300px;
+  min-width: 100px;
+  min-height: 100px;
   max-height: 600px;
-  max-width: 800px;
+  max-width: 625px;
 }
 .media__title {
   font-size: 24px;
@@ -423,18 +423,16 @@ body {
   font-size: xx-large;
   color: #911C1C;
   cursor: pointer;
-  width: fit-content;
-  flex: 0.5;
+  margin-left: 20px;
 }
 .media__right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
+  margin-left: -20px;
 }
 .media__left {
+  margin-right: 20px;
+}
+.media__media_close {
   display: flex;
-  align-items: center;
 }
 
 @media (min-width: 530px) and (max-width: 1024px) {
@@ -595,7 +593,8 @@ body {
   }
 
   .media[display-mobile-media=true] {
-    display: grid;
+    display: flex;
+    transform: translateY(20%);
   }
 
   .media {
@@ -605,9 +604,7 @@ body {
   }
   .media__media {
     object-fit: contain;
-    min-width: 100px;
-    max-width: 300px;
-    max-height: 400px;
+    width: 100%;
   }
   .media__close_icon {
     float: right;

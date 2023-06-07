@@ -576,8 +576,8 @@ function loadMedias(array) {
                                     <div class="images__count">
                                         ${array[i].likes}
                                     </div>
-                                        <button class="images__button" data-index="${i}" data-id-like="${array[i].id}">
-                                            <i class="fas fa-heart images__icon"  aria-label="like"></i>
+                                        <button class="images__button" data-index="${i}">
+                                            <i class="fas fa-heart images__icon" data-id-like="${array[i].id}" aria-label="like"></i>
                                         </button>
                                 </div>
                             </div>
@@ -598,8 +598,8 @@ function loadMedias(array) {
                                                        <div class="images__count">
                                                            ${array[i].likes}
                                                        </div>
-                                                        <button class="images__button" data-index="${i}" data-id-like="${array[i].id}">
-                                                            <i class="fas fa-heart images__icon" aria-label="like"></i>
+                                                        <button class="images__button" data-index="${i}">
+                                                            <i class="fas fa-heart images__icon" data-id-like="${array[i].id}" aria-label="like"></i>
                                                         </button>
                                                    </div>
                                                </div>
@@ -612,7 +612,8 @@ function loadMedias(array) {
     for (let item of items) {
         //fonctionnalité like
         item.addEventListener('click', (e) => {
-            const id = e.path[1].dataset.idLike;
+            console.log(e);
+            const id = e.target.dataset.idLike;
             likeMedia(id);
         })
     }

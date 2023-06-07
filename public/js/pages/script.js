@@ -25,7 +25,6 @@ function getData() {
  */
 function displayTags(photographers) {
     const tags = [...new Set(photographers.map((photographer) => photographer.tags).flat())];
-
     tags.forEach((tag) => {
         const a = document.createElement('a');
         a.addEventListener('click', event => {
@@ -39,6 +38,7 @@ function displayTags(photographers) {
             displayPhotographers(photographers);
         });
         a.href = "#";
+        a.id=tag;
         a.innerHTML = "#" + tag;
         a.classList.add('header__tag');
         document.getElementById('nav').appendChild(a);
@@ -50,13 +50,12 @@ function displayTags(photographers) {
  * @returns retourne un tableau de tags séléctionnés
  */
 function selectTag(event) {
-    const tag = event.path[0].innerHTML.substring(1);
+    const tag = event.target.id;
     if (tagsArray.indexOf(tag) == -1) {
         tagsArray.push(tag);
     } else {
         tagsArray.splice(tagsArray.indexOf(tag), 1);
     }
-    console.log(tagsArray)
     return tagsArray;
 }
 

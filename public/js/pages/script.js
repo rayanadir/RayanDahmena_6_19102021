@@ -38,7 +38,7 @@ function displayTags(photographers) {
             displayPhotographers(photographers);
         });
         a.href = "#";
-        a.id=tag;
+        a.id=tag; 
         a.innerHTML = "#" + tag;
         a.classList.add('header__tag');
         document.getElementById('nav').appendChild(a);
